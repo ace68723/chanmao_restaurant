@@ -6,7 +6,7 @@ registerScreens();
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'Login',
+    screen: 'Home',
     navigatorStyle: {
       navBarHidden: false,
     },
