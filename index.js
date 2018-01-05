@@ -6,11 +6,11 @@ registerScreens();
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'Login',
+    screen: 'CreateOrderDetail',
     navigatorStyle: {
       navBarHidden: false,
     },
-    title:'Login',
+    title:'CreateOrderDetail',
     appStyle: {
      navBarTextColor:"#c49a6c",
    },
