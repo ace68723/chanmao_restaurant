@@ -5,7 +5,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
 
 import Setting from '../../Config/Setting.js'
@@ -13,17 +14,28 @@ import Setting from '../../Config/Setting.js'
 export default class Formcell extends Component {
   constructor(props) {
     super(props);
+    this.onPressAddress = this.onPressAddress.bind(this);
+  }
+  onPressAddress() {
+    if (this.props.isAddress){
+      
+    }
   }
   render() {
-    let {id, title, value, isMandatory} = this.props;
+    let {id, title, value, isMandatory, isAddress} = this.props;
     return (
       <View style={[this.props.style,styles.container ]}>
-        <Text style={ styles.title }>{this.props.title}</Text>
-        <TextInput
-          underlineColorAndroid={"rgba(0,0,0,0)"}
-          style={ styles.input }
-          onChangeText={(text) => this.props.onChangeText({text})}
-        />
+          {isMandatory ? (
+            <Text style={ styles.mTitle }>*{this.props.title}</Text>
+          ) : (
+            <Text style={ styles.title }>{this.props.title}</Text>
+          )}
+          <TextInput
+            underlineColorAndroid={"rgba(0,0,0,0)"}
+            style={ styles.input }
+            onChangeText={(text) => this.props.onChangeText({text})}
+            onFocus={this.onPressAddress}
+          />
       </View>
     );
   }
@@ -37,6 +49,14 @@ const styles = StyleSheet.create({
   },
   title:{
     color: '#6D6E71',
+    fontSize: 24,
+    textAlign: 'left',
+    fontFamily: 'Noto Sans CJK SC(Regular)',
+    marginLeft: Setting.getX(28),
+    width: Setting.getX(152),
+  },
+  mTitle:{
+    color: '#E2661A',
     fontSize: 24,
     textAlign: 'left',
     fontFamily: 'Noto Sans CJK SC(Regular)',

@@ -18,7 +18,6 @@ export default class CreateOrder extends Component {
     this.handleChangeValue = this.handleChangeValue.bind(this);
     this.onPress = this.onPress.bind(this);
   }
-
   handleChangeValue(key, value) {
     //console.log(key, value.text.text);
     this.setState({[key]: value.text.text});
@@ -35,18 +34,21 @@ export default class CreateOrder extends Component {
             style={styles.cell}
             title='Address'
             value={this.state.address}
-            onChangeText={(text) => this.handleChangeValue('address', {text})}>
+            isAddress={true}
+            onChangeText={(text) => this.handleChangeValue('address', {text})}
+          >
           </FormCell>
-
           <FormCell
             style={styles.cell}
             title='City'
-            onChangeText={(text) => this.handleChangeValue('city', {text})}>
+            onChangeText={(text) => this.handleChangeValue('city', {text})}
+          >
           </FormCell>
           <FormCell
             style={styles.cell}
             title='Postal'
             onChangeText={(text) => this.handleChangeValue('postal', {text})}>
+          >
           </FormCell>
 
           <TouchableOpacity style={styles.button} onPress={this.onPress}>
