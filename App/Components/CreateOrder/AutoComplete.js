@@ -29,7 +29,7 @@ export default class AutoComplete extends Component {
         }}
         styles={{
           textInputContainer: {
-            backgroundColor: 'white',
+            backgroundColor: 'rgba(0,0,0,0)',
             borderTopWidth: 0,
             borderBottomWidth:0,
           },
@@ -43,13 +43,14 @@ export default class AutoComplete extends Component {
             borderColor: '#6D6E71',
             marginLeft: 0,
             marginRight: Setting.getX(20),
+            backgroundColor: 'rgba(0,0,0,0)'
           },
           listView: {
             top: Setting.getY(43),
             height: Setting.getY(340),
             width:  Setting.getX(340),
             position: 'absolute',
-            backgroundColor: 'white',
+            backgroundColor: 'rgba(0,0,0,0)',
             zIndex: 99999
           }
         }}
