@@ -8,7 +8,7 @@ Navigation.startSingleScreenApp({
   screen: {
     screen: 'HistoryPage',
     navigatorStyle: {
-      navBarHidden: false,
+      navBarHidden: true,
     },
     title:'HistoryPage',
     appStyle: {
