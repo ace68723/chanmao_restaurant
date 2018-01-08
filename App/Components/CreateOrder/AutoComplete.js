@@ -50,7 +50,7 @@ export default class AutoComplete extends Component {
             height: Setting.getY(340),
             width:  Setting.getX(340),
             position: 'absolute',
-            backgroundColor: 'rgba(0,0,0,0)',
+            backgroundColor: 'white',
             zIndex: 99999
           }
         }}

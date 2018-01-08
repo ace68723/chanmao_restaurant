@@ -10,13 +10,23 @@ import {
 
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell.js'
+import Alert from '../Alert'
 
 export default class CreateOrderDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {address: '', fee: 0, unit: '', buzz: '', price: '', name: '', phone: ''};
+    this.state = {
+      preForm: {},
+      fee: 0,
+      unit: '',
+      buzz: '',
+      price: '',
+      name: '',
+      phone: ''
+    };
     this.handleChangeValue = this.handleChangeValue.bind(this);
     this.onPress = this.onPress.bind(this);
+    this._toggleAlert = this._toggleAlert.bind(this);
   }
 
   handleChangeValue(key, value) {
@@ -25,7 +35,17 @@ export default class CreateOrderDetail extends Component {
   onPress() {
     console.log(this.state);
   }
-
+  _toggleAlert(title, message, buttonTitle){
+    if (this.state.showAlert == true){
+      this.setState({['showAlert']: false});
+    }
+    else{
+      this.setState({['showAlert']: true});
+      this.state.alert.title = title;
+      this.state.alert.message = message;
+      this.state.alert.buttonTitle = title;
+    }
+  }
   render() {
     return (
       <View style={styles.container}>

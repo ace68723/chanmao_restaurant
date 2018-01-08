@@ -5,7 +5,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal
 } from 'react-native';
 
 import Setting from '../../Config/Setting.js'
@@ -13,16 +14,36 @@ import FormCell from './FormCell'
 import ESTFormCell from './ESTFormCell'
 import AutoComplete from './AutoComplete.js'
 
+import Alert from '../Alert'
+
 export default class CreateOrder extends Component {
   constructor(props) {
     super(props);
-    this.state = {address: '', city: '', postal: '', est: '', selected: ''};
+    this.state = {
+      address: '',
+      city: '',
+      postal: '',
+      est: '',
+      selected: '',
+      showAlert: false,
+      alert:{
+        message: '',
+        title: '',
+        buttonTitle: '',
+      }
+    };
     this.handleChangeValue = this.handleChangeValue.bind(this);
     this.onPress = this.onPress.bind(this);
     this.onPressEST = this.onPressEST.bind(this);
+    this.onPressAlert = this.onPressAlert.bind(this);
+    this._toggleAlert = this._toggleAlert.bind(this);
   }
   onPress() {
     // console.log(this.state);
+    //this._toggleAlert('NOTICE', 'hha312ew', 'ok');
+  }
+  onPressAlert() {
+    this._toggleAlert();
   }
   onPressEST(value) {
     // console.log(value);
@@ -34,22 +55,40 @@ export default class CreateOrder extends Component {
     // console.log(key, value.text.text);
     this.setState({[key]: value.text.text});
   }
-
+  _toggleAlert(title, message, buttonTitle){
+    if (this.state.showAlert == true){
+      this.setState({['showAlert']: false});
+    }
+    else{
+      this.setState({['showAlert']: true});
+      this.state.alert.title = title;
+      this.state.alert.message = message;
+      this.state.alert.buttonTitle = title;
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
+        <Modal
+          visible={this.state.showAlert}>
+            <Alert
+              message={this.state.alert.message}
+              title={this.state.alert.title}
+              buttonTitle={this.state.alert.buttonTitle}
+              onPressAlert={this.onPressAlert}>
+            </Alert>
+        </Modal>
+
         <FormCell
           style={styles.cell}
           title='Address'
           isAddress='true'
-          onChangeText={(text) => this.handleChangeValue('address', {text})}
-        >
+          onChangeText={(text) => this.handleChangeValue('address', {text})}>
         </FormCell>
           <FormCell
             style={styles.cell}
             title='City'
-            onChangeText={(text) => this.handleChangeValue('city', {text})}
-          >
+            onChangeText={(text) => this.handleChangeValue('city', {text})}>
           </FormCell>
           <FormCell
             style={styles.cell}
@@ -62,8 +101,7 @@ export default class CreateOrder extends Component {
             title='Estimate Time'
             onPress={(value) => this.onPressEST({value})}
             selected={this.state.selected}>
-          >
-        </ESTFormCell>
+          </ESTFormCell>
           <TouchableOpacity style={styles.button} onPress={this.onPress}>
             <Text style={styles.buttonTitle}>Next</Text>
           </TouchableOpacity>
