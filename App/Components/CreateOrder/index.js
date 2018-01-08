@@ -10,6 +10,7 @@ import {
 
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell'
+import AutoComplete from './AutoComplete.js'
 
 export default class CreateOrder extends Component {
   constructor(props) {
@@ -18,26 +19,24 @@ export default class CreateOrder extends Component {
     this.handleChangeValue = this.handleChangeValue.bind(this);
     this.onPress = this.onPress.bind(this);
   }
-  handleChangeValue(key, value) {
-    //console.log(key, value.text.text);
-    this.setState({[key]: value.text.text});
-  }
-
   onPress() {
     console.log(this.state);
+  }
+  handleChangeValue(key, value) {
+    console.log(key, value.text.text);
+    this.setState({[key]: value.text.text});
   }
 
   render() {
     return (
       <View style={styles.container}>
-          <FormCell
-            style={styles.cell}
-            title='Address'
-            value={this.state.address}
-            isAddress={true}
-            onChangeText={(text) => this.handleChangeValue('address', {text})}
-          >
-          </FormCell>
+        <FormCell
+          style={styles.cell}
+          title='Address'
+          isAddress='true'
+          onChangeText={(text) => this.handleChangeValue('address', {text})}
+        >
+        </FormCell>
           <FormCell
             style={styles.cell}
             title='City'
@@ -64,9 +63,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Setting.getY(10)
   },
-  innerContainer: {
-  flex: 1,
-  },
   button:{
     marginTop: Setting.getY(116),
     height: Setting.getY(66),
@@ -81,6 +77,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Noto Sans CJK SC(Regular)',
   },
   cell:{
-    marginTop: Setting.getY(34)
-  }
+    marginTop: Setting.getY(34),
+  },
 });
