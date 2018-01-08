@@ -6,11 +6,11 @@ registerScreens();
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'Login',
+    screen: 'HistoryPage',
     navigatorStyle: {
       navBarHidden: false,
     },
-    title:'Login',
+    title:'HistoryPage',
     appStyle: {
      navBarTextColor:"#c49a6c",
    },

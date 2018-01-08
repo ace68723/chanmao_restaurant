@@ -1,5 +1,5 @@
 import { Navigation } from 'react-native-navigation';
-
+import HistoryPage from '../Components/History';
 import AboutUs from '../Components/AboutUs';
 import CreateOrder from '../Components/CreateOrder';
 import CreateOrderDetail from '../Components/CreateOrderDetail';
@@ -11,6 +11,7 @@ import PaymentHistory from '../Components/PaymentHistory';
 // register all screens of the app (including internal ones)
 export function registerScreens() {
   Navigation.registerComponent('AboutUs', () => AboutUs);
+  Navigation.registerComponent('HistoryPage', () => HistoryPage);
   Navigation.registerComponent('CreateOrder', () => CreateOrder);
   Navigation.registerComponent('CreateOrderDetail', () => CreateOrderDetail);
   Navigation.registerComponent('Login', () => Login);
