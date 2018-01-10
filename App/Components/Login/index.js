@@ -18,8 +18,24 @@ export default class Login extends Component {
       username:'',
       pwPlaceholder:'Password',
       password:'',
-      buttonText:'GO'
+      buttonText:'GO',
+      waiting: false,
     }
+    this._setUsername = this._setUsername.bind(this);
+    this._setPassword = this._setPassword.bind(this);
+    this._submit = this._submit.bind(this);
+  }
+  _setUsername(username){
+    this.setState({username});
+  }
+  _setPassword(password){
+    this.setState({password});
+  }
+  _submit(){
+    this.setState({waiting:true});
+
+    setTimeout(()=>this.setState({waiting:false}),500);
+
   }
   render() {
     return (
@@ -29,19 +45,22 @@ export default class Login extends Component {
         </View>
         <View style={styles.infoView}>
           <TextInput style={[styles.textInputStyle,{borderBottomColor:'#EA7B21', borderBottomWidth:2}]}
-              onChangeText={(username) => this.setState({username})}
+              onChangeText={(username) => this._setUsername(username)}
               placeholder={this.state.usPlaceholder}
               underlineColorAndroid={'transparent'}>
           </TextInput>
           <TextInput style={styles.textInputStyle}
-              onChangeText={(password) => this.setState({password})}
+              onChangeText={(password)=> this._setPassword(password)}
               placeholder={this.state.pwPlaceholder}
               secureTextEntry={true}
               underlineColorAndroid={'transparent'}>
           </TextInput>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.buttonStyle}>
+          <TouchableOpacity style={styles.buttonStyle}
+                            activeOpacity={0.4}
+                            disabled={this.state.waiting}
+                            onPress={()=>this._submit()}>
               <Text style={{fontSize:22, color:'white', fontFamily:'Noto Sans CJK SC'}}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
