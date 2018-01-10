@@ -18,8 +18,14 @@ export default class AboutUs extends Component {
       username:'',
       pwPlaceholder:'Password',
       password:'',
-      buttonText:'Log Out'
+      buttonText:'Log Out',
+      waiting:false
     }
+    this._logOut = this._logOut.bind(this);
+  }
+  _logOut(){
+    this.setState({waiting:true});
+    setTimeout(()=>this.setState({waiting:false}),500);
   }
   render() {
     return (
@@ -42,7 +48,10 @@ export default class AboutUs extends Component {
           </View>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.buttonStyle}>
+          <TouchableOpacity style={styles.buttonStyle}
+                            activeOpacity={0.4}
+                            onPress={()=>this._logOut()}
+                            disabled={this.state.waiting}>
               <Text style={{fontSize:22, color:'white',fontFamily:'Noto Sans CJK SC'}}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
