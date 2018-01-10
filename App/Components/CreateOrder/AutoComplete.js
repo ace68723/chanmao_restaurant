@@ -10,7 +10,7 @@ import {
 
 import Setting from '../../Config/Setting.js'
 
-const GOOGLE_API_KEY = 'AIzaSyD27tcH34ui-lyuJaPSlmCPAB7Kokra9Aw';
+const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8';
 const ds = new ListView.DataSource({
   rowHasChanged: (r1, r2) => r1.id !== r2.id,
 });
@@ -32,11 +32,13 @@ export default class App extends React.Component {
 
   async searchLocation(query) {
     const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${
-      GOOGLE_API_KEY
-    }&input=${query}`;
+                GOOGLE_API_KEY
+                }&input=${query}
+                &components=country:ca&types=address&language=en`;
     this.setState({ isLoading: true, value: query });
     const response = await fetch(url);
     const jsonResponse = await response.json();
+    console.log(jsonResponse)
     this.setState({
       isLoading: false,
       dataSource: ds.cloneWithRows(jsonResponse.predictions),
