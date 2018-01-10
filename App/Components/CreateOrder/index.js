@@ -26,6 +26,7 @@ export default class CreateOrder extends Component {
       est: '',
       selected: '',
       showAlert: false,
+      waiting: false,
       alert:{
         message: '',
         title: '',
@@ -40,7 +41,13 @@ export default class CreateOrder extends Component {
   }
   onPress() {
     // console.log(this.state);
-    this._toggleAlert('NOTICE', 'hha312ew', 'ok');
+    this.setState({ waiting: true });
+    //this._toggleAlert('NOTICE', 'hha312ew', 'ok');
+
+
+    setTimeout(() => {
+      this.setState({ waiting: false });
+    }, 500);
   }
   onPressAlert() {
     this._toggleAlert();
@@ -102,7 +109,10 @@ export default class CreateOrder extends Component {
             onPress={(value) => this.onPressEST({value})}
             selected={this.state.selected}>
           </ESTFormCell>
-          <TouchableOpacity style={styles.button} onPress={this.onPress}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.onPress}
+            disabled={this.state.waiting}>
             <Text style={styles.buttonTitle}>Next</Text>
           </TouchableOpacity>
 

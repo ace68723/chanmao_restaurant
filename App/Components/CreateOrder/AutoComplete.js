@@ -28,6 +28,7 @@ export default class App extends React.Component {
     this.renderRow = this.renderRow.bind(this);
     this.renderSeparator = this.renderSeparator.bind(this);
     this.onFocusInput = this.onFocusInput.bind(this);
+    this.onBlurInput = this.onBlurInput.bind(this);
   }
 
   async searchLocation(query) {
@@ -77,7 +78,9 @@ export default class App extends React.Component {
   onFocusInput(){
     this.setState({ showList: true });
   }
-
+  onBlurInput(){
+    this.setState({ showList: false });
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -86,6 +89,7 @@ export default class App extends React.Component {
           style={styles.input}
           onChangeText={this.searchLocation}
           onFocus={this.onFocusInput}
+          onSubmitEditing={this.onBlurInput}
           underlineColorAndroid='rgba(0,0,0,0)'/>
 
         {this.state.showList && this.state.value != '' &&
