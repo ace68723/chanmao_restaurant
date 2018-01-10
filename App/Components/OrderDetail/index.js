@@ -71,51 +71,90 @@ export default class OrderDetail extends Component {
           sold:false,
         },
       ],
+      waiting:false,
     }
+    this._acceptOrder = this._acceptOrder.bind(this);
+    this._printOrder = this._printOrder.bind(this);
     this._renderItems = this._renderItems.bind(this);
     this._changeSoldState = this._changeSoldState.bind(this);
   }
 
   _renderListTitle(){
+    if(this.props.type == 'new'){
     return(
-      <View style={styles.titleContainer}>
-        <View style={{width:70}}>
-          <Text style={styles.titleFont}>Dish No.</Text>
-        </View>
-        <View style={{width:100}}>
-          <Text style={styles.titleFont}>Dish Name</Text>
-        </View>
-        <View style={{width:60,marginLeft:20}}>
-          <Text style={styles.titleFont}>Amount</Text>
-        </View>
-        <View style={{width:70, marginLeft:10}}>
-          <Text style={styles.titleFont}>Sold Out</Text>
-        </View>
-      </View>
-    )
-  }
-  _renderItems(items){
-    return items.map((item,index)=>{
-      return(
-        <View key={index} style={styles.itemContainer}>
-          <View style={{flex:0.2}}>
-            <Text>{item.dishNum}</Text>
+        <View style={styles.titleContainer}>
+          <View style={{width:70}}>
+            <Text style={styles.titleFont}>Dish No.</Text>
           </View>
-          <View style={{flex:0.4}}>
-            <Text>{item.name}</Text>
+          <View style={{width:100}}>
+            <Text style={styles.titleFont}>Dish Name</Text>
           </View>
-          <View style={{flex:0.2}}>
-            <Text>{item.amount}</Text>
+          <View style={{width:60,marginLeft:20}}>
+            <Text style={styles.titleFont}>Amount</Text>
           </View>
-          <View style={{flex:0.2}}>
-            <TouchableOpacity style={[styles.checkBox,{ backgroundColor:this.state.dataArray[index].sold ?'#F15A29' : 'white' }]}
-                onPress={()=>this._changeSoldState(index)}/>
+          <View style={{width:70, marginLeft:10}}>
+            <Text style={styles.titleFont}>Sold Out</Text>
           </View>
         </View>
       )
     }
+    else{
+      return(
+          <View style={styles.titleContainer}>
+            <View style={{width:70}}>
+              <Text style={styles.titleFont}>Dish No.</Text>
+            </View>
+            <View style={{width:160}}>
+              <Text style={styles.titleFont}>Dish Name</Text>
+            </View>
+            <View style={{width:60,marginLeft:20}}>
+              <Text style={styles.titleFont}>Amount</Text>
+            </View>
 
-    )
+          </View>
+        )
+    }
+  }
+  _renderItems(items){
+    if(this.props.type == 'new'){
+      return items.map((item,index)=>{
+          return(
+            <View key={index} style={styles.itemContainer}>
+              <View style={{flex:0.2}}>
+                <Text>{item.dishNum}</Text>
+              </View>
+              <View style={{flex:0.4}}>
+                <Text>{item.name}</Text>
+              </View>
+              <View style={{flex:0.2}}>
+                <Text>{item.amount}</Text>
+              </View>
+              <View style={{flex:0.2}}>
+                <TouchableOpacity style={[styles.checkBox,{ backgroundColor:this.state.dataArray[index].sold ?'#F15A29' : 'white' }]}
+                    onPress={()=>this._changeSoldState(index)}/>
+              </View>
+            </View>
+          )
+        }
+      )
+    }else{
+      return items.map((item,index)=>{
+          return(
+            <View key={index} style={styles.itemContainer}>
+              <View style={{flex:0.2}}>
+                <Text>{item.dishNum}</Text>
+              </View>
+              <View style={{flex:0.6}}>
+                <Text>{item.name}</Text>
+              </View>
+              <View style={{flex:0.2}}>
+                <Text>{item.amount}</Text>
+              </View>
+            </View>
+          )
+        }
+      )
+    }
   }
   _changeSoldState(index){
     let temp = this.state.dataArray;
@@ -151,40 +190,70 @@ export default class OrderDetail extends Component {
 
   }
   _renderDetails(){
-
-    return(
-      <View style={styles.detailContainer}>
-        <View style={{flex:0.5}}>
-          <Text style={styles.detailInfoFont}>Total After Tax: {this.state.totalPrice}</Text>
-          <Text style={styles.detailInfoFont}>Comment: {this.state.comment}</Text>
-          <Text style={styles.detailInfoFont}>Estimate Time: </Text>
+    if(this.props.type == 'new'){
+      return(
+        <View style={[styles.detailContainer,{height:130}]}>
+          <View style={{flex:0.5}}>
+            <Text style={styles.detailInfoFont}>Total After Tax: {this.state.totalPrice}</Text>
+            <Text style={styles.detailInfoFont}>Comment: {this.state.comment}</Text>
+            <Text style={styles.detailInfoFont}>Estimate Time: </Text>
+          </View>
+          <View style={styles.timeContainer}>
+            {this._renderTimesOptions()}
+          </View>
         </View>
-        <View style={styles.timeContainer}>
-          {this._renderTimesOptions()}
+      )
+    }else{
+      return(
+        <View style={[styles.detailContainer,{height:70}]}>
+          <View style={{flex:0.5}}>
+            <Text style={styles.detailInfoFont}>Total After Tax: {this.state.totalPrice}</Text>
+            <Text style={styles.detailInfoFont}>Comment: {this.state.comment}</Text>
+          </View>
         </View>
-      </View>
-    )
+      )
+    }
   }
   _renderConfirm(){
-    let soldOutArr = this.state.dataArray.filter(item => item.sold == true);
-    let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
-    return(
-      <View style={styles.confirmContainer} >
-        <View style={styles.confirmInfoView}>
-          <View style={{flex:0.5}}>
-            <Text style={styles.detailInfoFont}>User: {this.state.user}</Text>
+    if(this.props.type == 'new'){
+      let soldOutArr = this.state.dataArray.filter(item => item.sold == true);
+      let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
+      return(
+        <View style={[styles.confirmContainer,{height:120}]} >
+          <View style={styles.confirmInfoView}>
+            <View style={{flex:0.5}}>
+              <Text style={styles.detailInfoFont}>User: {this.state.user}</Text>
+            </View>
+            <View style={{flex:0.5}}>
+              <Text style={styles.detailInfoFont}>Tel: {this.state.tel}</Text>
+            </View>
           </View>
-          <View style={{flex:0.5}}>
-            <Text style={styles.detailInfoFont}>Tel: {this.state.tel}</Text>
+          <View style={styles.confirmButtonView} >
+              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={()=>this._acceptOrder()}>
+                <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
+              </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.confirmButtonView} >
-            <TouchableOpacity style={styles.confirmButtonStyle}>
-              <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
-            </TouchableOpacity>
+      )
+    }else{
+      return(
+        <View style={{height:80}} >
+          <View style={styles.confirmButtonView} >
+              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={()=>this._printOrder()}>
+                <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>Print</Text>
+              </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    )
+      )
+    }
+  }
+  _acceptOrder(){
+    this.setState({waiting:true})
+    setTimeout(()=>this.setState({waiting:false}),500)
+  }
+  _printOrder(){
+    this.setState({waiting:true})
+    setTimeout(()=>this.setState({waiting:false}),500)
   }
   render() {
     return (
@@ -237,7 +306,6 @@ const styles = StyleSheet.create({
     marginLeft:10
   },
   detailContainer:{
-    height:130,
     paddingTop:10,
   },
   timeContainer:{
@@ -262,7 +330,6 @@ const styles = StyleSheet.create({
   confirmContainer:{
     borderColor:'#D1D3D4',
     borderTopWidth:1,
-    height:120,
   },
   confirmInfoView:{
     paddingTop:10,

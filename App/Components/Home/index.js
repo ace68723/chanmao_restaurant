@@ -124,7 +124,7 @@ export default class Home extends Component {
   {
     if (!isOpen) return;
     return (
-        <OrderDetail passingOrder={()=>this._passingToRecentOrder()} item=item />
+        <OrderDetail type={item.deliveryStatus==0?'new':'recent'}  />
 
     )
   }
