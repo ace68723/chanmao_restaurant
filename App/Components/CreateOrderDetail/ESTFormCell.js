@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import Setting from '../../Config/Setting.js'
-import AutoComplete from './AutoComplete.js'
 
 const wtf = '< ';
 const wtf2 = '> ';

@@ -11,6 +11,7 @@ import {
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell.js'
 import Alert from '../Alert'
+import ESTFormCell from './ESTFormCell'
 
 export default class CreateOrderDetail extends Component {
   constructor(props) {
@@ -22,11 +23,14 @@ export default class CreateOrderDetail extends Component {
       buzz: '',
       price: '',
       name: '',
-      phone: ''
+      phone: '',
+      est: '',
+      selected: '',
     };
     this.handleChangeValue = this.handleChangeValue.bind(this);
     this.onPress = this.onPress.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
+    this.onPressEST = this.onPressEST.bind(this);
   }
 
   handleChangeValue(key, value) {
@@ -34,6 +38,12 @@ export default class CreateOrderDetail extends Component {
   }
   onPress() {
     console.log(this.state);
+  }
+  onPressEST(value) {
+    // console.log(value);
+    const options = ['<10', '20', '30', '>40'];
+    this.setState({['est']: options[Number.parseInt(value.value, 10)]});
+    this.setState({['selected']: value.value});
   }
   _toggleAlert(title, message, buttonTitle){
     if (this.state.showAlert == true){
@@ -83,6 +93,13 @@ export default class CreateOrderDetail extends Component {
             value={this.state.phone}
             onChangeText={(text) => this.handleChangeValue('phone', {text})}>
           </FormCell>
+
+          <ESTFormCell
+            style={styles.ESTcell}
+            title='Estimate Time'
+            onPress={(value) => this.onPressEST({value})}
+            selected={this.state.selected}>
+          </ESTFormCell>
 
           <TouchableOpacity
             style={styles.button}>

@@ -91,6 +91,7 @@ export default class App extends React.Component {
           onChangeText={this.searchLocation}
           onFocus={this.onFocusInput}
           onSubmitEditing={this.onBlurInput}
+          autoFocus={this.props.autoFocus}
           underlineColorAndroid='rgba(0,0,0,0)'/>
 
         {this.state.showList && this.state.value != '' &&

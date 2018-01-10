@@ -29,7 +29,8 @@ export default class Formcell extends Component {
         <Text style={ styles.title }>{this.props.title}</Text>
           {isAddress ? (
             <AutoComplete
-              onChangeText={(text) => this.props.onChangeText({text})}>
+              onChangeText={(text) => this.props.onChangeText({text})}
+              autoFocus={this.props.autoFocus}>
             </AutoComplete>
           ) : (
             <TextInput

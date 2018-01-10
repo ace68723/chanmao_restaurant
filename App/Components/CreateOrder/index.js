@@ -11,7 +11,6 @@ import {
 
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell'
-import ESTFormCell from './ESTFormCell'
 import AutoComplete from './AutoComplete.js'
 
 import Alert from '../Alert'
@@ -25,10 +24,8 @@ export default class CreateOrder extends Component {
       address: '',
       city: '',
       postal: '',
-      est: '',
-      selected: '',
       showAlert: false,
-      waiting: false,
+      coord: [],
       alert:{
         message: '',
         title: '',
@@ -36,30 +33,13 @@ export default class CreateOrder extends Component {
       }
     };
     this.handleChangeValue = this.handleChangeValue.bind(this);
-    this.onPress = this.onPress.bind(this);
-    this.onPressEST = this.onPressEST.bind(this);
+
     this.onPressAlert = this.onPressAlert.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this._getGeoPoint = this._getGeoPoint.bind(this);
   }
-  onPress() {
-    this.setState({ waiting: true });
-    //this._toggleAlert('NOTICE', 'hha312ew', 'ok');
-    this._getGeoPoint();
-    setTimeout(() => {
-      this.setState({ waiting: false });
-    }, 500);
-  }
-
   onPressAlert() {
     this._toggleAlert();
-  }
-
-  onPressEST(value) {
-    // console.log(value);
-    const options = ['<10', '20', '30', '>40'];
-    this.setState({['est']: options[Number.parseInt(value.value, 10)]});
-    this.setState({['selected']: value.value});
   }
 
   handleChangeValue(key, value) {
@@ -68,7 +48,7 @@ export default class CreateOrder extends Component {
       console.log(value);
       this.setState({['address']: value.text.text.description});
       this.setState({['city']: value.text.text.terms[2].value});
-      // this.setState({['postal']: value.text.text.terms[2].value});
+      this._getGeoPoint();
       return;
     }
     this.setState({[key]: value.text.text});
@@ -81,9 +61,10 @@ export default class CreateOrder extends Component {
                  + this.state.address;
     const response = await fetch(url);
     const jsonResponse = await response.json();
-
-    let coord = jsonResponse.results[0].geometry.location;
-    console.log(coord);
+    console.log(jsonResponse.results[0]);
+    this.state.coord = jsonResponse.results[0].geometry.location;
+    this.state.postal = jsonResponse.results[0].address_components[7].long_name;
+    console.log(this.state);
   }
 
   _toggleAlert(title, message, buttonTitle){
@@ -114,34 +95,9 @@ export default class CreateOrder extends Component {
           style={styles.cell}
           title='Address'
           isAddress='true'
-          onChangeText={(text) => this.handleChangeValue('address', {text})}>
+          onChangeText={(text) => this.handleChangeValue('address', {text})}
+          autoFocus={true}>
         </FormCell>
-          <FormCell
-            style={styles.cell}
-            title='City'
-            onChangeText={(text) => this.handleChangeValue('city', {text})}
-            value={this.state.city}>
-          </FormCell>
-          <FormCell
-            style={styles.cell}
-            title='Postal'
-            onChangeText={(text) => this.handleChangeValue('postal', {text})}
-            value={this.state.postal}>>
-          >
-          </FormCell>
-          <ESTFormCell
-            style={styles.ESTcell}
-            title='Estimate Time'
-            onPress={(value) => this.onPressEST({value})}
-            selected={this.state.selected}>
-          </ESTFormCell>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.onPress}
-            disabled={this.state.waiting}>
-            <Text style={styles.buttonTitle}>Next</Text>
-          </TouchableOpacity>
-
       </View>
     );
   }
