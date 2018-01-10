@@ -16,6 +16,8 @@ import AutoComplete from './AutoComplete.js'
 
 import Alert from '../Alert'
 
+const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8';
+
 export default class CreateOrder extends Component {
   constructor(props) {
     super(props);
@@ -38,30 +40,52 @@ export default class CreateOrder extends Component {
     this.onPressEST = this.onPressEST.bind(this);
     this.onPressAlert = this.onPressAlert.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
+    this._getGeoPoint = this._getGeoPoint.bind(this);
   }
   onPress() {
-    // console.log(this.state);
     this.setState({ waiting: true });
     //this._toggleAlert('NOTICE', 'hha312ew', 'ok');
-
-
+    this._getGeoPoint();
     setTimeout(() => {
       this.setState({ waiting: false });
     }, 500);
   }
+
   onPressAlert() {
     this._toggleAlert();
   }
+
   onPressEST(value) {
     // console.log(value);
     const options = ['<10', '20', '30', '>40'];
     this.setState({['est']: options[Number.parseInt(value.value, 10)]});
     this.setState({['selected']: value.value});
   }
+
   handleChangeValue(key, value) {
     // console.log(key, value.text.text);
+    if (key == 'address'){
+      console.log(value);
+      this.setState({['address']: value.text.text.description});
+      this.setState({['city']: value.text.text.terms[2].value});
+      // this.setState({['postal']: value.text.text.terms[2].value});
+      return;
+    }
     this.setState({[key]: value.text.text});
   }
+
+  async _getGeoPoint(){
+    const url = 'https://maps.googleapis.com/maps/api/geocode/json?key='
+                 + GOOGLE_API_KEY
+                 + '&address='
+                 + this.state.address;
+    const response = await fetch(url);
+    const jsonResponse = await response.json();
+
+    let coord = jsonResponse.results[0].geometry.location;
+    console.log(coord);
+  }
+
   _toggleAlert(title, message, buttonTitle){
     if (this.state.showAlert == true){
       this.setState({['showAlert']: false});
@@ -95,12 +119,14 @@ export default class CreateOrder extends Component {
           <FormCell
             style={styles.cell}
             title='City'
-            onChangeText={(text) => this.handleChangeValue('city', {text})}>
+            onChangeText={(text) => this.handleChangeValue('city', {text})}
+            value={this.state.city}>
           </FormCell>
           <FormCell
             style={styles.cell}
             title='Postal'
-            onChangeText={(text) => this.handleChangeValue('postal', {text})}>
+            onChangeText={(text) => this.handleChangeValue('postal', {text})}
+            value={this.state.postal}>>
           >
           </FormCell>
           <ESTFormCell

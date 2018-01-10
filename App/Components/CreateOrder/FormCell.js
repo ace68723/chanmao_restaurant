@@ -36,6 +36,7 @@ export default class Formcell extends Component {
               underlineColorAndroid={"rgba(0,0,0,0)"}
               style={ styles.input }
               onChangeText={(text) => this.props.onChangeText({text})}
+              value={this.props.value}
             />
           )}
       </View>
