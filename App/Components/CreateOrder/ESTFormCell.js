@@ -11,9 +11,12 @@ import {
 
 import Setting from '../../Config/Setting.js'
 import AutoComplete from './AutoComplete.js'
-import ESTButton from './ESTButton.js'
+
+const wtf = '< ';
+const wtf2 = '> ';
 
 export default class Formcell extends Component {
+
   constructor(props) {
     super(props);
   }
@@ -25,11 +28,11 @@ export default class Formcell extends Component {
           <View style={ styles.buttons }>
             {selected == '0' ? (
               <TouchableOpacity style={styles.buttonSelected} onPress={() => { this.props.onPress('0') }}>
-                <Text style={styles.buttonTitleSelected}>10</Text>
+                <Text style={styles.buttonTitleSelected}>{wtf}10</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.button} onPress={() => { this.props.onPress('0') }}>
-                <Text style={styles.buttonTitle}>10</Text>
+                <Text style={styles.buttonTitle}>{wtf}10</Text>
               </TouchableOpacity>
             )}
 
@@ -54,11 +57,11 @@ export default class Formcell extends Component {
 
             {selected == '3' ? (
               <TouchableOpacity style={styles.buttonSelected} onPress={() => { this.props.onPress('3') }} >
-                <Text style={styles.buttonTitleSelected}>40</Text>
+                <Text style={styles.buttonTitleSelected}>{wtf2}40</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.button} onPress={() => { this.props.onPress('3') }} >
-                <Text style={styles.buttonTitle}>40</Text>
+                <Text style={styles.buttonTitle}>{wtf2}40</Text>
               </TouchableOpacity>
             )}
 
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#798BA5',
     width: Setting.getX(102),
-    height: Setting.getX(40),
+    height: Setting.getY(40),
     backgroundColor: 'white',
     marginRight: Setting.getX(24)
   },

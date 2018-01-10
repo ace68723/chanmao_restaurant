@@ -40,7 +40,7 @@ export default class CreateOrder extends Component {
   }
   onPress() {
     // console.log(this.state);
-    //this._toggleAlert('NOTICE', 'hha312ew', 'ok');
+    this._toggleAlert('NOTICE', 'hha312ew', 'ok');
   }
   onPressAlert() {
     this._toggleAlert();

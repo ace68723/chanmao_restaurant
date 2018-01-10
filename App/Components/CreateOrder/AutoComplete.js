@@ -86,7 +86,7 @@ export default class App extends React.Component {
           onFocus={this.onFocusInput}
           underlineColorAndroid='rgba(0,0,0,0)'/>
 
-        {this.state.showList &&
+        {this.state.showList && this.state.value != '' &&
           <ListView
             enableEmptySections
             style={styles.listView}
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
 
   },
   listView: {
-    elevation: 20, // fix that shit...
+    elevation: 1, // fix that shit...
     backgroundColor: 'white',
     position: 'absolute',
     marginTop: Setting.getY(40),
