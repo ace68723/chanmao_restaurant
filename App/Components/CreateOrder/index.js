@@ -63,7 +63,7 @@ export default class CreateOrder extends Component {
     const jsonResponse = await response.json();
     console.log(jsonResponse.results[0]);
     this.state.coord = jsonResponse.results[0].geometry.location;
-    this.state.postal = jsonResponse.results[0].address_components[7].long_name;
+    this.state.postal = jsonResponse.results[0].address_components.pop().long_name;
     console.log(this.state);
   }
 
