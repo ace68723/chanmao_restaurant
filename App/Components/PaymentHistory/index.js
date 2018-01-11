@@ -77,7 +77,7 @@ export default class PaymentHistory extends Component {
         <View style={{flex:0.25}}>
           <Text style={styles.listTitleFont}>Start</Text>
         </View>
-        <View style={{flex:0.25,paddingLeft:Setting.getX(10)}}>
+        <View style={{flex:0.25,paddingLeft:Setting.getX(20)}}>
           <Text style={styles.listTitleFont}>End</Text>
         </View>
         <View style={{flex:0.2,paddingLeft: Settings.getX(20)}}>

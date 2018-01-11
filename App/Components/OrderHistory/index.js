@@ -102,7 +102,7 @@ export default class OrderHistory extends Component {
           {this.renderDetialList()}
           <TouchableOpacity style={{
            position:'absolute',
-           top: height*0.67,
+           top: height*0.74,
            left: width*0.77,
            height: Settings.getX(84),
            width: Settings.getX(84),
