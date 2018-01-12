@@ -8,68 +8,20 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Setting from '../../Config/Setting';
+import Loading from '../Loading';
+import OrderDetailModule from '../../Module/OrderDetail/OrderDetailModule';
+
 const timeStr = ['< 10', '20', '30', '> 40'];
-var dataArr = [
-  {
-    dishNum:'K20',
-    name:'鱼香肉丝',
-    amount:1,
-    sold:false,
-  },
-  {
-    dishNum:'K20',
-    name:'鱼香肉丝',
-    amount:1,
-    sold:false,
-  },
-  {
-    dishNum:'K20',
-    name:'鱼香肉丝',
-    amount:1,
-    sold:false,
-  },
-  {
-    dishNum:'K20',
-    name:'鱼香肉丝',
-    amount:1,
-    sold:false,
-  },
-]
 export default class OrderDetail extends Component {
   constructor(props){
     super(props);
-    this.props.data = dataArr;
     this.state = {
-      totalPrice:'$40.22',
-      comment:' 麻婆豆腐不要葱，谢谢。',
-      user:'Ginny',
-      tel:'(905)966-3253',
+      totalPrice:'',
+      comment:' ',
+      user:'',
+      tel:'',
       estimateTime:'20',
       dataArray: [
-        {
-          dishNum:'K20',
-          name:'鱼香肉丝',
-          amount:1,
-          sold:false,
-        },
-        {
-          dishNum:'K21',
-          name:'番茄炒鸡蛋',
-          amount:1,
-          sold:false,
-        },
-        {
-          dishNum:'K22',
-          name:'鱼香肉丝',
-          amount:1,
-          sold:false,
-        },
-        {
-          dishNum:'K23',
-          name:'鱼香肉丝',
-          amount:1,
-          sold:false,
-        },
       ],
       waiting:false,
     }
@@ -78,7 +30,31 @@ export default class OrderDetail extends Component {
     this._renderItems = this._renderItems.bind(this);
     this._changeSoldState = this._changeSoldState.bind(this);
   }
+  componentDidMount() {
+    this.getOrderDetail();
+  }
+  async getOrderDetail(){
+    try{
+       const rid = 5;
+       const token = '';
+       const oid = 19006;
+       this.refs.loading.startLoading();
+       const data = await OrderDetailModule.getOrderDetail(token,rid,oid);
+       console.log(data);
+       this.setState({
+         dataArray: data.items,
+         totalPrice: data.total,
+         user: data.name,
+         tel: data.tel,
+         comment: data.comment,
+       })
+       console.log(this.state.dataArray)
+       this.refs.loading.endLoading();
 
+    }catch(error){
+      console.log(error);
+    }
+  }
   _renderListTitle(){
     if(this.props.type == 'new'){
     return(
@@ -121,10 +97,10 @@ export default class OrderDetail extends Component {
           return(
             <View key={index} style={styles.itemContainer}>
               <View style={{flex:0.2}}>
-                <Text>{item.dishNum}</Text>
+                <Text>{item.ds_id}</Text>
               </View>
               <View style={{flex:0.4}}>
-                <Text>{item.name}</Text>
+                <Text>{item.ds_name}</Text>
               </View>
               <View style={{flex:0.2}}>
                 <Text>{item.amount}</Text>
@@ -142,10 +118,10 @@ export default class OrderDetail extends Component {
           return(
             <View key={index} style={styles.itemContainer}>
               <View style={{flex:0.2}}>
-                <Text>{item.dishNum}</Text>
+                <Text>{item.ds_id}</Text>
               </View>
               <View style={{flex:0.6}}>
-                <Text>{item.name}</Text>
+                <Text>{item.ds_name}</Text>
               </View>
               <View style={{flex:0.2}}>
                 <Text>{item.amount}</Text>
@@ -163,9 +139,10 @@ export default class OrderDetail extends Component {
   }
   _renderList(){
     return(
-      <View style={styles.listContainer}>
+          <View style= {{height:this.state.dataArray.length * 30 + 40, borderBottomWidth:1,
+            borderColor:'#D1D3D4'}}>
         {this._renderListTitle()}
-        <View style={styles.listViewStyle}>
+        <View style = {{height: this.state.dataArray.length * 30}}>
           {this._renderItems(this.state.dataArray)}
         </View>
       </View>
@@ -258,6 +235,7 @@ export default class OrderDetail extends Component {
   render() {
     return (
       <View style={styles.container}>
+                    <Loading ref="loading" size={60}/>
         {this._renderList()}
         {this._renderDetails()}
         {this._renderConfirm()}
@@ -265,17 +243,11 @@ export default class OrderDetail extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal:Setting.getX(26),
     backgroundColor:'white'
-  },
-  listContainer:{
-    height: dataArr.length * 30 + 40,
-    borderBottomWidth:1,
-    borderColor:'#D1D3D4'
   },
   titleContainer:{
     height:30,
@@ -286,10 +258,6 @@ const styles = StyleSheet.create({
     fontFamily:'Noto Sans CJK SC',
     fontWeight:'bold',
     fontSize:16,
-  },
-  listViewStyle:{
-    height: dataArr.length * 30,
-
   },
 
   itemContainer:{

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting';
 
