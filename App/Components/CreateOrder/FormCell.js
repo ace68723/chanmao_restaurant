@@ -27,19 +27,10 @@ export default class Formcell extends Component {
     return (
       <View style={[this.props.style,styles.container ]}>
         <Text style={ styles.title }>{this.props.title}</Text>
-          {isAddress ? (
-            <AutoComplete
-              onChangeText={(text) => this.props.onChangeText({text})}
-              autoFocus={this.props.autoFocus}>
-            </AutoComplete>
-          ) : (
-            <TextInput
-              underlineColorAndroid={"rgba(0,0,0,0)"}
-              style={ styles.input }
-              onChangeText={(text) => this.props.onChangeText({text})}
-              value={this.props.value}
-            />
-          )}
+          <AutoComplete
+            onChangeText={(text) => this.props.onChangeText({text})}
+            autoFocus={this.props.autoFocus}>
+          </AutoComplete>
       </View>
     );
   }

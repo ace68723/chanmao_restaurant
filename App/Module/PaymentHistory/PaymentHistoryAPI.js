@@ -13,7 +13,7 @@ export default  {
       // })
   
       options.body = JSON.stringify({
-          "token": token,
+          "token": '3eedc29bfceb960b0a52e0ab1b205c82',
           "rid":rid
       })
   
@@ -26,7 +26,7 @@ export default  {
         })
      },
      getSummary(token,rid,bill_end,bill_start){
-        const url = 'http://www.chanmao.ca/index.php?r=rrclient/billing/';
+        const url = 'http://www.chanmao.ca/index.php?r=rrclient/summary/';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -39,7 +39,7 @@ export default  {
         // })
     
         options.body = JSON.stringify({
-            "token": token,
+            "token": '3eedc29bfceb960b0a52e0ab1b205c82',
             "rid":rid,
             "bill_end": bill_end,
             "bill_start":bill_start

@@ -6,21 +6,19 @@ import {
   ListView,
   TouchableOpacity,
   TextInput,
+  FlatList,
 } from 'react-native';
 
 import Setting from '../../Config/Setting.js'
 
 const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8';
-const ds = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1.id !== r2.id,
-});
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      dataSource: ds.cloneWithRows([]),
+      data: [],
       value: '',
       showList: false
     };
@@ -39,10 +37,10 @@ export default class App extends React.Component {
     this.setState({ isLoading: true, value: query });
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    // console.log(jsonResponse)
+    console.log(jsonResponse.predictions)
     this.setState({
       isLoading: false,
-      dataSource: ds.cloneWithRows(jsonResponse.predictions),
+      data: jsonResponse.predictions
     });
   }
 
@@ -64,7 +62,7 @@ export default class App extends React.Component {
   async onListItemClicked(prediction) {
     this.setState({
       value: prediction.description,
-      dataSource: ds.cloneWithRows([]),
+      data: [],
       isLoading: true,
     });
     const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${
@@ -76,12 +74,15 @@ export default class App extends React.Component {
     this.setState({ showList: false });
     this.props.onChangeText(prediction);
   }
+
   onFocusInput(){
     this.setState({ showList: true });
   }
+
   onBlurInput(){
     this.setState({ showList: false });
   }
+  
   render() {
     return (
       <View style={styles.container}>
@@ -95,12 +96,12 @@ export default class App extends React.Component {
           underlineColorAndroid='rgba(0,0,0,0)'/>
 
         {this.state.showList && this.state.value != '' &&
-          <ListView
-            enableEmptySections
+          <FlatList
+            data={this.state.data}
             style={styles.listView}
-            dataSource={this.state.dataSource}
-            renderRow={this.renderRow}
-            renderSeparator={this.renderSeparator}/>
+            renderItem={({item}) => this.renderRow(item)}
+            ItemSeparatorComponent={this.renderSeparator}
+          />
         }
       </View>
     );
@@ -124,20 +125,21 @@ const styles = StyleSheet.create({
     borderColor: '#6D6E71',
     padding:1,
     paddingLeft:10,
-
   },
   listView: {
-    elevation: 1, // fix that shit...
+    elevation: 5, // fix that shit...
     backgroundColor: 'white',
     position: 'absolute',
     marginTop: Setting.getY(40),
-    height: Setting.getY(200),
+    height: Setting.getY(230),
     width: Setting.getX(340),
   },
   listItem: {
     padding: 10,
   },
   listItemSeparator: {
+    alignSelf: 'center',
+    width: Setting.getY(320),
     borderWidth: 0.5,
     borderColor: 'lightgrey',
   },

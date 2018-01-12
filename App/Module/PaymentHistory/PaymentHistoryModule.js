@@ -19,6 +19,7 @@ export default  {
   async getSummary(token,rid,bill_end,bill_start){
     try {
       const data = await PaymentHistoryAPI.getSummary(token,rid,bill_end,bill_start);
+      console.log(data)
       if(data.result === 0 ){
          const orderLists = data.orders
          return orderLists

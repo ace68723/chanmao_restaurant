@@ -12,8 +12,10 @@ import {
   AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting';
+import Setting from '../../Config/Setting';
+import Loading from '../Loading';
+import PaymentHistoryModule from '../../Module/PaymentHistory/PaymentHistoryModule';
 import PrintModule from '../../Module/Print/PrintModule';
-
 const {height, width} = Dimensions.get('window');
 
 export default class OrderHistory extends Component {
@@ -78,25 +80,44 @@ export default class OrderHistory extends Component {
   }
   componentDidMount() {
   }
-  _printHistory(){
-    let data = {
-      type:'history',
-      restaurantName:'西北楼',
-      restaurantAddress:'3212 Yonge Street',
-      restaurantPhoneNumber: '647-684-6483',
-      timeTerm: this.state.startDate + " ~ " + this.state.endDate,
-      orderAmount:this.state.list.length.toString(),
-      total:this.state.totalAmount.toString(),
-      orderArray:this.state.list,
+  async getSummary(){
+    try{
+       const rid = 5;
+       const token = '';
+       const bill_start = this.state.startDate;
+       const bill_end = this.state.endDate;
+       this.refs.loading.startLoading();
+       const data = await PaymentHistoryModule.getSummary(token,rid,bill_end,bill_start);
+       console.log(data);
+       this.setState({
+         list: data
+       })
+       this.refs.loading.endLoading();
 
+    }catch(error){
+      console.log(error);
     }
-    this.setState({waiting:true});
-    PrintModule.printContent(data);
-    setTimeout(()=>this.setState({waiting:false}),500);
   }
+  _printHistory(){
+  let data = {
+    type:'history',
+    restaurantName:'西北楼',
+    restaurantAddress:'3212 Yonge Street',
+    restaurantPhoneNumber: '647-684-6483',
+    timeTerm: this.state.startDate + " ~ " + this.state.endDate,
+    orderAmount:this.state.list.length.toString(),
+    total:this.state.totalAmount.toString(),
+    orderArray:this.state.list,
+
+  }
+  this.setState({waiting:true});
+  PrintModule.printContent(data);
+  setTimeout(()=>this.setState({waiting:false}),500);
+}
   render(){
     return(
       <View style={styles.container}>
+              <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {this.renderSelectDate()}
           {this.renderListFunction()}
@@ -200,7 +221,6 @@ export default class OrderHistory extends Component {
         //return date = new Date(year,month, day).getTime() / 1000;
         month = month + 1;
         dateString = year + '/' + month + '/' + day;
-        console.log(month)
         this.setDate(dateType,dateString)
       }
     } catch ({code, message}) {
@@ -213,11 +233,11 @@ export default class OrderHistory extends Component {
       <View style={styles.listFunctionView}>
         <View style={{flex:0.7, paddingTop:Settings.getY(40),paddingLeft:Settings.getX(10)}}>
           <Text style={{fontSize:16, fontFamily: 'Noto Sans CJK SC', color:'black'}}>
-            Order Amount：{this.state.list.length} (${this.state.totalAmount})
+            Order Amount：{this.state.list.length}
           </Text>
         </View>
         <TouchableOpacity style={styles.searchButtonStyle}
-        onPress={() => this.getTodayTransaction()}>
+        onPress={() => this.getSummary()}>
             <Image source={require('./Image/search.png')} style={{
               width:Settings.getX(26), height:Settings.getY(26)}} />
             <Text style={styles.searchButtonFont}>
@@ -266,13 +286,13 @@ export default class OrderHistory extends Component {
         <View style={styles.recordView}
                 key={index}>
           <View style={{flex:0.3, marginLeft:15}}>
-            <Text style={styles.recordTitleFont}>{record.orderNumber}</Text>
+            <Text style={styles.recordTitleFont}>{record.oid}</Text>
           </View>
           <View style={{flex:0.5,}}>
-            <Text style={styles.recordTitleFont}>{record.time}</Text>
+            <Text style={styles.recordTitleFont}>{record.date} {record.time}</Text>
           </View>
           <View style={{flex:0.2, marginRight:15}}>
-            <Text style={styles.recordTitleFont}>{record.price}</Text>
+            <Text style={styles.recordTitleFont}>{record.total}</Text>
           </View>
         </View>
       )
