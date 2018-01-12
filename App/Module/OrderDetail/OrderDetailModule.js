@@ -1,9 +1,9 @@
 import OrderDetailAPI from './OrderDetailAPI';
 
 export default  {
-  async getOrderDetail(oid,token,rid){
+  async getOrderDetail(token,rid,oid){
     try {
-      const data = await OrderDetailAPI.getOrderDetail(oid,token,rid);
+      const data = await OrderDetailAPI.getOrderDetail(token,rid,oid);
       if(data.result === 0 ){
          const orderDetail = data;
          return orderDetail

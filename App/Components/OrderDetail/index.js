@@ -8,77 +8,81 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Setting from '../../Config/Setting';
+import PrintModule from '../../Module/Print/PrintModule';
 const timeStr = ['< 10', '20', '30', '> 40'];
-var dataArr = [
-  {
-    dishNum:'K20',
-    name:'鱼香肉丝',
-    amount:1,
-    sold:false,
-  },
-  {
-    dishNum:'K20',
-    name:'鱼香肉丝',
-    amount:1,
-    sold:false,
-  },
-  {
-    dishNum:'K20',
-    name:'鱼香肉丝',
-    amount:1,
-    sold:false,
-  },
-  {
-    dishNum:'K20',
-    name:'鱼香肉丝',
-    amount:1,
-    sold:false,
-  },
-]
+
 export default class OrderDetail extends Component {
   constructor(props){
     super(props);
-    this.props.data = dataArr;
     this.state = {
-      totalPrice:'$40.22',
-      comment:' 麻婆豆腐不要葱，谢谢。',
-      user:'Ginny',
-      tel:'(905)966-3253',
+      totalPrice:'',
+      comment:' ',
+      user:'',
+      tel:'',
       estimateTime:'20',
       dataArray: [
         {
           dishNum:'K20',
           name:'鱼香肉丝',
-          amount:1,
+          amount:'1',
           sold:false,
+          price:'7.99'
         },
         {
           dishNum:'K21',
           name:'番茄炒鸡蛋',
-          amount:1,
+          amount:'1',
           sold:false,
+          price:'6.99'
         },
         {
           dishNum:'K22',
           name:'鱼香肉丝',
-          amount:1,
+          amount:'1',
           sold:false,
+          price:'7.99'
         },
         {
           dishNum:'K23',
           name:'鱼香肉丝',
-          amount:1,
+          amount:'1',
           sold:false,
+          price:'7.99'
         },
       ],
       waiting:false,
+      printTitles:["No.","Dish","Amount","Price"],
     }
     this._acceptOrder = this._acceptOrder.bind(this);
     this._printOrder = this._printOrder.bind(this);
     this._renderItems = this._renderItems.bind(this);
     this._changeSoldState = this._changeSoldState.bind(this);
   }
+  componentDidMount() {
+    this.getOrderDetail();
+  }
+  async getOrderDetail(){
+    try{
+       const rid = 5;
+       const token = '';
+       const oid = 19006;
+       this.refs.loading.startLoading();
+       const data = await OrderDetailModule.getOrderDetail(token,rid,oid);
+       console.log(data);
+       this.setState({
+         dataArray: data.items,
+         totalPrice: data.total,
+         user: data.name,
+         tel: data.tel,
+         comment: data.comment,
+       })
+       console.log(this.state.dataArray)
+       this.refs.loading.endLoading();
 
+    }catch(error){
+      console.log(error);
+    }
+  }
   _renderListTitle(){
     if(this.props.type == 'new'){
     return(
@@ -121,10 +125,10 @@ export default class OrderDetail extends Component {
           return(
             <View key={index} style={styles.itemContainer}>
               <View style={{flex:0.2}}>
-                <Text>{item.dishNum}</Text>
+                <Text>{item.ds_id}</Text>
               </View>
               <View style={{flex:0.4}}>
-                <Text>{item.name}</Text>
+                <Text>{item.ds_name}</Text>
               </View>
               <View style={{flex:0.2}}>
                 <Text>{item.amount}</Text>
@@ -142,10 +146,10 @@ export default class OrderDetail extends Component {
           return(
             <View key={index} style={styles.itemContainer}>
               <View style={{flex:0.2}}>
-                <Text>{item.dishNum}</Text>
+                <Text>{item.ds_id}</Text>
               </View>
               <View style={{flex:0.6}}>
-                <Text>{item.name}</Text>
+                <Text>{item.ds_name}</Text>
               </View>
               <View style={{flex:0.2}}>
                 <Text>{item.amount}</Text>
@@ -163,9 +167,10 @@ export default class OrderDetail extends Component {
   }
   _renderList(){
     return(
-      <View style={styles.listContainer}>
+          <View style= {{height:this.state.dataArray.length * 30 + 40, borderBottomWidth:1,
+            borderColor:'#D1D3D4'}}>
         {this._renderListTitle()}
-        <View style={styles.listViewStyle}>
+        <View style = {{height: this.state.dataArray.length * 30}}>
           {this._renderItems(this.state.dataArray)}
         </View>
       </View>
@@ -251,13 +256,36 @@ export default class OrderDetail extends Component {
     this.setState({waiting:true})
     setTimeout(()=>this.setState({waiting:false}),500)
   }
+  _setWidth(itemString, number){
+    if(itemString.length < number){
+      for(let i = 0; i < number - itemString.length; i++){
+          itemString.push(" ");
+      }
+    }
+    return itemString;
+  }
   _printOrder(){
+    let data = {
+      type:'receipt',
+      restaurantName:'西北楼',
+      restaurantAddress:'3212 Yonge Street',
+      restaurantPhoneNumber: '647-684-6483',
+      orderTime:'2017-02-15 12:30:12',
+      orderNumber:'826154',
+      orderArray:this.state.dataArray,
+      subTotal:'26.99',
+      tax:'2.44',
+      total:'29.47',
+      printTitles:this.state.printTitles,
+      }
     this.setState({waiting:true})
+    PrintModule.printContent(data)
     setTimeout(()=>this.setState({waiting:false}),500)
   }
   render() {
     return (
       <View style={styles.container}>
+                    <Loading ref="loading" size={60}/>
         {this._renderList()}
         {this._renderDetails()}
         {this._renderConfirm()}
@@ -265,17 +293,11 @@ export default class OrderDetail extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal:Setting.getX(26),
     backgroundColor:'white'
-  },
-  listContainer:{
-    height: dataArr.length * 30 + 40,
-    borderBottomWidth:1,
-    borderColor:'#D1D3D4'
   },
   titleContainer:{
     height:30,
@@ -286,10 +308,6 @@ const styles = StyleSheet.create({
     fontFamily:'Noto Sans CJK SC',
     fontWeight:'bold',
     fontSize:16,
-  },
-  listViewStyle:{
-    height: dataArr.length * 30,
-
   },
 
   itemContainer:{

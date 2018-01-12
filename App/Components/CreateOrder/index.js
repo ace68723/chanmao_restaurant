@@ -89,6 +89,7 @@ export default class CreateOrder extends Component {
     return (
       <View style={styles.container}>
         <Modal
+          onRequestClose={() => console.log('123')}
           visible={this.state.showAlert}>
             <Alert
               message={this.state.alert.message}
@@ -104,6 +105,24 @@ export default class CreateOrder extends Component {
           onChangeText={(text) => this.handleChangeValue('address', {text})}
           autoFocus={true}>
         </FormCell>
+        <TouchableOpacity style={{
+          marginTop:Setting.getY(208),
+          width:Setting.getX(250),
+          height:Setting.getX(250)/250*75,
+          alignItems: 'center',
+          backgroundColor:'#2f3038',
+          borderRadius: 8,
+          justifyContent:'center',
+          alignSelf:'center',
+          borderColor:'#C49A6C',
+          borderWidth:1
+        }}
+        activeOpacity={0.4}
+        onPress={() => console.log('123')}>
+        <Text style={{fontSize:28,color:'#C49A6C'}}>
+        Next
+        </Text>
+      </TouchableOpacity>
       </View>
     );
   }
