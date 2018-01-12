@@ -6,7 +6,7 @@ registerScreens();
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'CreateOrder',
+    screen: 'Home',
     navigatorStyle: {
       navBarHidden: false,
     },
