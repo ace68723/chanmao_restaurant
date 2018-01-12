@@ -12,7 +12,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting';
-import Setting from '../../Config/Setting';
+import PrintModule from '../../Module/Print/PrintModule';
 
 const {height, width} = Dimensions.get('window');
 
@@ -33,54 +33,39 @@ export default class OrderHistory extends Component {
       endDate:'YYYY/MM/DD',
       list: [
         {
-         orderNumber: 3001223,
-         time: '2017-11-15 12:24:34',
-         price: 407.23,
-        },
-        {
-         orderNumber: 3001223,
-         time: '2017-11-15 12:24:34',
-         price: 407.23,
-        },
-        {
-         orderNumber: 3001223,
-         time: '2017-11-15 12:24:34',
-         price: 407.23,
-        },
-        {
-        orderNumber: 3001223,
+        orderNumber: '3001223',
         time: '2017-11-15 12:24:34',
-        price: 407.23,
+        price: '407.23',
         },
         {
-        orderNumber: 3001223,
+        orderNumber: '3001223',
         time: '2017-11-15 12:24:34',
-        price: 407.23,
+        price: '407.23',
         },
         {
-        orderNumber: 3001223,
+        orderNumber: '3001223',
         time: '2017-11-15 12:24:34',
-        price: 407.23,
+        price: '407.23',
         },
         {
-        orderNumber: 3001223,
+        orderNumber: '3001223',
         time: '2017-11-15 12:24:34',
-        price: 407.23,
+        price: '407.23',
         },
         {
-        orderNumber: 3001223,
+        orderNumber: '3001223',
         time: '2017-11-15 12:24:34',
-        price: 407.23,
+        price: '407.23',
         },
         {
-        orderNumber: 3001223,
+        orderNumber: '3001223',
         time: '2017-11-15 12:24:34',
-        price: 407.23,
+        price: '407.23',
         },
         {
-        orderNumber: 3001223,
+        orderNumber: '3001223',
         time: '2017-11-15 12:24:34',
-        price: 407.23,
+        price: '407.23',
         },
       ],
       waiting: false,
@@ -89,10 +74,26 @@ export default class OrderHistory extends Component {
       token: '',
     }
     this.setDate = this.setDate.bind(this);
+    this._printHistory = this._printHistory.bind(this);
   }
   componentDidMount() {
   }
-  
+  _printHistory(){
+    let data = {
+      type:'history',
+      restaurantName:'西北楼',
+      restaurantAddress:'3212 Yonge Street',
+      restaurantPhoneNumber: '647-684-6483',
+      timeTerm: this.state.startDate + " ~ " + this.state.endDate,
+      orderAmount:this.state.list.length.toString(),
+      total:this.state.totalAmount.toString(),
+      orderArray:this.state.list,
+
+    }
+    this.setState({waiting:true});
+    PrintModule.printContent(data);
+    setTimeout(()=>this.setState({waiting:false}),500);
+  }
   render(){
     return(
       <View style={styles.container}>
@@ -100,27 +101,29 @@ export default class OrderHistory extends Component {
           {this.renderSelectDate()}
           {this.renderListFunction()}
           {this.renderDetialList()}
-          <TouchableOpacity style={{
-           position:'absolute',
-           top: height*0.74,
-           left: width*0.77,
-           height: Settings.getX(84),
-           width: Settings.getX(84),
-           flex:0.5,
-           borderColor: '#EA7B21',
-           backgroundColor:'#EA7B21',
-           borderWidth: 1,
-           borderRadius: 8,
-           alignItems:'center',
-           justifyContent: 'center',
-           opacity: 0.85
-           }}
-                      onPress={()=>{}}>
+          <TouchableOpacity
+            style={{
+               position:'absolute',
+               top: height*0.74,
+               left: width*0.77,
+               height: Settings.getX(84),
+               width: Settings.getX(84),
+               flex:0.5,
+               borderColor: '#EA7B21',
+               backgroundColor:'#EA7B21',
+               borderWidth: 1,
+               borderRadius: 8,
+               alignItems:'center',
+               justifyContent: 'center',
+               opacity: 0.85
+               }}
+            onPress={()=>{this._printHistory()}}
+            disabled={this.state.waiting}>
             <Image source={require('./Image/print.png')} style={{
-              width:Settings.getX(42), 
+              width:Settings.getX(42),
               height:Settings.getY(42),
               marginBottom:Settings.getY(5),
-             }} 
+             }}
               />
             <Text style = {{color:'white',fontWeight:'bold'}}>
               Print
@@ -208,7 +211,7 @@ export default class OrderHistory extends Component {
   renderListFunction(){
     return(
       <View style={styles.listFunctionView}>
-        <View style={{flex:0.7, paddingTop:Settings.getY(40),paddingLeft:Setting.getX(10)}}>
+        <View style={{flex:0.7, paddingTop:Settings.getY(40),paddingLeft:Settings.getX(10)}}>
           <Text style={{fontSize:16, fontFamily: 'Noto Sans CJK SC', color:'black'}}>
             Order Amount：{this.state.list.length} (${this.state.totalAmount})
           </Text>

@@ -8,30 +8,31 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Setting from '../../Config/Setting';
+import PrintModule from '../../Module/Print/PrintModule';
 const timeStr = ['< 10', '20', '30', '> 40'];
 var dataArr = [
   {
     dishNum:'K20',
     name:'鱼香肉丝',
-    amount:1,
+    amount:'1',
     sold:false,
   },
   {
     dishNum:'K20',
     name:'鱼香肉丝',
-    amount:1,
+    amount:'1',
     sold:false,
   },
   {
     dishNum:'K20',
     name:'鱼香肉丝',
-    amount:1,
+    amount:'1',
     sold:false,
   },
   {
     dishNum:'K20',
     name:'鱼香肉丝',
-    amount:1,
+    amount:'1',
     sold:false,
   },
 ]
@@ -49,29 +50,34 @@ export default class OrderDetail extends Component {
         {
           dishNum:'K20',
           name:'鱼香肉丝',
-          amount:1,
+          amount:'1',
           sold:false,
+          price:'7.99'
         },
         {
           dishNum:'K21',
           name:'番茄炒鸡蛋',
-          amount:1,
+          amount:'1',
           sold:false,
+          price:'6.99'
         },
         {
           dishNum:'K22',
           name:'鱼香肉丝',
-          amount:1,
+          amount:'1',
           sold:false,
+          price:'7.99'
         },
         {
           dishNum:'K23',
           name:'鱼香肉丝',
-          amount:1,
+          amount:'1',
           sold:false,
+          price:'7.99'
         },
       ],
       waiting:false,
+      printTitles:["No.","Dish","Amount","Price"],
     }
     this._acceptOrder = this._acceptOrder.bind(this);
     this._printOrder = this._printOrder.bind(this);
@@ -251,8 +257,30 @@ export default class OrderDetail extends Component {
     this.setState({waiting:true})
     setTimeout(()=>this.setState({waiting:false}),500)
   }
+  _setWidth(itemString, number){
+    if(itemString.length < number){
+      for(let i = 0; i < number - itemString.length; i++){
+          itemString.push(" ");
+      }
+    }
+    return itemString;
+  }
   _printOrder(){
+    let data = {
+      type:'receipt',
+      restaurantName:'西北楼',
+      restaurantAddress:'3212 Yonge Street',
+      restaurantPhoneNumber: '647-684-6483',
+      orderTime:'2017-02-15 12:30:12',
+      orderNumber:'826154',
+      orderArray:this.state.dataArray,
+      subTotal:'26.99',
+      tax:'2.44',
+      total:'29.47',
+      printTitles:this.state.printTitles,
+      }
     this.setState({waiting:true})
+    PrintModule.printContent(data)
     setTimeout(()=>this.setState({waiting:false}),500)
   }
   render() {
