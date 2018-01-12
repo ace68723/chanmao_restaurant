@@ -97,7 +97,6 @@ export default class CreateOrder extends Component {
         <FormCell
           style={styles.cell}
           title='Address'
-          isAddress='true'
           onChangeText={(text) => this.handleChangeValue('address', {text})}
           autoFocus={true}>
         </FormCell>
