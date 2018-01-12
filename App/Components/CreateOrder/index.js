@@ -22,7 +22,6 @@ export default class CreateOrder extends Component {
     super(props);
     this.state = {
       address: '',
-      city: '',
       postal: '',
       showAlert: false,
       coord: [],
@@ -37,17 +36,25 @@ export default class CreateOrder extends Component {
     this.onPressAlert = this.onPressAlert.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this._getGeoPoint = this._getGeoPoint.bind(this);
+    this._addressExtractor = this._addressExtractor.bind(this);
   }
   onPressAlert() {
     this._toggleAlert();
   }
 
+  _addressExtractor(data, key){
+    const mapping = {'postal': "postal_code"};
+    for(var i = 0; i < data.address_components.length; i++){
+      if (data.address_components[i].types.includes(mapping[key])){
+          return data.address_components[i].long_name;
+      }
+    }
+  }
+
   handleChangeValue(key, value) {
     // console.log(key, value.text.text);
     if (key == 'address'){
-      console.log(value);
       this.setState({['address']: value.text.text.description});
-      this.setState({['city']: value.text.text.terms[2].value});
       this._getGeoPoint();
       return;
     }
@@ -61,10 +68,10 @@ export default class CreateOrder extends Component {
                  + this.state.address;
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    console.log(jsonResponse.results[0]);
+    // console.log(jsonResponse.results[0]);
     this.state.coord = jsonResponse.results[0].geometry.location;
-    this.state.postal = jsonResponse.results[0].address_components.pop().long_name;
-    console.log(this.state);
+    this.state.postal = this._addressExtractor(jsonResponse.results[0], 'postal');
+    console.log('final', this.state);
   }
 
   _toggleAlert(title, message, buttonTitle){

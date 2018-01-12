@@ -37,7 +37,7 @@ export default class App extends React.Component {
     this.setState({ isLoading: true, value: query });
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    console.log(jsonResponse.predictions)
+    //console.log(jsonResponse.predictions)
     this.setState({
       isLoading: false,
       data: jsonResponse.predictions
@@ -82,7 +82,7 @@ export default class App extends React.Component {
   onBlurInput(){
     this.setState({ showList: false });
   }
-  
+
   render() {
     return (
       <View style={styles.container}>
