@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting'
 import OrderDetail from '../OrderDetail/index'
@@ -18,6 +19,7 @@ export default class Home extends Component {
     super(props);
     this.state={
       reRender:0,
+      token: '',
       newOrder:[
         {
           isOpen:false,
@@ -108,6 +110,8 @@ export default class Home extends Component {
     this._renderDeliveryButton=this._renderDeliveryButton.bind(this);
     this._passingToRecentOrder=this._passingToRecentOrder.bind(this);
   }
+  componentDidMount() {
+  }
   _passingToRecentOrder(item,targetStatus)   //item.orderNumber
   {
     let orders=this.state.newOrder;
@@ -128,6 +132,7 @@ export default class Home extends Component {
 
     )
   }
+  
   _renderDeliveryButton(item)
   {
     if (item.deliveryStatus===0) return (
