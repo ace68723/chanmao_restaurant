@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Modal
 } from 'react-native';
-
+import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell'
 import AutoComplete from './AutoComplete.js'
@@ -37,6 +37,7 @@ export default class CreateOrder extends Component {
     this._toggleAlert = this._toggleAlert.bind(this);
     this._getGeoPoint = this._getGeoPoint.bind(this);
     this._addressExtractor = this._addressExtractor.bind(this);
+    this._goCreateOrder = this._goCreateOrder.bind(this);
   }
   onPressAlert() {
     this._toggleAlert();
@@ -50,6 +51,28 @@ export default class CreateOrder extends Component {
       }
     }
   }
+  async _goCreateOrder() {
+    const {address,postal} = this.state;
+    const lat = this.state.coord.lat;
+    const lng = this.state.coord.lng;
+    const data = await CreateOrderModule.areaCheck(lng,lat)
+    console.log(data);
+    if(data.result === 0) {
+      const dlexp = data.dlexp;
+      const area = data.area;
+      console.log(dlexp);
+      this.props.navigator.push({
+        screen: 'CreateOrderDetail',
+        navigatorStyle: {
+          navBarHidden: true
+        },
+        passProps: {address,lat,lng,area,dlexp,postal},
+        animationType: 'slide-down'
+      });
+    }
+    
+  }
+  
 
   handleChangeValue(key, value) {
     // console.log(key, value.text.text);
@@ -105,20 +128,22 @@ export default class CreateOrder extends Component {
           onChangeText={(text) => this.handleChangeValue('address', {text})}
           autoFocus={true}>
         </FormCell>
-        <TouchableOpacity style={{
-          marginTop:Setting.getY(208),
-          width:Setting.getX(250),
-          height:Setting.getX(250)/250*75,
-          alignItems: 'center',
-          backgroundColor:'#2f3038',
-          borderRadius: 8,
-          justifyContent:'center',
-          alignSelf:'center',
-          borderColor:'#C49A6C',
-          borderWidth:1
-        }}
+        <TouchableOpacity 
+          onPress={() => this._goCreateOrder()}
+          style={{
+              marginTop:Setting.getY(208),
+              width:Setting.getX(250),
+              height:Setting.getX(250)/250*75,
+              alignItems: 'center',
+              backgroundColor:'#2f3038',
+              borderRadius: 8,
+              justifyContent:'center',
+              alignSelf:'center',
+              borderColor:'#C49A6C',
+              borderWidth:1
+          }}
         activeOpacity={0.4}
-        onPress={() => console.log('123')}>
+        >
         <Text style={{fontSize:28,color:'#C49A6C'}}>
         Next
         </Text>
