@@ -3,7 +3,7 @@ import OrderDetailAPI from './OrderDetailAPI';
 export default  {
   async getOrderDetail(oid){
     try {
-      const token = "708ff36e68fd7c2b1ab6614d65c5135d";
+      const token = "51b6b390eb95b60eb039837ecbd231db";
       const rid = 5;
       const data = await OrderDetailAPI.getOrderDetail(token, rid, oid);
       if(data.result === 0 ){
@@ -21,7 +21,7 @@ export default  {
   },
   async handleOrder({oid,task,itemList}){
     try {
-      const token = "708ff36e68fd7c2b1ab6614d65c5135d";
+      const token = "51b6b390eb95b60eb039837ecbd231db";
       const rid = 5;
       const items = itemList;
       // const oid = oid;

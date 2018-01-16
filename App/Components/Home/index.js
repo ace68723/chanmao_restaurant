@@ -24,9 +24,9 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 export default class Home extends Component {
-  constructor(props)
+  constructor()
   {
-    super(props);
+    super();
     this.state={
       reRender:0,
       // newOrder:[
@@ -123,8 +123,9 @@ export default class Home extends Component {
   _listenForItems() {
       let newOrder,recentOrder;
       const starCountRef = firebase.database().ref('rrclient/5/');
-      starCountRef.on('value',(snapshot)=> {
 
+      starCountRef.on('value',(snapshot)=> {
+        console.log('here')
       newOrder = snapshot.val().new;
       recentOrder = snapshot.val().done;
 

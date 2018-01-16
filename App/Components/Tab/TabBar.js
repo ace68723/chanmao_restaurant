@@ -18,7 +18,6 @@ export default class TabBar extends Component {
   constructor(props) {
     super(props);
     this.renderTab   = this.renderTab.bind(this);
-    console.log(props)
   }
   // getDefaultProps() {
   //   return {
