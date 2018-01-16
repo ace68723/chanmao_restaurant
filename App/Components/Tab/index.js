@@ -10,9 +10,10 @@ import {
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 import OrderHistory from '../OrderHistory/index';
 import PaymentHistory from '../PaymentHistory/index';
+import TabBar from './TabBar';
+
 import Setting from '../../Config/Setting';
 
-import TabBar from './TabBar';
 export default class Tab extends Component {
     render() {
         return (
@@ -21,14 +22,24 @@ export default class Tab extends Component {
               initialPage={0}
               style={{marginTop: 20, }}
               renderTabBar={() => <TabBar />}
+              tabBarActiveTextColor="#EA7B21"
+              tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}
             >
-              <View tabLabel="home">
+              <View tabLabel="home"
+                    activeIconImage={require("./Image/homeorange.png")}
+                    inactiveIconImage={require("./Image/homegrey.png")}>
               </View>
-              <View tabLabel="History">
+              <View tabLabel="History"
+                    activeIconImage={require("./Image/historyorange.png")}
+                    inactiveIconImage={require("./Image/historygrey.png")}>
               </View>
-              <View tabLabel="Create Order">
+              <View tabLabel="Create Order"
+                    activeIconImage={require("./Image/neworange.png")}
+                    inactiveIconImage={require("./Image/newgrey.png")}>
               </View>
-              <View tabLabel="About">
+              <View tabLabel="About"
+                    activeIconImage={require("./Image/aboutorange.png")}
+                    inactiveIconImage={require("./Image/aboutgrey.png")}>
               </View>
             </ScrollableTabView>
 

@@ -15,37 +15,44 @@ import createReactClass from 'create-react-class';
 
 import Button from './Button';
 export default class TabBar extends Component {
-
-  getDefaultProps() {
-    return {
-      activeTextColor: 'navy',
-      inactiveTextColor: 'black',
-      backgroundColor: null,
-    };
+  constructor(props) {
+    super(props);
+    this.renderTab   = this.renderTab.bind(this);
+    console.log(props)
   }
+  // getDefaultProps() {
+  //   return {
+  //     activeTextColor: 'navy',
+  //     inactiveTextColor: 'black',
+  //     backgroundColor: null,
+  //   };
+  // }
 
   renderTabOption(name, page) {
   }
 
-  renderTab(name, page, isTabActive, onPressHandler) {
+  renderTab(name, page, isTabActive, onPressHandler,activeIconImage,inactiveIconImage) {
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
-
-    return <Button
-      style={{flex: 1, }}
-      key={name}
-      accessible={true}
-      accessibilityLabel={name}
-      accessibilityTraits='button'
-      onPress={() => onPressHandler(page)}
-    >
-      <View style={[styles.tab, this.props.tabStyle, ]}>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-          {name}
-        </Text>
-      </View>
-    </Button>;
+    const iconImage = isTabActive ? activeIconImage : inactiveIconImage;
+    return (
+      <Button
+        style={{flex: 1, }}
+        key={name}
+        accessible={true}
+        accessibilityLabel={name}
+        accessibilityTraits='button'
+        onPress={() => onPressHandler(page)}
+      >
+        <View style={[styles.tab, this.props.tabStyle, ]}>
+          <Image source={iconImage} style={{width:20, height:20,}}/>
+          <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+            {name}
+          </Text>
+        </View>
+      </Button>
+    );
   }
 
   render() {
@@ -68,7 +75,9 @@ export default class TabBar extends Component {
         {this.props.tabs.map((name, page) => {
           const isTabActive = this.props.activeTab === page;
           const renderTab = this.props.renderTab || this.renderTab;
-          return renderTab(name, page, isTabActive, this.props.goToPage);
+          const activeIconImage = this.props.activeIconImages[page];
+          const inactiveIconImage = this.props.inactiveIconImage[page];
+          return renderTab(name, page, isTabActive, this.props.goToPage,activeIconImage,inactiveIconImage);
         })}
         <Animated.View
           style={[
@@ -91,17 +100,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 10,
+    paddingBottom: 5,
   },
   tabs: {
-    height: 50,
+    height: 60,
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderWidth: 1,
-    borderTopWidth: 0,
+    borderTopWidth: 1,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderColor: '#ccc',
+    borderColor: '#D1D3D4',
   },
 });
-
