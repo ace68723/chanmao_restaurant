@@ -22,7 +22,7 @@ export default class Tab extends Component {
             <ScrollableTabView
               tabBarPosition = "bottom"
               initialPage={0}
-              style={{marginTop: 20, }}
+              style={{flex:1, }}
               renderTabBar={() => <TabBar />}
               tabBarActiveTextColor="#EA7B21"
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}
