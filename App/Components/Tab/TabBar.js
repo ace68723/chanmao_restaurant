@@ -1,28 +1,20 @@
-const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
-const PropTypes = require('prop-types');
-const createReactClass = require('create-react-class');
-const {
-  StyleSheet,
-  Text,
-  View,
-  Animated,
-} = ReactNative;
-const Button = require('./Button');
 
-const TabBar = createReactClass({
-  propTypes: {
-    goToPage: PropTypes.func,
-    activeTab: PropTypes.number,
-    tabs: PropTypes.array,
-    backgroundColor: PropTypes.string,
-    activeTextColor: PropTypes.string,
-    inactiveTextColor: PropTypes.string,
-    textStyle: Text.propTypes.style,
-    tabStyle: ViewPropTypes.style,
-    renderTab: PropTypes.func,
-    underlineStyle: ViewPropTypes.style,
-  },
+import React, { Component } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  Animated
+} from 'react-native';
+
+import createReactClass from 'create-react-class';
+
+import Button from './Button';
+export default class TabBar extends Component {
 
   getDefaultProps() {
     return {
@@ -30,10 +22,10 @@ const TabBar = createReactClass({
       inactiveTextColor: 'black',
       backgroundColor: null,
     };
-  },
+  }
 
   renderTabOption(name, page) {
-  },
+  }
 
   renderTab(name, page, isTabActive, onPressHandler) {
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
@@ -54,7 +46,7 @@ const TabBar = createReactClass({
         </Text>
       </View>
     </Button>;
-  },
+  }
 
   render() {
     const containerWidth = this.props.containerWidth;
@@ -91,8 +83,8 @@ const TabBar = createReactClass({
         />
       </View>
     );
-  },
-});
+  }
+};
 
 const styles = StyleSheet.create({
   tab: {
@@ -113,4 +105,3 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = TabBar;
