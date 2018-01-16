@@ -1,16 +1,14 @@
 import CreateOrderAPI from './CreateOrderAPI';
 
 export default  {
-  async areaCheck(token,rid,lng,lat){
+  async areaCheck(lng,lat){
     try {
+      const token = '3ef5558e9696f6ae01f6ac604e38fec8';
+      const rid = 5;
       const data = await CreateOrderAPI.areaCheck(token,rid,lng,lat);
       if(data.result === 0 ){
-         const eo_data ={
-             area = data.area,
-             dlexp: data.dlexp,
-             result: data.result
-         }
-         return eo_data
+         
+         return data
       }else{
         const errorMessage = data.error_msg;
         throw errorMessage
@@ -21,34 +19,31 @@ export default  {
     }
 
   },
-  async createOrder(orderDetail){
+  async createOrder(reqData){
     try {
       const submitDetail = {
-        "token":orderDetail.token,
-        "rid":orderDetail.rid,
-        "lat":orderDetail.lat,
-        "lng":orderDetail.lng,
+        "token":reqData.token,
+        "rid":reqData.rid,
+        "lat":reqData.lat,
+        "lng":reqData.lng,
         "channel":4,
-        "addr":orderDetail.addr,
-        "apt_no":orderDetail.apt_no,
-        "buzz":orderDetail.buzz,
-        "city":orderDetail.city,
-        "comment":orderDetail.comment,
-        "dlexp":orderDetail.dlexp,
+        "addr":reqData.addr,
+        "apt_no":reqData.apt_no,
+        "buzz":reqData.buzz,
+        "city":reqData.city,
+        "comment":reqData.comment,
+        "dlexp":reqData.dlexp,
         "dltype":1,
-        "name":orderDetail.name,
-        "postal":orderDetail.postal,
-        "pretax":orderDetail.pretax,
-        "tel":orderDetail.tel,
-        "uid":orderDetail.uid
-      },
+        "name":reqData.name,
+        "postal":reqData.postal,
+        "pretax":reqData.pretax,
+        "tel":reqData.tel,
+        "uid":reqData.uid
+      }
       const data = await CreateOrderAPI.createOrder(submitDetail);
       if(data.result === 0 ){
-         const eo_data ={
-             result = data.result,
-             oid: data.oid
-         }
-         return eo_data
+        
+         return data
       }else{
         const errorMessage = data.error_msg;
         throw errorMessage
@@ -57,6 +52,5 @@ export default  {
       console.log(error);
       throw error
     }
-
   }
 }
