@@ -9,6 +9,7 @@ import {
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 import OrderHistory from '../OrderHistory/index';
 import PaymentHistory from '../PaymentHistory/index';
+import Setting from '../../Config/Setting';
 export default class HistoryPage extends Component {
     render() {
         return (

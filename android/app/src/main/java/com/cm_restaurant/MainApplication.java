@@ -1,4 +1,5 @@
 package com.cm_restaurant;
+import io.realm.react.RealmReactPackage; // add this import
 
 import com.facebook.react.ReactPackage;
 import com.reactnativenavigation.NavigationApplication;
@@ -21,7 +22,8 @@ public class MainApplication extends NavigationApplication {
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
                 new RNDeviceInfo(),
-                new customPackage()
+                new customPackage(),
+                new RealmReactPackage() // add this line
         );
     }
     @Override
