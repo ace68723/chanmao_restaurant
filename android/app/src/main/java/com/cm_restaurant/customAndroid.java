@@ -100,14 +100,9 @@ public class customAndroid extends ReactContextBaseJavaModule {
     public String getName() {
         return "customAndroid";
     }
-    @ReactMethod
-    public void show() {
-        Toast.makeText(getReactApplicationContext(), "11111", Toast.LENGTH_LONG).show();
-    }
     @ReactMethod                                                            //rn方法 简单打印text
     public void printOriginalText(String text,final Promise p){
         final IWoyouService ss = woyouService;
-        Log.i(TAG,"come: "+text+" ss:"+ss);
         final String txt = text;
         ThreadPoolManager.getInstance().executeTask(new Runnable(){
             @Override

@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import Setting from '../../Config/Setting';
 import PrintModule from '../../Module/Print/PrintModule';
+import Loading from '../Loading';
+import OrderDetailModule from '../../Module/OrderDetail/OrderDetailModule';
 const timeStr = ['< 10', '20', '30', '> 40'];
 
 export default class OrderDetail extends Component {
@@ -20,69 +22,97 @@ export default class OrderDetail extends Component {
       user:'',
       tel:'',
       estimateTime:'20',
-      dataArray: [
-        {
-          dishNum:'K20',
-          name:'鱼香肉丝',
-          amount:'1',
-          sold:false,
-          price:'7.99'
-        },
-        {
-          dishNum:'K21',
-          name:'番茄炒鸡蛋',
-          amount:'1',
-          sold:false,
-          price:'6.99'
-        },
-        {
-          dishNum:'K22',
-          name:'鱼香肉丝',
-          amount:'1',
-          sold:false,
-          price:'7.99'
-        },
-        {
-          dishNum:'K23',
-          name:'鱼香肉丝',
-          amount:'1',
-          sold:false,
-          price:'7.99'
-        },
-      ],
+      itemList:[],
       waiting:false,
       printTitles:["No.","Dish","Amount","Price"],
     }
-    this._acceptOrder = this._acceptOrder.bind(this);
+    this._handleOrder = this._handleOrder.bind(this);
     this._printOrder = this._printOrder.bind(this);
     this._renderItems = this._renderItems.bind(this);
     this._changeSoldState = this._changeSoldState.bind(this);
   }
   componentDidMount() {
-    this.getOrderDetail();
+    this._getOrderDetail();
   }
-  async getOrderDetail(){
+  async _getOrderDetail(){
     try{
-       const rid = 5;
-       const token = '';
-       const oid = 19006;
-       this.refs.loading.startLoading();
-       const data = await OrderDetailModule.getOrderDetail(token,rid,oid);
-       console.log(data);
+       const oid = this.props.oid;
+       const loadingTimeout = setTimeout(() => {
+         this.refs.loading.startLoading();
+       }, 300);//add loading if request more than 200ms
+
+       const data = await OrderDetailModule.getOrderDetail(oid);
+       console.log(data)
        this.setState({
-         dataArray: data.items,
+         itemList: data.items,
          totalPrice: data.total,
          user: data.name,
          tel: data.tel,
          comment: data.comment,
+         dltype:data.dltype
        })
-       console.log(this.state.dataArray)
-       this.refs.loading.endLoading();
+         clearTimeout(loadingTimeout);
+         this.refs.loading.endLoading();
 
     }catch(error){
       console.log(error);
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
     }
   }
+  async _handleOrder(task){
+
+    try {
+      this.setState({waiting:true})
+      setTimeout(()=>this.setState({waiting:false}),500)
+
+      const oid = this.props.oid;
+      const loadingTimeout = setTimeout(() => {
+        this.refs.loading.startLoading();
+      }, 100);//add loading if request more than 200ms
+
+      const itemList = this.state.itemList;
+      const data = await OrderDetailModule.handleOrder({oid,task,itemList});
+      this._printOrder();
+      // clearTimeout(loadingTimeout);
+      // this.refs.loading.endLoading();
+
+    } catch (e) {
+      console.log(e)
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
+    }
+  }
+  _printerWatting = false;
+  async _printOrder(){
+    if(this._printerWatting) return;
+    this._printerWatting = true;
+    console.log('_printOrder')
+    let dltypeMessage;
+    if(this.state.dltype == 0 ){
+      dltypeMessage = 'Pick Up';
+    }else{
+      dltypeMessage = 'Delivery';
+    }
+    let data = {
+      type:'receipt',
+      dltypeMessage:dltypeMessage,
+      restaurantName:'西北楼',
+      restaurantAddress:'3212 Yonge Street',
+      restaurantPhoneNumber: '647-684-6483',
+      orderTime:'2017-02-15 12:30:12',
+      orderNumber:this.props.oid,
+      orderArray:this.state.itemList,
+      subTotal:'',
+      tax:'',
+      total:this.state.totalPrice,
+      printTitles:this.state.printTitles,
+      comment:this.state.comment,
+    }
+    await PrintModule.printContent(data);
+    this._printerWatting = false;
+  }
+
   _renderListTitle(){
     if(this.props.type == 'new'){
     return(
@@ -134,7 +164,7 @@ export default class OrderDetail extends Component {
                 <Text>{item.amount}</Text>
               </View>
               <View style={{flex:0.2}}>
-                <TouchableOpacity style={[styles.checkBox,{ backgroundColor:this.state.dataArray[index].sold ?'#F15A29' : 'white' }]}
+                <TouchableOpacity style={[styles.checkBox,{ backgroundColor:this.state.itemList[index].sold ?'#F15A29' : 'white' }]}
                     onPress={()=>this._changeSoldState(index)}/>
               </View>
             </View>
@@ -161,17 +191,17 @@ export default class OrderDetail extends Component {
     }
   }
   _changeSoldState(index){
-    let temp = this.state.dataArray;
-    temp[index].sold = !this.state.dataArray[index].sold;
-    this.setState({dataArray:temp},()=>console.log(this.state.dataArray[index]));
+    let temp = this.state.itemList;
+    temp[index].sold = !this.state.itemList[index].sold;
+    this.setState({itemList:temp},()=>console.log(this.state.itemList[index]));
   }
   _renderList(){
     return(
-          <View style= {{height:this.state.dataArray.length * 30 + 40, borderBottomWidth:1,
+          <View style= {{height:this.state.itemList.length * 30 + 40, borderBottomWidth:1,
             borderColor:'#D1D3D4'}}>
         {this._renderListTitle()}
-        <View style = {{height: this.state.dataArray.length * 30}}>
-          {this._renderItems(this.state.dataArray)}
+        <View style = {{height: this.state.itemList.length * 30}}>
+          {this._renderItems(this.state.itemList)}
         </View>
       </View>
     )
@@ -220,8 +250,8 @@ export default class OrderDetail extends Component {
     }
   }
   _renderConfirm(){
-    if(this.props.type == 'new'){
-      let soldOutArr = this.state.dataArray.filter(item => item.sold == true);
+    if(this.props.status == '0'){
+      let soldOutArr = this.state.itemList.filter(item => item.sold == true);
       let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
       return(
         <View style={[styles.confirmContainer,{height:120}]} >
@@ -234,7 +264,7 @@ export default class OrderDetail extends Component {
             </View>
           </View>
           <View style={styles.confirmButtonView} >
-              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={()=>this._acceptOrder()}>
+              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._handleOrder.bind(null,0)}>
                 <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
               </TouchableOpacity>
           </View>
@@ -242,19 +272,23 @@ export default class OrderDetail extends Component {
       )
     }else{
       return(
-        <View style={{height:80}} >
+        <View style={[styles.confirmContainer,{height:120}]} >
+          <View style={styles.confirmInfoView}>
+            <View style={{flex:0.5}}>
+              <Text style={styles.detailInfoFont}>User: {this.state.user}</Text>
+            </View>
+            <View style={{flex:0.5}}>
+              <Text style={styles.detailInfoFont}>Tel: {this.state.tel}</Text>
+            </View>
+          </View>
           <View style={styles.confirmButtonView} >
-              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={()=>this._printOrder()}>
+              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._printOrder}>
                 <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>Print</Text>
               </TouchableOpacity>
           </View>
         </View>
       )
     }
-  }
-  _acceptOrder(){
-    this.setState({waiting:true})
-    setTimeout(()=>this.setState({waiting:false}),500)
   }
   _setWidth(itemString, number){
     if(itemString.length < number){
@@ -264,28 +298,10 @@ export default class OrderDetail extends Component {
     }
     return itemString;
   }
-  _printOrder(){
-    let data = {
-      type:'receipt',
-      restaurantName:'西北楼',
-      restaurantAddress:'3212 Yonge Street',
-      restaurantPhoneNumber: '647-684-6483',
-      orderTime:'2017-02-15 12:30:12',
-      orderNumber:'826154',
-      orderArray:this.state.dataArray,
-      subTotal:'26.99',
-      tax:'2.44',
-      total:'29.47',
-      printTitles:this.state.printTitles,
-      }
-    this.setState({waiting:true})
-    PrintModule.printContent(data)
-    setTimeout(()=>this.setState({waiting:false}),500)
-  }
   render() {
     return (
       <View style={styles.container}>
-                    <Loading ref="loading" size={60}/>
+        <Loading ref="loading" size={60}/>
         {this._renderList()}
         {this._renderDetails()}
         {this._renderConfirm()}
@@ -293,7 +309,7 @@ export default class OrderDetail extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal:Setting.getX(26),

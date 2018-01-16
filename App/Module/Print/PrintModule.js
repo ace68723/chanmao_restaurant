@@ -19,6 +19,10 @@ export default  {
 
              await NativeModules.customAndroid.lineWrap(2);
 
+             await NativeModules.customAndroid.printOriginalText(data.dltypeMessage + "  #" + data.orderNumber);
+
+             await NativeModules.customAndroid.lineWrap(1);
+
              await NativeModules.customAndroid.printOriginalText(data.restaurantName);
 
              await NativeModules.customAndroid.lineWrap(1);
@@ -44,13 +48,21 @@ export default  {
              await NativeModules.customAndroid.printOriginalText("No.   Dish      Amount   Price");
              await NativeModules.customAndroid.lineWrap(2);
              for(let i = 0; i < data.orderArray.length; i++){
-                await NativeModules.customAndroid.printOriginalText(data.orderArray[i].dishNum);
-                await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].name);
+                await NativeModules.customAndroid.printOriginalText(data.orderArray[i].ds_id);
+                await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].ds_name);
                 await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].amount);
-                await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].price);
+                // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].price);
 
                 await NativeModules.customAndroid.lineWrap(2);
              }
+             if( data.comment) {
+               await NativeModules.customAndroid.printOriginalText("_______________________________");
+               await NativeModules.customAndroid.lineWrap(2);
+               await NativeModules.customAndroid.printOriginalText("Comment: " + data.comment );
+               await NativeModules.customAndroid.lineWrap(2);
+             }
+
+
              await NativeModules.customAndroid.printOriginalText("_______________________________");
              await NativeModules.customAndroid.lineWrap(2);
 

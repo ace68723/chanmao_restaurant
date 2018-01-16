@@ -11,20 +11,41 @@ export default  {
       // options.headers = Object.assign(options.headers,{
       //     uuid: io_data.uuid,
       // })
-  
+
       options.body = JSON.stringify({
-          "token": '1e4a0f1171fe181b9adb631dcd324ce7',
+          "token": token,
           "rid":rid,
           "oid": oid
       })
-  
-      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
              console.log(error);
              throw error
         })
-     }
+     },
+     handleOrder(reqData){
+       const url = 'http://www.chanmao.ca/index.php?r=rrclient/handle/';
+       let options = {
+           method: 'POST',
+           mode:'cors',
+           headers: {
+               'Content-Type': 'application/json'
+           }
+       }
+
+       options.body = JSON.stringify({
+          "token": reqData.token,
+          "rid": reqData.rid,
+          "oid": reqData.oid,
+          "items": reqData.items,
+          "task": reqData.task
+       })
+     return fetch(url,options)
+          .then((response) => response.json())
+          .catch((error) => {
+              console.log(error);
+              throw error
+         })
+      }
   }
-  

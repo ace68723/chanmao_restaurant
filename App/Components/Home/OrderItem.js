@@ -17,20 +17,62 @@ export default class OrderItem extends Component {
       isOpen:false
     }
   }
-  _renderOrderDetail(item,deliveryStatus)
+  // _renderOrderDetail(oid,item,deliveryStatus)
+  _renderOrderDetail({oid,status})
   {
     if (!this.state.isOpen) return;
+    // type={deliveryStatus==0?'new':'recent'}
     return (
-        <OrderDetail type={deliveryStatus==0?'new':'recent'}  />
+        <OrderDetail  {...{oid,status}}/>
 
     )
   }
-  _renderDeliveryButton({deliveryStatus})
+  _renderDeliveryButton({status})
   {
-    if (deliveryStatus===0) return (
+    let statusMessage;
+    let statusColor;
+    switch (status) {
+        case '0':
+            statusColor = '#ea7b21';
+            statusMessage = 'New';
+            break;
+        case '10':
+            statusColor = '#33cd5f';
+            statusMessage = 'Accepted';
+            break;
+        case '20':
+            statusColor = '#33cd5f';
+            statusMessage = '商家已确认, 准备中';
+            break;
+        case '30':
+            statusColor = '#9bc8df';
+            statusMessage = '送餐员已开始送餐';
+            break;
+        case '40':
+            statusColor = '#11c1f3';
+            statusMessage = '已送到, 满意吗？';
+            break;
+        case '55':
+            statusColor = '#886aea';
+            statusMessage = '新用户订单确认中';
+            break;
+        case '60':
+            statusColor = '#11c1f3';
+            statusMessage = '客服稍后联系您改运费';
+            break;
+        case '5':
+            statusColor = '#b2b2b2';
+            statusMessage = 'Sold Out';
+            break;
+        case '90':
+            statusColor = '#ef473a';
+            statusMessage = 'Cancelled';
+            break;
+    }
+    return(
       <View style={{
         marginLeft:10,
-        borderColor:'#ea7b21',
+        borderColor:statusColor,
         borderWidth:2,
         height:Settings.getY(32),
         width:Settings.getX(118),
@@ -38,8 +80,8 @@ export default class OrderItem extends Component {
         alignItems:'center',
         justifyContent:'center',
       }}>
-        <Text style={{color:'#ea7b21'}}>
-          View
+        <Text style={{color:statusColor}}>
+          {statusMessage}
         </Text>
         <View style={{width:3}}>
         </View>
@@ -47,62 +89,7 @@ export default class OrderItem extends Component {
           source={this.state.isOpen? require('./up.png'):require('./down.png')}
         />
       </View>
-    );
-    if (deliveryStatus===1) return (                   //Accepted
-      <View style={{
-        marginLeft:10,
-        borderColor:'#43c9a2',
-        borderWidth:2,
-        height:Settings.getY(32),
-        width:Settings.getX(118),
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center',
-      }}>
-        <Text style={{color:'#43c9a2'}}>
-          Accepted
-        </Text>
-        <View style={{width:3}}>
-        </View>
-        <Image  style={{width:Settings.getX(17),height:Settings.getX(11)}}
-          source={this.state.isOpen? require('./up.png'):require('./down.png')}
-        />
-      </View>
-    );
-    if (deliveryStatus===2) return (                   //Sold Out
-      <View style={{
-        marginLeft:10,
-        backgroundColor:'#6c727a',
-        height:Settings.getY(32),
-        width:Settings.getX(118),
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center',
-      }}>
-        <Text style={{color:'white'}}>
-          Sold Out
-        </Text>
-
-
-      </View>
-    );
-    if (deliveryStatus===3) return (                   //Cancelled
-      <View style={{
-        marginLeft:10,
-        backgroundColor:'#f26657',
-        height:Settings.getY(32),
-        width:Settings.getX(118),
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center',
-      }}>
-        <Text style={{color:'white'}}>
-          Cancelled
-        </Text>
-
-
-      </View>
-    );
+    )
   }
   _renderDeliverType(dltype){
     if(dltype == 0){
@@ -132,15 +119,15 @@ export default class OrderItem extends Component {
     }
   }
   render() {
-    const {dltype,oid,time,total,deliveryStatus} = this.props;
-    return(
+    const {dltype,oid,time,total,status} = this.props;
 
+// disabled={(status>1)}
+    return(
         <View style={{  borderBottomColor:'#d1d3d4',
           borderBottomWidth:1,}}>
           <TouchableOpacity onPress={()=>{
                               this.setState({isOpen:!this.state.isOpen});
-                            }}
-            disabled={(deliveryStatus>1)}>
+                            }}>
           <View style={{
             width:Settings.getX(540),
             height:Settings.getY(118),
@@ -205,13 +192,13 @@ export default class OrderItem extends Component {
               </View>
               <View style={{flex:1,flexDirection:'row',}}>
                 {this._renderDeliverType(dltype)}
-                {this._renderDeliveryButton({deliveryStatus})}
+                {this._renderDeliveryButton({status})}
               </View>
             </View>
 
           </View>
           </TouchableOpacity>
-          {this._renderOrderDetail()}
+          {this._renderOrderDetail({oid,status,time,dltype})}
         </View>
 
     )

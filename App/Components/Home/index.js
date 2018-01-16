@@ -17,8 +17,8 @@ import OrderItem from './OrderItem';
 
 import * as firebase from 'firebase';
 const firebaseConfig = {
-  apiKey: "AIzaSyCwhZeyBXPWUAkeIc29p7_JfvGT0qC51c8",
-  databaseURL: "https://cm-rrclient-1.firebaseio.com",
+  apiKey: "AIzaSyAtQAN3PhdIsFEHkEJfiuQQHVcm9ZSfYFQ",
+  databaseURL: "https://cm-rrclient-3.firebaseio.com",
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -122,15 +122,24 @@ export default class Home extends Component {
   }
   _listenForItems() {
       let newOrder,recentOrder;
-      const starCountRef = firebase.database().ref('testclient/4/');
+      const starCountRef = firebase.database().ref('rrclient/5/');
       starCountRef.on('value',(snapshot)=> {
 
       newOrder = snapshot.val().new;
       recentOrder = snapshot.val().done;
 
-      if(recentOrder) recentOrder =  Object.entries(recentOrder).map(e => Object.assign(e[1], { key: e[0] }));
-      if(newOrder) newOrder = Object.entries(newOrder).map(e => Object.assign(e[1], { key: e[0] }));
-      newOrder = [...[{}],newOrder];
+      if(recentOrder){
+        recentOrder =  Object.entries(recentOrder).map(e => Object.assign(e[1], { key: e[0] }));
+      } else {
+        recentOrder = [];
+      }
+      if(newOrder){
+        newOrder = Object.entries(newOrder).map(e => Object.assign(e[1], { key: e[0] }));
+      } else {
+        newOrder = [];
+      }
+
+      console.log(newOrder)
       this.setState({
         newOrder:newOrder,
         recentOrder: recentOrder
@@ -139,7 +148,7 @@ export default class Home extends Component {
   }
 
   _renderItem ({item}){
-      return <OrderItem {...item} {...{deliveryStatus:1} }/>
+      return <OrderItem {...item} />
   }
   render() {
 
