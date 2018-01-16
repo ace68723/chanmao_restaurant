@@ -10,6 +10,7 @@ import {
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 import Home from '../Home';
 import CreateOrder from '../CreateOrder';
+import HistoryPage from '../History';
 import AboutUs from '../AboutUs';
 import TabBar from './TabBar';
 
@@ -29,10 +30,9 @@ export default class Tab extends Component {
               <Home tabLabel="home"
                     activeIconImage={require("./Image/homeorange.png")}
                     inactiveIconImage={require("./Image/homegrey.png")}/>
-              <View tabLabel="History"
+              <HistoryPage tabLabel="History"
                     activeIconImage={require("./Image/historyorange.png")}
-                    inactiveIconImage={require("./Image/historygrey.png")}>
-              </View>
+                    inactiveIconImage={require("./Image/historygrey.png")}/>
               <CreateOrder tabLabel="Create Order"
                     activeIconImage={require("./Image/neworange.png")}
                     inactiveIconImage={require("./Image/newgrey.png")}/>

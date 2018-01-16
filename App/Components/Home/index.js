@@ -154,67 +154,70 @@ export default class Home extends Component {
   render() {
 
     return (
-      <ScrollView style={styles.container}>
-        <View style={{
-          backgroundColor:'white',
-          width:Settings.getX(540),
-          height:Settings.getY(76),
-          justifyContent:'center',
-        }}>
-          <Text style={{
-            color:'black',
-            fontSize:22,
-            marginLeft:Settings.getX(26),
-          }}>
-            HOME {this.state.result}
-          </Text>
-        </View>
-        <View style={{
-          backgroundColor:'#ea7B21',
-          width:Settings.getX(540),
-          height:Settings.getY(54),
-          justifyContent:'center',
-        }}>
-          <Text style={{
-            color:'white',
-            fontSize:16,
-            marginLeft:Settings.getX(26),
-          }}>
-            NEW ORDER
-          </Text>
-        </View>
-          <FlatList
-            style={{minHeight:Settings.getX(400),}}
-            data={this.state.newOrder}
-            renderItem={this._renderItem}
-            stickyHeaderIndices={this.state.stickyHeaderIndices}
-          />
+      <View  style={styles.container}>
+          <View style={{
+              backgroundColor:'white',
+              width:Settings.getX(540),
+              height:Settings.getY(76),
+              justifyContent:'center',
+            }}>
+              <Text style={{
+                color:'black',
+                fontSize:22,
+                marginLeft:Settings.getX(26),
+              }}>
+                HOME {this.state.result}
+              </Text>
+          </View>
+          <ScrollView style={{marginTop: 10,flex:0.925}}> 
+            <View style={{
+              backgroundColor:'#ea7B21',
+              width:Settings.getX(540),
+              height:Settings.getY(54),
+              justifyContent:'center',
+            }}>
+              <Text style={{
+                color:'white',
+                fontSize:16,
+                marginLeft:Settings.getX(26),
+              }}>
+                NEW ORDER
+              </Text>
+            </View>
+              <FlatList
+                style={{minHeight:Settings.getX(400),}}
+                data={this.state.newOrder}
+                renderItem={this._renderItem}
+                stickyHeaderIndices={this.state.stickyHeaderIndices}
+              />
 
 
-        <View style={{
-          backgroundColor:'#798ba5',
-          width:Settings.getX(540),
-          height:Settings.getY(54),
-          justifyContent:'center',
-          marginTop:20,
-        }}>
-          <Text style={{
-            color:'white',
-            fontSize:16,
-            marginLeft:Settings.getX(26),
-          }}>
-            RECENT ORDER
-          </Text>
-        </View>
+            <View style={{
+              backgroundColor:'#798ba5',
+              width:Settings.getX(540),
+              height:Settings.getY(54),
+              justifyContent:'center',
+              marginTop:20,
+            }}>
+              <Text style={{
+                color:'white',
+                fontSize:16,
+                marginLeft:Settings.getX(26),
+              }}>
+                RECENT ORDER
+              </Text>
+            </View>
 
-          <FlatList
-            data={this.state.recentOrder}
-            renderItem={this._renderItem}
-            keyExtractor={(item, index) => index}
-          />
+              <FlatList
+                data={this.state.recentOrder}
+                renderItem={this._renderItem}
+                keyExtractor={(item, index) => index}
+              />
 
 
-      </ScrollView>
+          </ScrollView>
+      </View>
+     
     );
   }
 }

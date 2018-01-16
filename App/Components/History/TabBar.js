@@ -34,8 +34,10 @@ export default class TabBar extends Component {
   renderTab(name, page, isTabActive, onPressHandler,activeIconImage,inactiveIconImage) {
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
-    const fontWeight = isTabActive ? 'bold' : 'normal';
+    const fontWeight = isTabActive ? 'bold' : 'bold';
+    const fontSize =  isTabActive ? 19 : 19;
     const iconImage = isTabActive ? activeIconImage : inactiveIconImage;
+    const backgroundColor = isTabActive ? '#EA7B21' : 'white';
     return (
       <Button
         style={{flex: 1, }}
@@ -45,9 +47,9 @@ export default class TabBar extends Component {
         accessibilityTraits='button'
         onPress={() => onPressHandler(page)}
       >
-        <View style={[styles.tab, this.props.tabStyle, ]}>
+        <View style={[styles.tab, this.props.tabStyle,{backgroundColor:backgroundColor} ]}>
           <Image source={iconImage} style={{width:20, height:20,}}/>
-          <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+          <Text style={[{color: textColor, fontWeight,fontSize } ]}>
             {name}
           </Text>
         </View>
@@ -106,10 +108,11 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    borderWidth: 1,
-    borderTopWidth: 1,
+    borderWidth: 0,
+    borderTopWidth: 0,
+    borderBottomWidth:1,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderColor: '#D1D3D4',
+    borderColor: '#EA7B21',
   },
 });

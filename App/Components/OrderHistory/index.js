@@ -34,41 +34,7 @@ export default class OrderHistory extends Component {
       startDate:'YYYY/MM/DD',
       endDate:'YYYY/MM/DD',
       list: [
-        {
-        orderNumber: '3001223',
-        time: '2017-11-15 12:24:34',
-        price: '407.23',
-        },
-        {
-        orderNumber: '3001223',
-        time: '2017-11-15 12:24:34',
-        price: '407.23',
-        },
-        {
-        orderNumber: '3001223',
-        time: '2017-11-15 12:24:34',
-        price: '407.23',
-        },
-        {
-        orderNumber: '3001223',
-        time: '2017-11-15 12:24:34',
-        price: '407.23',
-        },
-        {
-        orderNumber: '3001223',
-        time: '2017-11-15 12:24:34',
-        price: '407.23',
-        },
-        {
-        orderNumber: '3001223',
-        time: '2017-11-15 12:24:34',
-        price: '407.23',
-        },
-        {
-        orderNumber: '3001223',
-        time: '2017-11-15 12:24:34',
-        price: '407.23',
-        },
+       
       ],
       waiting: false,
       "page_num" :1,
