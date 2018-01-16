@@ -8,7 +8,7 @@ Navigation.startSingleScreenApp({
   screen: {
     screen: 'Home',
     navigatorStyle: {
-      navBarHidden: false,
+      navBarHidden: true,
     },
     title:'CreateOrder',
     appStyle: {

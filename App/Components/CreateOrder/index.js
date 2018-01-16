@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Modal
 } from 'react-native';
-
+import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell'
 import AutoComplete from './AutoComplete.js'
@@ -22,7 +22,6 @@ export default class CreateOrder extends Component {
     super(props);
     this.state = {
       address: '',
-      city: '',
       postal: '',
       showAlert: false,
       coord: [],
@@ -37,17 +36,48 @@ export default class CreateOrder extends Component {
     this.onPressAlert = this.onPressAlert.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this._getGeoPoint = this._getGeoPoint.bind(this);
+    this._addressExtractor = this._addressExtractor.bind(this);
+    this._goCreateOrder = this._goCreateOrder.bind(this);
   }
   onPressAlert() {
     this._toggleAlert();
   }
 
+  _addressExtractor(data, key){
+    const mapping = {'postal': "postal_code"};
+    for(var i = 0; i < data.address_components.length; i++){
+      if (data.address_components[i].types.includes(mapping[key])){
+          return data.address_components[i].long_name;
+      }
+    }
+  }
+  async _goCreateOrder() {
+    const {address,postal} = this.state;
+    const lat = this.state.coord.lat;
+    const lng = this.state.coord.lng;
+    const data = await CreateOrderModule.areaCheck(lng,lat)
+    console.log(data);
+    if(data.result === 0) {
+      const dlexp = data.dlexp;
+      const area = data.area;
+      console.log(dlexp);
+      this.props.navigator.push({
+        screen: 'CreateOrderDetail',
+        navigatorStyle: {
+          navBarHidden: true
+        },
+        passProps: {address,lat,lng,area,dlexp,postal},
+        animationType: 'slide-down'
+      });
+    }
+    
+  }
+  
+
   handleChangeValue(key, value) {
     // console.log(key, value.text.text);
     if (key == 'address'){
-      console.log(value);
       this.setState({['address']: value.text.text.description});
-      this.setState({['city']: value.text.text.terms[2].value});
       this._getGeoPoint();
       return;
     }
@@ -61,10 +91,10 @@ export default class CreateOrder extends Component {
                  + this.state.address;
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    console.log(jsonResponse.results[0]);
+    // console.log(jsonResponse.results[0]);
     this.state.coord = jsonResponse.results[0].geometry.location;
-    this.state.postal = jsonResponse.results[0].address_components.pop().long_name;
-    console.log(this.state);
+    this.state.postal = this._addressExtractor(jsonResponse.results[0], 'postal');
+    console.log('final', this.state);
   }
 
   _toggleAlert(title, message, buttonTitle){
@@ -82,6 +112,7 @@ export default class CreateOrder extends Component {
     return (
       <View style={styles.container}>
         <Modal
+          onRequestClose={() => console.log('123')}
           visible={this.state.showAlert}>
             <Alert
               message={this.state.alert.message}
@@ -94,10 +125,29 @@ export default class CreateOrder extends Component {
         <FormCell
           style={styles.cell}
           title='Address'
-          isAddress='true'
           onChangeText={(text) => this.handleChangeValue('address', {text})}
           autoFocus={true}>
         </FormCell>
+        <TouchableOpacity 
+          onPress={() => this._goCreateOrder()}
+          style={{
+              marginTop:Setting.getY(208),
+              width:Setting.getX(250),
+              height:Setting.getX(250)/250*75,
+              alignItems: 'center',
+              backgroundColor:'#2f3038',
+              borderRadius: 8,
+              justifyContent:'center',
+              alignSelf:'center',
+              borderColor:'#C49A6C',
+              borderWidth:1
+          }}
+        activeOpacity={0.4}
+        >
+        <Text style={{fontSize:28,color:'#C49A6C'}}>
+        Next
+        </Text>
+      </TouchableOpacity>
       </View>
     );
   }

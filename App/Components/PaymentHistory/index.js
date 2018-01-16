@@ -13,7 +13,8 @@ import {
 } from 'react-native';
 import Settings from '../../Config/Setting';
 import Setting from '../../Config/Setting';
-
+import Loading from '../Loading';
+import PaymentHistoryModule from '../../Module/PaymentHistory/PaymentHistoryModule';
 const {height, width} = Dimensions.get('window');
 
 export default class PaymentHistory extends Component {
@@ -31,26 +32,7 @@ export default class PaymentHistory extends Component {
       endTitle:'End',
       startDate:'YYYY/MM/DD',
       endDate:'YYYY/MM/DD',
-      list: [
-        {
-         orderNumber: 3001223,
-         startTime: '2017-11-15',
-         endTime: '2017-11-15',
-         price: 407.23,
-        },
-        {
-         orderNumber: 3001223,
-         startTime: '2017-11-15',
-         endTime: '2017-11-15',
-         price: 407.23,
-        },
-        {
-         orderNumber: 3001223,
-         startTime: '2017-11-15',
-         endTime: '2017-11-15',
-         price: 407.23,
-        },
-      ],
+      list: [],
       waiting: false,
       "page_num" :1,
       "page_size":50,
@@ -58,11 +40,29 @@ export default class PaymentHistory extends Component {
     }
   }
   componentDidMount() {
+    this.getBilling();
+    console.log('123')
   }
-  
+  async getBilling(){
+    try{
+       const rid = 5;
+       const token = '';
+       this.refs.loading.startLoading();
+       const data = await PaymentHistoryModule.getBilling(token, rid);
+       console.log(data);
+       this.setState({
+         list: data
+       })
+       this.refs.loading.endLoading();
+
+    }catch(error){
+      console.log(error);
+    }
+  }
   render(){
     return(
       <View style={styles.container}>
+              <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {this.renderDetialList()}
         </View>
@@ -77,7 +77,7 @@ export default class PaymentHistory extends Component {
         <View style={{flex:0.25}}>
           <Text style={styles.listTitleFont}>Start</Text>
         </View>
-        <View style={{flex:0.25,paddingLeft:Setting.getX(10)}}>
+        <View style={{flex:0.25,paddingLeft:Setting.getX(20)}}>
           <Text style={styles.listTitleFont}>End</Text>
         </View>
         <View style={{flex:0.2,paddingLeft: Settings.getX(20)}}>
@@ -113,16 +113,16 @@ export default class PaymentHistory extends Component {
         <View style={styles.recordView}
                 key={index}>
           <View style={{flex:0.25}}>
-            <Text style={styles.recordTitleFont}>{record.startTime}</Text>
+            <Text style={styles.recordTitleFont}>{record.bill_range_start}</Text>
           </View>
           <View style={{flex:0.25}}>
-            <Text style={styles.recordTitleFont}>{record.endTime}</Text>
+            <Text style={styles.recordTitleFont}>{record.bill_range_end}</Text>
           </View>
           <View style={{flex:0.2}}>
-            <Text style={styles.recordTitleFont}>{record.price}</Text>
+            <Text style={styles.recordTitleFont}>{record.total_income}</Text>
           </View>
           <View style={{flex:0.3}}>
-            <Text style={styles.recordTitleFont}>{record.price}</Text>
+            <Text style={styles.recordTitleFont}>{record.service_charge}</Text>
           </View>
         </View>
       )
