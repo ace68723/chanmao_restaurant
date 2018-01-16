@@ -40,10 +40,9 @@ export default class HistoryPage extends Component {
               renderTabBar={() => <TabBar />}
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}
             >
-            <OrderHistory tabLabel='Order History'><Text>Order History</Text>
-            </OrderHistory>
-            <PaymentHistory tabLabel='Payment History'><Text>Payment History</Text></PaymentHistory>
-            
+            <OrderHistory tabLabel='Order History'/>
+            <PaymentHistory tabLabel='Payment History'/>
+
             </ScrollableTabView>
         </View>
         );
@@ -56,4 +55,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
