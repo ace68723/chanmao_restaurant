@@ -8,6 +8,7 @@ import OrderDetail from '../Components/OrderDetail';
 import OrderHistory from '../Components/OrderHistory';
 import PaymentHistory from '../Components/PaymentHistory';
 import Home from '../Components/Home';
+import Tab from '../Components/Tab';
 // import TabBar from '../Components/TabBar';
 // register all screens of the app (including internal ones)
 export function registerScreens() {
@@ -20,5 +21,5 @@ export function registerScreens() {
   Navigation.registerComponent('OrderHistory', () => OrderHistory);
   Navigation.registerComponent('PaymentHistory', () => PaymentHistory);
   Navigation.registerComponent('Home', () => Home);
-  // Navigation.registerComponent('TabBar', () => TabBar);
+  Navigation.registerComponent('Tab', () => Tab);
 }
