@@ -29,16 +29,22 @@ export default class Tab extends Component {
             >
               <Home tabLabel="home"
                     activeIconImage={require("./Image/homeorange.png")}
-                    inactiveIconImage={require("./Image/homegrey.png")}/>
+                    inactiveIconImage={require("./Image/homegrey.png")}
+                    navigator={this.props.navigator}/>
               <HistoryPage tabLabel="History"
                     activeIconImage={require("./Image/historyorange.png")}
-                    inactiveIconImage={require("./Image/historygrey.png")}/>
+                    inactiveIconImage={require("./Image/historygrey.png")}
+                    navigator={this.props.navigator}/>
               <CreateOrder tabLabel="Create Order"
                     activeIconImage={require("./Image/neworange.png")}
-                    inactiveIconImage={require("./Image/newgrey.png")}/>
-              <AboutUs tabLabel="About"
+                    inactiveIconImage={require("./Image/newgrey.png")}
+                    navigator={this.props.navigator}/>
+              <AboutUs
+                    tabLabel="About"
                     activeIconImage={require("./Image/aboutorange.png")}
-                    inactiveIconImage={require("./Image/aboutgrey.png")}/>
+                    inactiveIconImage={require("./Image/aboutgrey.png")}
+                    navigator={this.props.navigator}
+                    />
             </ScrollableTabView>
 
         );

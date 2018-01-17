@@ -47,14 +47,14 @@ export default class Login extends Component {
     setTimeout(()=>this.setState({waiting:false}),500);
 
   }
-  
+
   async login(username, password){
     try{
        this.refs.loading.startLoading();
        const data = await LoginModule.login(username, password);
        this.refs.loading.endLoading();
-       this.props.navigator.push({
-           screen: 'Home',
+       this.props.navigator.resetTo({
+           screen: 'Tab',
            navigatorStyle: {
              navBarHidden: true
            },
@@ -74,7 +74,7 @@ export default class Login extends Component {
        )
       } else {
         return
-      } 
+      }
     }
 }
   render() {

@@ -1,5 +1,5 @@
 import LoginAPI from './LoginAPI';
-import {GetDeviceInfo,SaveUserInfo} from '../Database';
+import { GetDeviceInfo, SaveUserInfo, InitUserInfo } from '../Database';
 
 export default  {
   async login(username,password){
@@ -7,14 +7,22 @@ export default  {
       const { channel,version } = GetDeviceInfo();
       const userInfo = await LoginAPI.login(username,password, channel, version);
       if(userInfo.result === 0 ){
-        const eo_data ={
-           uid:userInfo.uid,
-           token:userInfo.token,
-           rid: userInfo.rid,
-           url: userInfo.url,
-           result: userInfo.result
+         const token =userInfo.token;
+         const rid = userInfo.rid;
+         const uid =userInfo.uid;
+         const firebaseURL = userInfo.firebase_url;
+         const firebaseKEY = userInfo.firebase_key;
+         const firebaseREF = userInfo.firebase_ref;
+         const eo_data ={
+             result: userInfo.result
          }
-         SaveUserInfo({});
+         SaveUserInfo({ token,
+                        rid,
+                        uid,
+                        firebaseURL,
+                        firebaseKEY,
+                        firebaseREF
+                      });
          return eo_data
       }else{
         const errorMessage = userInfo.error_msg;
@@ -25,5 +33,9 @@ export default  {
       throw error
     }
 
+  },
+  logout(){
+    InitUserInfo();
   }
+
 }
