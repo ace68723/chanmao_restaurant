@@ -14,6 +14,7 @@ import FormCell from './FormCell'
 import AutoComplete from './AutoComplete.js'
 
 import Alert from '../Alert'
+import Loading from '../Loading';
 
 const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8';
 
@@ -23,24 +24,14 @@ export default class CreateOrder extends Component {
     this.state = {
       address: '',
       postal: '',
-      showAlert: false,
-      coord: [],
-      alert:{
-        message: '',
-        title: '',
-        buttonTitle: '',
-      }
+      coord: []
     };
     this.handleChangeValue = this.handleChangeValue.bind(this);
 
-    this.onPressAlert = this.onPressAlert.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this._getGeoPoint = this._getGeoPoint.bind(this);
     this._addressExtractor = this._addressExtractor.bind(this);
     this._goCreateOrder = this._goCreateOrder.bind(this);
-  }
-  onPressAlert() {
-    this._toggleAlert();
   }
 
   _addressExtractor(data, key){
@@ -52,10 +43,12 @@ export default class CreateOrder extends Component {
     }
   }
   async _goCreateOrder() {
+    //this.refs.loading.startLoading();
     const {address,postal} = this.state;
     const lat = this.state.coord.lat;
     const lng = this.state.coord.lng;
     const data = await CreateOrderModule.areaCheck(lng,lat)
+    //this.refs.loading.endLoading();
     console.log(data);
     if(data.result === 0) {
       const dlexp = data.dlexp;
@@ -84,6 +77,8 @@ export default class CreateOrder extends Component {
   }
 
   async _getGeoPoint(){
+    //this.refs.loading.startLoading();
+
     const url = 'https://maps.googleapis.com/maps/api/geocode/json?key='
                  + GOOGLE_API_KEY
                  + '&address='
@@ -98,16 +93,9 @@ export default class CreateOrder extends Component {
   }
 
   _toggleAlert(title, message, buttonTitle){
-    if (this.state.showAlert == true){
-      this.setState({['showAlert']: false});
-    }
-    else{
-      this.setState({['showAlert']: true});
-      this.state.alert.title = title;
-      this.state.alert.message = message;
-      this.state.alert.buttonTitle = title;
-    }
+    Alert.openAlert(title, message, buttonTitle, );
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -128,17 +116,6 @@ export default class CreateOrder extends Component {
             Create Order
           </Text>
         </View>
-
-        <Modal
-          onRequestClose={() => console.log('123')}
-          visible={this.state.showAlert}>
-            <Alert
-              message={this.state.alert.message}
-              title={this.state.alert.title}
-              buttonTitle={this.state.alert.buttonTitle}
-              onPressAlert={this.onPressAlert}>
-            </Alert>
-        </Modal>
 
         <FormCell
           style={styles.cell}
