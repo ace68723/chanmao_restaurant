@@ -11,14 +11,14 @@ export default  {
       // options.headers = Object.assign(options.headers,{
       //     uuid: io_data.uuid,
       // })
-  
+
       options.body = JSON.stringify({
           "token": token,
           "rid":rid,
           "lat": lat,
           "lng":lng
       })
-  
+
       console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
@@ -39,7 +39,7 @@ export default  {
         // options.headers = Object.assign(options.headers,{
         //     uuid: io_data.uuid,
         // })
-    
+
         options.body = JSON.stringify({
                 "token":submitDetail.token,
                 "rid":submitDetail.rid,
@@ -59,7 +59,7 @@ export default  {
                 "tel":submitDetail.tel,
                 "uid":submitDetail.uid
         })
-    
+
         console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
@@ -69,4 +69,3 @@ export default  {
           })
        }
   }
-  

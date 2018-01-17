@@ -45,10 +45,8 @@ export default class PaymentHistory extends Component {
   }
   async getBilling(){
     try{
-       const rid = 5;
-       const token = '';
        this.refs.loading.startLoading();
-       const data = await PaymentHistoryModule.getBilling(token, rid);
+       const data = await PaymentHistoryModule.getBilling();
        console.log(data);
        this.setState({
          list: data
@@ -70,7 +68,7 @@ export default class PaymentHistory extends Component {
     )
   }
 
-  
+
   renderListTitle(){
     return(
       <View style={styles.listTitles}>
