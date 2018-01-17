@@ -16,17 +16,24 @@ export default class OrderItem extends Component {
     this.state = {
       isOpen:false
     }
+
+  }
+  componentDidMount()
+  {
+    console.log(this.props);
   }
   // _renderOrderDetail(oid,item,deliveryStatus)
   _renderOrderDetail({oid,status})
   {
     if (!this.state.isOpen) return;
+    console.log(oid);
     // type={deliveryStatus==0?'new':'recent'}
     return (
-        <OrderDetail  {...{oid,status}}/>
+        <OrderDetail  {...{oid,status} }/>
 
     )
   }
+
   _renderDeliveryButton({status})
   {
     let statusMessage;
@@ -127,6 +134,8 @@ export default class OrderItem extends Component {
           borderBottomWidth:1,}}>
           <TouchableOpacity onPress={()=>{
                               this.setState({isOpen:!this.state.isOpen});
+
+                    
                             }}>
           <View style={{
             width:Settings.getX(540),

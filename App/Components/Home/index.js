@@ -11,6 +11,7 @@ import {
   Image,
   AsyncStorage
 } from 'react-native';
+import { ListItem, Left, Body, Icon, Right, Title } from "native-base";
 import Settings from '../../Config/Setting';
 
 import OrderItem from './OrderItem';
@@ -113,22 +114,25 @@ export default class Home extends Component {
       //     ],
       //   },
       // ]
+      stickyHeaderIndices: [],
     }
     this._renderItem=this._renderItem.bind(this);
     this._listenForItems = this._listenForItems.bind(this);
+    this.scrollToIndexI=this.scrollToIndexI.bind(this);
   }
   componentDidMount(){
     this._listenForItems();
   }
   _listenForItems() {
       let newOrder,recentOrder;
+      let headerIndices=[];
       const starCountRef = firebase.database().ref('rrclient/5/');
 
       starCountRef.on('value',(snapshot)=> {
         console.log('here')
       newOrder = snapshot.val().new;
       recentOrder = snapshot.val().done;
-
+      headerIndices.push(0);
       if(recentOrder){
         recentOrder =  Object.entries(recentOrder).map(e => Object.assign(e[1], { key: e[0] }));
       } else {
@@ -139,85 +143,81 @@ export default class Home extends Component {
       } else {
         newOrder = [];
       }
+      let Orders=[{title:'NEW ORDER',color:'#ea7B21'},...newOrder,{title:'RECENT ORDER',color:'#798BA5'}, ...recentOrder];
 
-      console.log(newOrder)
+      headerIndices.push(newOrder.length+1);
+      console.log(newOrder);
+      console.log(recentOrder);
+      console.log(Orders);
       this.setState({
         newOrder:newOrder,
-        recentOrder: recentOrder
+        recentOrder: recentOrder,
+        Orders:Orders,
+        stickyHeaderIndices:headerIndices,
       });
+      console.log(this.state.stickyHeaderIndices);
     });
   }
-
+  scrollToIndexI(index)
+  {
+    console.log(index);
+    console.log(this.list);
+    this.list.scrollToIndex({'animated':'true','index':index,'viewPosition':1,'viewOffset':0 })
+  }
   _renderItem ({item}){
-      return <OrderItem {...item} />
+      if (!item.title) return <OrderItem {...item} scrollToIndex={this.scrollToIndexI} />
+      return(
+        <View style={{
+          backgroundColor:item.color,
+          width:Settings.getX(540),
+          height:Settings.getY(54),
+          justifyContent:'center',
+        }}>
+
+          <Text style={{
+            color:'white',
+            fontSize:16,
+            marginLeft:Settings.getX(26),
+          }}>
+            {item.title}
+          </Text>
+
+        </View>
+      )
   }
   render() {
 
+
     return (
-      <View  style={styles.container}>
-          <View style={{
-              backgroundColor:'white',
-              width:Settings.getX(540),
-              height:Settings.getY(76),
-              justifyContent:'center',
-            }}>
-              <Text style={{
-                color:'black',
-                fontSize:22,
-                marginLeft:Settings.getX(26),
-              }}>
-                HOME {this.state.result}
-              </Text>
-          </View>
-          <ScrollView style={{marginTop: 10,flex:0.925}}> 
-            <View style={{
-              backgroundColor:'#ea7B21',
-              width:Settings.getX(540),
-              height:Settings.getY(54),
-              justifyContent:'center',
-            }}>
-              <Text style={{
-                color:'white',
-                fontSize:16,
-                marginLeft:Settings.getX(26),
-              }}>
-                NEW ORDER
-              </Text>
-            </View>
-              <FlatList
-                style={{minHeight:Settings.getX(400),}}
-                data={this.state.newOrder}
-                renderItem={this._renderItem}
-                stickyHeaderIndices={this.state.stickyHeaderIndices}
-              />
+      <ScrollView style={styles.container}>
+        <View style={{
+          backgroundColor:'white',
+          width:Settings.getX(540),
+          height:Settings.getY(76),
+          justifyContent:'center',
+        }}>
+          <Text style={{
+            color:'black',
+            fontSize:22,
+            marginLeft:Settings.getX(26),
+          }}>
+            HOME {this.state.result}
+          </Text>
+        </View>
+
+          <FlatList
+
+            data={this.state.Orders}
+            renderItem={this._renderItem}
+            stickyHeaderIndices={[0]}
+            ref={(ref) => { this.list = ref; }}
+            keyExtractor={(item, index) => index}
+          />
 
 
-            <View style={{
-              backgroundColor:'#798ba5',
-              width:Settings.getX(540),
-              height:Settings.getY(54),
-              justifyContent:'center',
-              marginTop:20,
-            }}>
-              <Text style={{
-                color:'white',
-                fontSize:16,
-                marginLeft:Settings.getX(26),
-              }}>
-                RECENT ORDER
-              </Text>
-            </View>
-
-              <FlatList
-                data={this.state.recentOrder}
-                renderItem={this._renderItem}
-                keyExtractor={(item, index) => index}
-              />
 
 
-          </ScrollView>
-      </View>
-     
+      </ScrollView>
     );
   }
 }
