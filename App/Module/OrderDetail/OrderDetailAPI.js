@@ -1,6 +1,8 @@
+import { API_GET_ORDER_DETAIL, API_HANDLE_ORDER } from '../../Config/API';
+
 export default  {
     getOrderDetail(token,rid,oid){
-      const url = 'http://www.chanmao.ca/index.php?r=rrclient/orderdetail/';
+      const url = API_GET_ORDER_DETAIL;
       let options = {
           method: 'POST',
           mode:'cors',
@@ -25,7 +27,7 @@ export default  {
         })
      },
      handleOrder(reqData){
-       const url = 'http://www.chanmao.ca/index.php?r=rrclient/handle/';
+       const url = API_HANDLE_ORDER;
        let options = {
            method: 'POST',
            mode:'cors',
