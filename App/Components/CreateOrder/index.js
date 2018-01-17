@@ -15,7 +15,7 @@ import AutoComplete from './AutoComplete.js'
 
 import Alert from '../Alert'
 
-const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8';
+import {GOOGLE_API_KEY} from '../../Config/API'
 
 export default class CreateOrder extends Component {
   constructor(props) {
@@ -70,9 +70,9 @@ export default class CreateOrder extends Component {
         animationType: 'slide-down'
       });
     }
-    
+
   }
-  
+
 
   handleChangeValue(key, value) {
     // console.log(key, value.text.text);
@@ -128,7 +128,7 @@ export default class CreateOrder extends Component {
           onChangeText={(text) => this.handleChangeValue('address', {text})}
           autoFocus={true}>
         </FormCell>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => this._goCreateOrder()}
           style={{
               marginTop:Setting.getY(208),

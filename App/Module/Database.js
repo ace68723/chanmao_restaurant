@@ -67,7 +67,8 @@ export function GetUserInfo() {
   const version   = realm.objectForPrimaryKey('cmr_system','version').value;
   const rid       = realm.objectForPrimaryKey('cmr_system','rid').value;
   const uid       = realm.objectForPrimaryKey('cmr_system','uid').value;
-  return {token,version,rid,uid}
+  const channel   = realm.objectForPrimaryKey('cmr_system','channel').value;
+  return {token,version,rid,uid,channel}
 }
 export function GetFirebaseInfo() {
   const firebaseURL = realm.objectForPrimaryKey('cmr_system','firebaseURL').value;
@@ -78,5 +79,7 @@ export function GetFirebaseInfo() {
 export function LogOut() {
   realm.write(() => {
     realm.create('cmr_system',{type: 'token', value: ''}, true);
+    realm.create('cmr_system',{type: 'rid', value: ''}, true);
+    realm.create('cmr_system',{type: 'uid', value: ''}, true);
   })
 }

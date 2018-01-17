@@ -34,7 +34,7 @@ export default class OrderHistory extends Component {
       startDate:'YYYY/MM/DD',
       endDate:'YYYY/MM/DD',
       list: [
-       
+
       ],
       waiting: false,
       "page_num" :1,
@@ -48,12 +48,10 @@ export default class OrderHistory extends Component {
   }
   async getSummary(){
     try{
-       const rid = 5;
-       const token = '';
        const bill_start = this.state.startDate;
        const bill_end = this.state.endDate;
        this.refs.loading.startLoading();
-       const data = await PaymentHistoryModule.getSummary(token,rid,bill_end,bill_start);
+       const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
        console.log(data);
        this.setState({
          list: data

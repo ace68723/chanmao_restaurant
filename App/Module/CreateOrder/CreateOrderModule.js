@@ -1,13 +1,12 @@
 import CreateOrderAPI from './CreateOrderAPI';
-
+import { GetUserInfo } from '../Database';
 export default  {
   async areaCheck(lng,lat){
     try {
-      const token = '3ef5558e9696f6ae01f6ac604e38fec8';
-      const rid = 5;
+      const { token,rid } = GetUserInfo();
       const data = await CreateOrderAPI.areaCheck(token,rid,lng,lat);
       if(data.result === 0 ){
-         
+
          return data
       }else{
         const errorMessage = data.error_msg;
@@ -21,12 +20,14 @@ export default  {
   },
   async createOrder(reqData){
     try {
+      const { token,rid,uid,channel } = GetUserInfo();
       const submitDetail = {
-        "token":reqData.token,
-        "rid":reqData.rid,
+        "token":token,
+        "rid":rid,
+        "uid":uid,
+        "channel":channel,
         "lat":reqData.lat,
         "lng":reqData.lng,
-        "channel":4,
         "addr":reqData.addr,
         "apt_no":reqData.apt_no,
         "buzz":reqData.buzz,
@@ -38,11 +39,10 @@ export default  {
         "postal":reqData.postal,
         "pretax":reqData.pretax,
         "tel":reqData.tel,
-        "uid":reqData.uid
       }
       const data = await CreateOrderAPI.createOrder(submitDetail);
       if(data.result === 0 ){
-        
+
          return data
       }else{
         const errorMessage = data.error_msg;

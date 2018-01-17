@@ -1,6 +1,7 @@
+import { API_GET_BILLING, API_GET_SUMMARY } from '../../Config/API';
 export default  {
     getBilling(token,rid){
-      const url = 'http://www.chanmao.ca/index.php?r=rrclient/billing/';
+      const url = API_GET_BILLING;
       let options = {
           method: 'POST',
           mode:'cors',
@@ -13,7 +14,7 @@ export default  {
       // })
 
       options.body = JSON.stringify({
-          "token": '579f63692b79ac73b3fc7d9910899bf7',
+          "token": token,
           "rid":rid
       })
 
@@ -26,7 +27,7 @@ export default  {
         })
      },
      getSummary(token,rid,bill_end,bill_start){
-        const url = 'http://www.chanmao.ca/index.php?r=rrclient/summary/';
+        const url = API_GET_SUMMARY;
         let options = {
             method: 'POST',
             mode:'cors',
@@ -39,7 +40,7 @@ export default  {
         // })
 
         options.body = JSON.stringify({
-            "token": '579f63692b79ac73b3fc7d9910899bf7',
+            "token": token,
             "rid":rid,
             "bill_end": bill_end,
             "bill_start":bill_start

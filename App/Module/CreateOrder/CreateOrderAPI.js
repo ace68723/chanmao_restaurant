@@ -1,6 +1,8 @@
+import { API_AREACHECK, API_ORDERSUBMIT } from '../../Config/API';
+
 export default  {
     areaCheck(token,rid,lat,lng){
-      const url = 'http://www.chanmao.ca/index.php?r=rrclient/areacheck/';
+      const url = API_AREACHECK;
       let options = {
           method: 'POST',
           mode:'cors',
@@ -8,18 +10,13 @@ export default  {
               'Content-Type': 'application/json'
           }
       }
-      // options.headers = Object.assign(options.headers,{
-      //     uuid: io_data.uuid,
-      // })
-  
+
       options.body = JSON.stringify({
           "token": token,
           "rid":rid,
           "lat": lat,
           "lng":lng
       })
-  
-      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
@@ -28,7 +25,7 @@ export default  {
         })
      },
      createOrder(submitDetail){
-        const url = 'http://www.chanmao.ca/index.php?r=rrclient/ordersubmit/';
+        const url = API_ORDERSUBMIT;
         let options = {
             method: 'POST',
             mode:'cors',
@@ -39,7 +36,7 @@ export default  {
         // options.headers = Object.assign(options.headers,{
         //     uuid: io_data.uuid,
         // })
-    
+
         options.body = JSON.stringify({
                 "token":submitDetail.token,
                 "rid":submitDetail.rid,
@@ -59,8 +56,6 @@ export default  {
                 "tel":submitDetail.tel,
                 "uid":submitDetail.uid
         })
-    
-        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {
@@ -69,4 +64,3 @@ export default  {
           })
        }
   }
-  
