@@ -11,7 +11,6 @@ import {
   Image,
   AsyncStorage
 } from 'react-native';
-import { ListItem, Left, Body, Icon, Right, Title } from "native-base";
 import Settings from '../../Config/Setting';
 
 import OrderItem from './OrderItem';
