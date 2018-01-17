@@ -1,5 +1,5 @@
 import LoginAPI from './LoginAPI';
-import {GetDeviceInfo,SaveUserInfo} from '../Database';
+import { GetDeviceInfo, SaveUserInfo, InitUserInfo } from '../Database';
 
 export default  {
   async login(username,password){
@@ -33,5 +33,9 @@ export default  {
       throw error
     }
 
+  },
+  logout(){
+    InitUserInfo();
   }
+
 }

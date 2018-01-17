@@ -48,6 +48,11 @@ export function SaveUserInfo({token,rid,uid,firebaseURL,firebaseKEY,firebaseREF}
 export function InitUserInfo() {
   realm.write(() => {
     realm.create('cmr_system',{type: 'token', value: ''}, true);
+    realm.create('cmr_system',{type: 'rid', value: ''}, true);
+    realm.create('cmr_system',{type: 'uid', value: ''}, true);
+    realm.create('cmr_system',{type: 'firebaseURL', value: ''}, true);
+    realm.create('cmr_system',{type: 'firebaseKEY', value: ''}, true);
+    realm.create('cmr_system',{type: 'firebaseREF', value: ''}, true);
   })
 }
 export function GetUserInfo() {

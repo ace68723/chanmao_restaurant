@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Setting from '../../Config/Setting';
+import LoginModule from '../../Module/Login/LoginModule';
 export default class AboutUs extends Component {
   constructor(){
     super();
@@ -26,6 +27,15 @@ export default class AboutUs extends Component {
   _logOut(){
     this.setState({waiting:true});
     setTimeout(()=>this.setState({waiting:false}),500);
+    this.props.navigator.resetTo({
+        screen: 'Login',
+        navigatorStyle: {
+          navBarHidden: true
+        },
+        passProps: {},
+        animationType: 'fade'
+      });
+    LoginModule.logout();
   }
   render() {
     return (
