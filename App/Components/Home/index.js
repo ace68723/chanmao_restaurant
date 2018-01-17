@@ -118,7 +118,7 @@ export default class Home extends Component {
     }
     this._renderItem=this._renderItem.bind(this);
     this._listenForItems = this._listenForItems.bind(this);
-
+    this.scrollToIndexI=this.scrollToIndexI.bind(this);
   }
   componentDidMount(){
     this._listenForItems();
@@ -157,9 +157,14 @@ export default class Home extends Component {
       console.log(this.state.stickyHeaderIndices);
     });
   }
-
+  scrollToIndexI(index)
+  {
+    console.log(index);
+    console.log(this.list);
+    this.list.scrollToIndex({'animated':'true','index':index,'viewPosition':1,'viewOffset':0 })
+  }
   _renderItem ({item}){
-      if (!item.title) return <OrderItem {...item} />
+      if (!item.title) return <OrderItem {...item} scrollToIndex={this.scrollToIndexI} />
       return(
         <View style={{
           backgroundColor:item.color,
@@ -180,6 +185,7 @@ export default class Home extends Component {
       )
   }
   render() {
+
 
     return (
       <ScrollView style={styles.container}>
@@ -203,7 +209,8 @@ export default class Home extends Component {
             data={this.state.Orders}
             renderItem={this._renderItem}
             stickyHeaderIndices={[0]}
-
+            ref={(ref) => { this.list = ref; }}
+            keyExtractor={(item, index) => index}
           />
 
 
