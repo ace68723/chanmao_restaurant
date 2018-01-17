@@ -1,5 +1,5 @@
 import LoginAPI from './LoginAPI';
-import { GetDeviceInfo, SaveUserInfo, InitUserInfo } from '../Database';
+import { GetDeviceInfo, GetUserInfo, SaveUserInfo, InitUserInfo } from '../Database';
 
 export default  {
   async login(username,password){
@@ -23,6 +23,29 @@ export default  {
                         firebaseKEY,
                         firebaseREF
                       });
+         return eo_data
+      }else{
+        const errorMessage = userInfo.error_msg;
+        throw errorMessage
+      }
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+
+  },
+  async auth(){
+    try {
+      const { token,rid } = GetUserInfo();
+      if(!token || !rid) {
+        InitUserInfo();
+        throw 'no token'
+      }
+      const userInfo = await LoginAPI.auth({token,rid});
+      if(userInfo.result === 0 ){
+         const eo_data ={
+             result: userInfo.result
+         }
          return eo_data
       }else{
         const errorMessage = userInfo.error_msg;

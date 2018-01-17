@@ -24,11 +24,18 @@ export function DatabaseInit() {
       schemaVersion: 1,
   })
     console.log(realm.path)
-
+  let cmr_system = realm.objects('cmr_system');
   realm.write(() => {
     realm.create('cmr_system',{type: 'channel', value: 'cm-4'}, true);
     realm.create('cmr_system',{type: 'version', value: '1.1.0-beta'}, true);
   })
+  if(cmr_system.length <5) {
+    realm.write(() => {
+      realm.create('cmr_system',{type: 'token', value: ''}, true);
+      realm.create('cmr_system',{type: 'rid', value: ''}, true);
+      realm.create('cmr_system',{type: 'uid', value: ''}, true);
+    })
+  }
 }
 export function GetDeviceInfo() {
   const channel = realm.objectForPrimaryKey('cmr_system','channel').value;
@@ -60,8 +67,7 @@ export function GetUserInfo() {
   const version   = realm.objectForPrimaryKey('cmr_system','version').value;
   const rid       = realm.objectForPrimaryKey('cmr_system','rid').value;
   const uid       = realm.objectForPrimaryKey('cmr_system','uid').value;
-  const firebase  = realm.objectForPrimaryKey('cmr_system','firebase').value;
-  return {token,version,rid,uid,firebase}
+  return {token,version,rid,uid}
 }
 export function GetFirebaseInfo() {
   const firebaseURL = realm.objectForPrimaryKey('cmr_system','firebaseURL').value;

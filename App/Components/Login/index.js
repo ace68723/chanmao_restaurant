@@ -35,6 +35,9 @@ export default class Login extends Component {
     this._submit = this._submit.bind(this);
     this.login = this.login.bind(this);
   }
+  componentDidMount(){
+      this.auth();
+  }
   _setUsername(username){
     this.setState({username});
   }
@@ -47,7 +50,22 @@ export default class Login extends Component {
     setTimeout(()=>this.setState({waiting:false}),500);
 
   }
+  async auth(){
+    try{
+       const data = await LoginModule.auth();
+       this.props.navigator.resetTo({
+           screen: 'Tab',
+           navigatorStyle: {
+             navBarHidden: true
+           },
+           passProps: {},
+           animationType: 'slide-down'
+         });
+      }catch(error){
 
+        return
+      }
+  }
   async login(username, password){
     try{
        this.refs.loading.startLoading();
@@ -61,22 +79,22 @@ export default class Login extends Component {
            passProps: {},
            animationType: 'slide-down'
          });
-    }catch(error){
-      if(error == 'LOGIN_FAIL') {
-       console.log(error)
-       Alert.alert(
-         "ERROR",
-         'Login failed. Please check your account information and try again',
-         [
-           {text: 'Ok', onPress:()=>this.refs.loading.endLoading()},
-         ],
-         { cancelable: false }
-       )
-      } else {
-        return
+      }catch(error){
+        if(error == 'LOGIN_FAIL') {
+         console.log(error)
+         Alert.alert(
+           "ERROR",
+           'Login failed. Please check your account information and try again',
+           [
+             {text: 'Ok', onPress:()=>this.refs.loading.endLoading()},
+           ],
+           { cancelable: false }
+         )
+        } else {
+          return
+        }
       }
-    }
-}
+  }
   render() {
     return (
       <View style={styles.container}>
