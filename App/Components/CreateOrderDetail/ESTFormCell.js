@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   },
   title:{
     color: '#6D6E71',
-    fontSize: 24,
+    fontSize: 22,
+    color:'black',
     textAlign: 'left',
     fontFamily: 'Noto Sans CJK SC(Regular)',
     marginLeft: Setting.getX(28),
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'center',
-    marginTop: Setting.getY(44),
+    marginTop: Setting.getY(30),
     marginLeft: Setting.getX(28)
   }
 });

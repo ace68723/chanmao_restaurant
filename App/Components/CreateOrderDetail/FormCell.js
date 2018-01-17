@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
     height:Setting.getY(60),
   },
   title:{
-    color: '#6D6E71',
-    fontSize: 24,
+    color:'black',
+    fontSize: 18,
     textAlign: 'left',
     fontFamily: 'Noto Sans CJK SC(Regular)',
     marginLeft: Setting.getX(28),

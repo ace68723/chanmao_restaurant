@@ -90,7 +90,7 @@ export default class CreateOrder extends Component {
                  + this.state.address;
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    // console.log(jsonResponse.results[0]);
+    console.log(jsonResponse);
     this.state.coord = jsonResponse.results[0].geometry.location;
     this.state.postal = this._addressExtractor(jsonResponse.results[0], 'postal');
     console.log('final', this.state);
@@ -143,6 +143,7 @@ export default class CreateOrder extends Component {
         <FormCell
           style={styles.cell}
           title='Address'
+          keyExtractor={(item, index) => index}
           onChangeText={(text) => this.handleChangeValue('address', {text})}
           autoFocus={true}>
         </FormCell>
