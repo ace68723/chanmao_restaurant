@@ -50,7 +50,8 @@ export default class App extends React.Component {
         onPress={() => this.onListItemClicked(prediction)}
         style={styles.listItem}
       >
-        <Text>{prediction.description}</Text>
+        <Text
+          style={{ fontSize: 20 }}>{prediction.description}</Text>
       </TouchableOpacity>
     );
   }
@@ -93,7 +94,8 @@ export default class App extends React.Component {
           onFocus={this.onFocusInput}
           onSubmitEditing={this.onBlurInput}
           autoFocus={this.props.autoFocus}
-          underlineColorAndroid='rgba(0,0,0,0)'/>
+          underlineColorAndroid='rgba(0,0,0,0)'
+          placeholder='Address' />
 
         {this.state.showList && this.state.value != '' &&
           <FlatList
@@ -117,29 +119,28 @@ const styles = StyleSheet.create({
   },
   input: {
     textAlign: 'left',
-    width: Setting.getX(340),
-    height: Setting.getY(40),
-    marginRight: Setting.getX(44),
-    borderRadius: 4,
+    width: Setting.getX(540),
+    height: Setting.getY(60),
     borderWidth: 0.5,
     borderColor: '#6D6E71',
     padding:1,
     paddingLeft:10,
+    fontSize: 20,
   },
   listView: {
     elevation: 5, // fix that shit...
     backgroundColor: 'white',
     position: 'absolute',
-    marginTop: Setting.getY(40),
-    height: Setting.getY(230),
-    width: Setting.getX(340),
+    marginTop: Setting.getY(60),
+    height: Setting.getY(380),
+    width: Setting.getX(540),
   },
   listItem: {
     padding: 10,
   },
   listItemSeparator: {
     alignSelf: 'center',
-    width: Setting.getY(320),
+    width: Setting.getY(480),
     borderWidth: 0.5,
     borderColor: 'lightgrey',
   },

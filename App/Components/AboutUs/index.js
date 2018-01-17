@@ -40,6 +40,23 @@ export default class AboutUs extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={{
+          backgroundColor:'white',
+          width:Setting.getX(540),
+          height:Setting.getY(76),
+          justifyContent:'center',
+          borderBottomColor: '#EA7B21',
+          borderBottomWidth: 1,
+        }}>
+          <Text style={{
+            color:'black',
+            fontSize:22,
+            marginLeft:Setting.getX(26),
+          }}>
+            Abous Us
+          </Text>
+        </View>
+
         <View style={styles.chanmaoView}>
           <Image source={require('./src/chanmaoqr.png')} style={styles.QRCodeStyle}/>
           <View style={{marginLeft:Setting.getX(20)}}>
