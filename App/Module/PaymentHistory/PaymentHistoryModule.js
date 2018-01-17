@@ -1,8 +1,9 @@
 import PaymentHistoryAPI from './PaymentHistoryAPI';
-
+import { GetUserInfo } from '../Database';
 export default  {
-  async getBilling(token,rid){
+  async getBilling(){
     try {
+      const { token,rid } = GetUserInfo();
       const data = await PaymentHistoryAPI.getBilling(token,rid);
       if(data.result === 0 ){
          const paymentLists = data.bills
@@ -16,8 +17,9 @@ export default  {
       throw error
     }
   },
-  async getSummary(token,rid,bill_end,bill_start){
+  async getSummary(bill_end,bill_start){
     try {
+      const { token,rid } = GetUserInfo();
       const data = await PaymentHistoryAPI.getSummary(token,rid,bill_end,bill_start);
       console.log(data)
       if(data.result === 0 ){

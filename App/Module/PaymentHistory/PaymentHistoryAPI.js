@@ -13,7 +13,7 @@ export default  {
       // })
 
       options.body = JSON.stringify({
-          "token": '579f63692b79ac73b3fc7d9910899bf7',
+          "token": token,
           "rid":rid
       })
 
@@ -39,7 +39,7 @@ export default  {
         // })
 
         options.body = JSON.stringify({
-            "token": '579f63692b79ac73b3fc7d9910899bf7',
+            "token": token,
             "rid":rid,
             "bill_end": bill_end,
             "bill_start":bill_start
