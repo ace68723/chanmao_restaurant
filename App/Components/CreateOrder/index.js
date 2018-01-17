@@ -65,7 +65,7 @@ export default class CreateOrder extends Component {
         screen: 'CreateOrderDetail',
         title: 'Order Detail',
         navigatorStyle: {
-          navBarHidden: false
+          navBarHidden: false,
         },
         passProps: {address,lat,lng,area,dlexp,postal},
         animationType: 'slide-down'

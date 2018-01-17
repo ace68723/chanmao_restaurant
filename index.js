@@ -9,7 +9,7 @@ Navigation.startSingleScreenApp({
   screen: {
     screen: 'Login',
     navigatorStyle: {
-      navBarHidden: true,
+      navBarHidden: false,
     },
     title:'CreateOrder',
     appStyle: {
