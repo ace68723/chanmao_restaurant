@@ -11,12 +11,12 @@ export default  {
       // options.headers = Object.assign(options.headers,{
       //     uuid: io_data.uuid,
       // })
-  
+
       options.body = JSON.stringify({
-          "token": '3eedc29bfceb960b0a52e0ab1b205c82',
+          "token": '579f63692b79ac73b3fc7d9910899bf7',
           "rid":rid
       })
-  
+
       console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
@@ -37,14 +37,14 @@ export default  {
         // options.headers = Object.assign(options.headers,{
         //     uuid: io_data.uuid,
         // })
-    
+
         options.body = JSON.stringify({
-            "token": '3eedc29bfceb960b0a52e0ab1b205c82',
+            "token": '579f63692b79ac73b3fc7d9910899bf7',
             "rid":rid,
             "bill_end": bill_end,
             "bill_start":bill_start
         })
-    
+
         console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
@@ -54,4 +54,3 @@ export default  {
           })
        }
   }
-  
