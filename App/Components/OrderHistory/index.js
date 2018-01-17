@@ -129,16 +129,16 @@ export default class OrderHistory extends Component {
            marginRight: Settings.getX(10),
            paddingLeft:10},
            styles.timeSelectButton]}
-                      onPress={()=>this.openDatePicker('start','YYYY/MM/DD')}>
+           onPress={()=>this.openDatePicker('start','YYYY/MM/DD')}>
             <Text style={{
               fontSize:15,
                color:'#EA7B21',
                fontFamily:'Noto Sans CJK SC'
             }}>{this.state.startTitle}</Text>
-            <Text style={{fontSize:15,
+            <Text style={{fontSize:12,
               color:'#6D6E71',
               fontFamily:'Noto Sans CJK SC',
-              paddingLeft:Settings.getX(40)
+              paddingLeft:Settings.getX(20)
           }}>{this.state.startDate}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[{
@@ -151,10 +151,10 @@ export default class OrderHistory extends Component {
                color:'#EA7B21',
                fontFamily:'Noto Sans CJK SC'
             }}>{this.state.endTitle}</Text>
-            <Text style={{fontSize:15,
+            <Text style={{fontSize:12,
               color:'#6D6E71',
               fontFamily:'Noto Sans CJK SC',
-              paddingLeft:Settings.getX(40)
+              paddingLeft:Settings.getX(20)
           }}>{this.state.endDate}</Text>
         </TouchableOpacity>
 
