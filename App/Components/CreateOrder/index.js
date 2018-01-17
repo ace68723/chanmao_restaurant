@@ -54,14 +54,13 @@ export default class CreateOrder extends Component {
       const dlexp = data.dlexp;
       const area = data.area;
       console.log(dlexp);
-      this.props.navigator.push({
+      this.props.navigator.showModal({
         screen: 'CreateOrderDetail',
-        title: 'Order Detail',
         navigatorStyle: {
-          navBarHidden: false,
+          navBarHidden: true,
         },
         passProps: {address,lat,lng,area,dlexp,postal},
-        animationType: 'slide-down'
+        animationType: 'screen'
       });
     }
   }
@@ -132,7 +131,8 @@ export default class CreateOrder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Setting.getY(0)
+    marginTop: Setting.getY(0),
+    backgroundColor: 'white'
   },
   cell:{
     marginTop: Setting.getY(0),
