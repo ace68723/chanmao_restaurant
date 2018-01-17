@@ -18,7 +18,12 @@ import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
 const {height, width} = Dimensions.get('window');
 
 export default class CreateOrderDetail extends Component {
-
+  static navigatorStyle = {
+        navBarTitleTextCentered: true,
+        navBarTextColor:"#EA7B21",
+        navBarBackgroundColor:"D1D3D4",
+        navBarButtonColor:"#EA7B21"
+      }
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +46,6 @@ export default class CreateOrderDetail extends Component {
     this.createOrder = this.createOrder.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this.onPressEST = this.onPressEST.bind(this);
-    this.goBackHome = this.goBackHome.bind(this);
   }
 
   handleChangeValue(key, value) {
@@ -88,53 +92,11 @@ export default class CreateOrderDetail extends Component {
       this.state.alert.buttonTitle = title;
     }
   }
-  goBackHome() {
-    this.props.navigator.resetTo({
-        screen: 'CreateOrder',
-        navigatorStyle: {
-          navBarHidden: true
-        },
-        passProps: {},
-        animationType: 'slide-horizontal'
-      });
-  }
+
   render() {
     return (
       <View style={styles.container}>
-       <View style={{
-          backgroundColor:'white',
-          flex:0.08,
-          alignItems: 'center',
-          flexDirection: 'row',
-          borderWidth: 0,
-          borderTopWidth: 0,
-          borderBottomWidth:1,
-          borderLeftWidth: 0,
-          borderRightWidth: 0,
-          borderColor: '#EA7B21',
-        }}>
-            <TouchableOpacity onPress={this.goBackHome}
-            style={{
-              position:'absolute',
-              alignItems:'center',
-              justifyContent: 'center',
-              height: '100%',
-              left:0.05*width}}>
-                  <Image style = {{
-                      height:Setting.getY(34),
-                       width:Setting.getY(24)}}
-                      source={require('./image/back.png')}
-                    />
-            </TouchableOpacity>
-            <Text style={{
-                  fontSize:20,
-                  color:'#EA7B21',
-                  position:'absolute',
-                  left:0.34*width}}>
-              Order Detail
-            </Text>
-        </View>
-        <View style = {{flex:0.92}} >
+      
           <View style={styles.infoText}>
             <Text style={styles.text}>Address: {this.state.address}</Text>
             <Text style={styles.textbot}>Delivery Fee: ${this.state.dlexp}</Text>
@@ -181,7 +143,6 @@ export default class CreateOrderDetail extends Component {
             style={styles.button}>
             <Text style={styles.buttonTitle} onPress={this.createOrder}>Place Order</Text>
           </TouchableOpacity>
-      </View>
       </View>
 
     );
