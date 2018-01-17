@@ -131,12 +131,14 @@ export default class OrderItem extends Component {
         <View style={{  borderBottomColor:'#d1d3d4',
           borderBottomWidth:1,}}>
           <TouchableOpacity onPress={()=>{
+
             this.props.navigator.showModal({
               screen: "OrderDetail", // unique ID registered with Navigation.registerScreen
               title: oid, // title of the screen as appears in the nav bar (optional)
               passProps: {
                 oid:oid,
                 status:status,
+                time:time,
               }, // simple serializable object that will pass as props to the modal (optional)
               navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
               animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')

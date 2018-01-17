@@ -11,6 +11,7 @@ import Setting from '../../Config/Setting';
 import PrintModule from '../../Module/Print/PrintModule';
 import Loading from '../Loading';
 import OrderDetailModule from '../../Module/OrderDetail/OrderDetailModule';
+
 const timeStr = ['< 10', '20', '30', '> 40'];
 
 export default class OrderDetail extends Component {
@@ -30,10 +31,210 @@ export default class OrderDetail extends Component {
     this._printOrder = this._printOrder.bind(this);
     this._renderItems = this._renderItems.bind(this);
     this._changeSoldState = this._changeSoldState.bind(this);
+    this._renderOrderType=this._renderOrderType.bind(this);
+    this._renderOrderInfo=this._renderOrderInfo.bind(this);
+    this._renderDeliveryButton=this._renderDeliveryButton.bind(this);
+    this._renderDeliverType=this._renderDeliverType.bind(this);
   }
   componentDidMount() {
     console.log(this.props);
     this._getOrderDetail();
+  }
+  _renderDeliverType(dltype){
+    if(dltype == 0){
+      return(
+        <Text style={{
+          color:'black',
+          marginLeft:Setting.getX(26),
+          // marginTop:Settings.getY(9),
+          fontSize:16,
+          fontWeight:'bold',
+        }}>
+          PickUp
+        </Text>
+      )
+    } else if(dltype == 1){
+      return(
+        <Text style={{
+          color:'black',
+          marginLeft:Setting.getX(26),
+          // marginTop:Settings.getY(9),
+          fontSize:16,
+          fontWeight:'bold',
+        }}>
+          Delivery
+        </Text>
+      )
+    }
+  }
+  _renderDeliveryButton(status)
+  {
+    let statusMessage;
+    let statusColor;
+    switch (status) {
+        case '0':
+            statusColor = '#ea7b21';
+            statusMessage = 'New';
+            break;
+        case '10':
+            statusColor = '#33cd5f';
+            statusMessage = 'Accepted';
+            break;
+        case '20':
+            statusColor = '#33cd5f';
+            statusMessage = '商家已确认, 准备中';
+            break;
+        case '30':
+            statusColor = '#9bc8df';
+            statusMessage = '送餐员已开始送餐';
+            break;
+        case '40':
+            statusColor = '#11c1f3';
+            statusMessage = '已送到, 满意吗？';
+            break;
+        case '55':
+            statusColor = '#886aea';
+            statusMessage = '新用户订单确认中';
+            break;
+        case '60':
+            statusColor = '#11c1f3';
+            statusMessage = '客服稍后联系您改运费';
+            break;
+        case '5':
+            statusColor = '#b2b2b2';
+            statusMessage = 'Sold Out';
+            break;
+        case '90':
+            statusColor = '#ef473a';
+            statusMessage = 'Cancelled';
+            break;
+    }
+    return(
+      <View style={{
+        marginLeft:10,
+        borderColor:statusColor,
+        borderWidth:2,
+        height:Setting.getY(32),
+        width:Setting.getX(118),
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+      }}>
+        <Text style={{color:statusColor}}>
+          {statusMessage}
+        </Text>
+        <View style={{width:3}}>
+        </View>
+
+      </View>
+    )
+  }
+  _renderOrderInfo()
+  {
+
+      if (this.state.itemList.length==0) return;
+    return(
+      <View style={{
+        width:Setting.getX(540),
+        height:Setting.getY(118),
+        backgroundColor:'white',
+      }}>
+
+        <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+          <View style={{flex:1,flexDirection:'row',}}>
+            <Text style={{
+              color:'black',
+              marginLeft:Setting.getX(26),
+              // marginTop:Settings.getY(20),
+              fontSize:16,
+              fontWeight:'bold',
+            }}>
+              No:
+            </Text>
+            <Text style={{fontSize:16,
+                      fontWeight:'normal',
+                      color:'#ea7b21'
+                    }}>
+              {this.props.oid}
+            </Text>
+          </View>
+          <View style={{flex:1,flexDirection:'row',}}>
+            <Text style={{
+              color:'black',
+              marginLeft:Setting.getX(26),
+              // marginTop:Settings.getY(20),
+              fontSize:16,
+              fontWeight:'bold',
+              }}>
+              Place Time:
+
+            </Text>
+            <Text style={{fontSize:16,
+                      fontWeight:'normal',
+                      color:'black',
+                    }}>
+              {this.props.time}
+            </Text>
+          </View>
+        </View>
+
+        <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+          <View style={{flex:1,flexDirection:'row',}}>
+            <Text style={{
+              color:'black',
+              marginLeft:Setting.getX(26),
+              // marginTop:Settings.getY(9),
+              fontSize:16,
+              fontWeight:'bold',
+            }}>
+              Price:$
+            </Text>
+            <Text style={{fontSize:16,
+                      fontWeight:'normal',
+                      color:'black'
+                    }}>
+              {this.state.totalPrice}
+            </Text>
+          </View>
+          <View style={{flex:1,flexDirection:'row',}}>
+            {this._renderDeliverType(this.state.dltype)}
+            {this._renderDeliveryButton(this.props.status)}
+          </View>
+        </View>
+
+      </View>
+    )
+  }
+  _renderOrderType(){
+    if (this.state.itemList.length==0) return;
+    let title='';
+    let color='';
+    if (this.props.status==="0") {
+      title='NEW ORDER';
+      color='#ea7B21';
+    } else
+    {
+      title='RECENT ORDER';
+      color='#798BA5';
+    }
+    return(
+      <View style={{
+        backgroundColor:color,
+        width:Setting.getX(540),
+        height:Setting.getY(54),
+        justifyContent:'center',
+      }}>
+
+        <Text style={{
+          color:'white',
+          fontSize:16,
+          marginLeft:Setting.getX(26),
+        }}>
+          {title}
+        </Text>
+
+      </View>
+    )
   }
   async _getOrderDetail(){
     try{
@@ -50,7 +251,7 @@ export default class OrderDetail extends Component {
          user: data.name,
          tel: data.tel,
          comment: data.comment,
-         dltype:data.dltype
+         dltype:data.dltype,
        })
          clearTimeout(loadingTimeout);
          this.refs.loading.endLoading();
@@ -204,6 +405,8 @@ export default class OrderDetail extends Component {
     this.setState({itemList:temp},()=>console.log(this.state.itemList[index]));
   }
   _renderList(){
+
+    if (this.state.itemList.length==0) return;
     return(
           <View style= {{height:this.state.itemList.length * 30 + 40, borderBottomWidth:1,
             borderColor:'#D1D3D4'}}>
@@ -233,6 +436,8 @@ export default class OrderDetail extends Component {
 
   }
   _renderDetails(){
+
+    if (this.state.itemList.length==0) return;
     if(this.props.type == 'new'){
       return(
         <View style={[styles.detailContainer,{height:130}]}>
@@ -258,13 +463,15 @@ export default class OrderDetail extends Component {
     }
   }
   _renderConfirm(){
+    if (this.state.itemList.length==0) return;
     if(this.props.status == '0'){
       let soldOutArr = this.state.itemList.filter(item => item.sold == true);
       let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
       return(
         <View style={[styles.confirmContainer,{height:120}]} >
           <View style={styles.confirmInfoView}>
-            <View style={{flex:0.5}}>
+            <View style={{flex:0.5,
+            }}>
               <Text style={styles.detailInfoFont}>User: {this.state.user}</Text>
             </View>
             <View style={{flex:0.5}}>
@@ -302,6 +509,8 @@ export default class OrderDetail extends Component {
     return (
       <View style={styles.container}>
         <Loading ref="loading" size={60}/>
+        {this._renderOrderType()}
+        {this._renderOrderInfo()}
         {this._renderList()}
         {this._renderDetails()}
         {this._renderConfirm()}
@@ -318,7 +527,8 @@ export default class OrderDetail extends Component {
   titleContainer:{
     height:30,
     flexDirection: 'row',
-    alignItems:'center'
+    alignItems:'center',
+    marginLeft:30,
   },
   titleFont:{
     fontFamily:'Noto Sans CJK SC',
@@ -330,6 +540,7 @@ export default class OrderDetail extends Component {
     height:30,
     flexDirection:'row',
     alignItems:'center',
+    marginLeft:30,
 
   },
   checkBox:{
@@ -341,6 +552,7 @@ export default class OrderDetail extends Component {
   },
   detailContainer:{
     paddingTop:10,
+    marginLeft:30,
   },
   timeContainer:{
     flexDirection:'row',
@@ -369,6 +581,8 @@ export default class OrderDetail extends Component {
     paddingTop:10,
     flexDirection:'row',
     flex:0.3,
+
+    marginLeft:30,
   },
   confirmButtonView:{
     alignItems:'center',
