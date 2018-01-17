@@ -1,12 +1,13 @@
 import { Navigation } from 'react-native-navigation';
 
 import { registerScreens } from './App/Config/Screens';
-
+import { DatabaseInit } from './App/Module/Database';
+DatabaseInit();
 registerScreens();
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'Tab',
+    screen: 'Login',
     navigatorStyle: {
       navBarHidden: true,
     },
