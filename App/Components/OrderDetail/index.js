@@ -74,9 +74,15 @@ export default class OrderDetail extends Component {
 
       const itemList = this.state.itemList;
       const data = await OrderDetailModule.handleOrder({oid,task,itemList});
-      this._printOrder();
-      // clearTimeout(loadingTimeout);
-      // this.refs.loading.endLoading();
+      this.props.navigator.dismissModal({
+        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+      });
+      await this._printOrder();
+      setTimeout(() =>{
+        this._printOrder();
+      }, 2000);
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
 
     } catch (e) {
       console.log(e)
@@ -111,6 +117,7 @@ export default class OrderDetail extends Component {
       comment:this.state.comment,
     }
     await PrintModule.printContent(data);
+
     this._printerWatting = false;
   }
 
@@ -291,14 +298,6 @@ export default class OrderDetail extends Component {
       )
     }
   }
-  _setWidth(itemString, number){
-    if(itemString.length < number){
-      for(let i = 0; i < number - itemString.length; i++){
-          itemString.push(" ");
-      }
-    }
-    return itemString;
-  }
   render() {
     return (
       <View style={styles.container}>
@@ -313,7 +312,7 @@ export default class OrderDetail extends Component {
   const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
     backgroundColor:'white'
   },
   titleContainer:{

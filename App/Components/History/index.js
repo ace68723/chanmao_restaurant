@@ -13,6 +13,7 @@ import Setting from '../../Config/Setting';
 import TabBar from './TabBar';
 
 export default class HistoryPage extends Component {
+    // renderTabBar={() => <TabBar />}
     render() {
         return (
           <View style={styles.container}>
@@ -37,7 +38,7 @@ export default class HistoryPage extends Component {
               tabBarActiveTextColor = "white"
               tabBarInactiveTextColor = "#6D6E71"
               style={{marginTop: 10,flex:0.925}}
-              renderTabBar={() => <TabBar />}
+
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}
             >
             <OrderHistory tabLabel='Order History'/>

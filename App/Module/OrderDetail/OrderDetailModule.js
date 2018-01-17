@@ -1,10 +1,9 @@
 import OrderDetailAPI from './OrderDetailAPI';
-
+import { GetUserInfo } from '../Database';
 export default  {
   async getOrderDetail(oid){
     try {
-      const token = "78b6e7be90ded051ce474bee5d8f0e38";
-      const rid = 5;
+      const { token,rid } = GetUserInfo();
       const data = await OrderDetailAPI.getOrderDetail(token, rid, oid);
       if(data.result === 0 ){
          const orderDetail = data;
@@ -21,8 +20,7 @@ export default  {
   },
   async handleOrder({oid,task,itemList}){
     try {
-      const token = "78b6e7be90ded051ce474bee5d8f0e38";
-      const rid = 5;
+      const { token,rid } = GetUserInfo();
       const items = itemList;
       // const oid = oid;
       // const task = task;

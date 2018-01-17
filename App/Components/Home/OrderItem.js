@@ -24,7 +24,7 @@ export default class OrderItem extends Component {
   _renderOrderDetail({oid,status})
   {
     if (!this.state.isOpen) return;
-  
+
     // type={deliveryStatus==0?'new':'recent'}
     return (
         <OrderDetail  {...{oid,status} }/>
@@ -133,7 +133,7 @@ export default class OrderItem extends Component {
           <TouchableOpacity onPress={()=>{
             this.props.navigator.showModal({
               screen: "OrderDetail", // unique ID registered with Navigation.registerScreen
-              title: "OrderDetail", // title of the screen as appears in the nav bar (optional)
+              title: oid, // title of the screen as appears in the nav bar (optional)
               passProps: {
                 oid:oid,
                 status:status,

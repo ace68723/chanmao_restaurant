@@ -1,8 +1,13 @@
 import {NativeModules} from 'react-native';
 export default  {
-    printContent(data){
-      if(data.type == 'receipt') {this._printReceipt(data)}
-      else if(data.type == 'history') {this._printOrderHistory(data)}
+    async printContent(data){
+      try {
+        if(data.type == 'receipt') {await this._printReceipt(data)}
+        else if(data.type == 'history') {await this._printOrderHistory(data)}
+      } catch (e) {
+
+      }
+
     },
     async _printReceipt(data)
     {
@@ -78,8 +83,6 @@ export default  {
              await NativeModules.customAndroid.lineWrap(2);
              await NativeModules.customAndroid.printOriginalText("Customer Service: chanmaoweixin");
              await NativeModules.customAndroid.lineWrap(6);
-
-
 
          }catch(e){
              console.log(e)
