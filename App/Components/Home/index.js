@@ -128,34 +128,40 @@ export default class Home extends Component {
       const starCountRef = firebase.database().ref('rrclient/5/');
 
       starCountRef.on('value',(snapshot)=> {
-        console.log('here')
-      newOrder = snapshot.val().new;
-      recentOrder = snapshot.val().done;
-      headerIndices.push(0);
-      if(recentOrder){
-        recentOrder =  Object.entries(recentOrder).map(e => Object.assign(e[1], { key: e[0] }));
-      } else {
-        recentOrder = [];
-      }
-      if(newOrder){
-        newOrder = Object.entries(newOrder).map(e => Object.assign(e[1], { key: e[0] }));
-      } else {
-        newOrder = [];
-      }
-      let Orders=[{title:'NEW ORDER',color:'#ea7B21'},...newOrder,{title:'RECENT ORDER',color:'#798BA5'}, ...recentOrder];
+        if(!snapshot.val()) {
+          let Orders=[{title:'NEW ORDER',color:'#ea7B21'}]
+          this.setState({
+            Orders:Orders,
+          });
+          return
+        };
+        newOrder = snapshot.val().new;
+        recentOrder = snapshot.val().done;
+        headerIndices.push(0);
+        if(recentOrder){
+          recentOrder =  Object.entries(recentOrder).map(e => Object.assign(e[1], { key: e[0] }));
+        } else {
+          recentOrder = [];
+        }
+        if(newOrder){
+          newOrder = Object.entries(newOrder).map(e => Object.assign(e[1], { key: e[0] }));
+        } else {
+          newOrder = [];
+        }
+        let Orders=[{title:'NEW ORDER',color:'#ea7B21'},...newOrder,{title:'RECENT ORDER',color:'#798BA5'}, ...recentOrder];
 
-      headerIndices.push(newOrder.length+1);
-      console.log(newOrder);
-      console.log(recentOrder);
-      console.log(Orders);
-      this.setState({
-        newOrder:newOrder,
-        recentOrder: recentOrder,
-        Orders:Orders,
-        stickyHeaderIndices:headerIndices,
+        headerIndices.push(newOrder.length+1);
+        console.log(newOrder);
+        console.log(recentOrder);
+        console.log(Orders);
+        this.setState({
+          newOrder:newOrder,
+          recentOrder: recentOrder,
+          Orders:Orders,
+          stickyHeaderIndices:headerIndices,
+        });
+        console.log(this.state.stickyHeaderIndices);
       });
-      console.log(this.state.stickyHeaderIndices);
-    });
   }
   scrollToIndexI(index)
   {
