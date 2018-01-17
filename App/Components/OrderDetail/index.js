@@ -204,6 +204,8 @@ export default class OrderDetail extends Component {
     this.setState({itemList:temp},()=>console.log(this.state.itemList[index]));
   }
   _renderList(){
+
+    if (this.state.itemList.length==0) return;
     return(
           <View style= {{height:this.state.itemList.length * 30 + 40, borderBottomWidth:1,
             borderColor:'#D1D3D4'}}>
@@ -233,6 +235,8 @@ export default class OrderDetail extends Component {
 
   }
   _renderDetails(){
+
+    if (this.state.itemList.length==0) return;
     if(this.props.type == 'new'){
       return(
         <View style={[styles.detailContainer,{height:130}]}>
@@ -258,6 +262,7 @@ export default class OrderDetail extends Component {
     }
   }
   _renderConfirm(){
+    if (this.state.itemList.length==0) return;
     if(this.props.status == '0'){
       let soldOutArr = this.state.itemList.filter(item => item.sold == true);
       let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
