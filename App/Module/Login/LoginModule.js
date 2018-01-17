@@ -6,8 +6,10 @@ export default  {
     try {
       const { channel,version } = GetDeviceInfo();
       const userInfo = await LoginAPI.login(username,password, channel, version);
+
       if(userInfo.result === 0 ){
          const token =userInfo.token;
+         console.log(token);
          const rid = userInfo.rid;
          const uid =userInfo.uid;
          const firebaseURL = userInfo.firebase_url;

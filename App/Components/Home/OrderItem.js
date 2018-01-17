@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+
 } from 'react-native';
 import Settings from '../../Config/Setting';
 import OrderDetail from '../OrderDetail/index';
@@ -18,15 +19,12 @@ export default class OrderItem extends Component {
     }
 
   }
-  componentDidMount()
-  {
-    console.log(this.props);
-  }
+
   // _renderOrderDetail(oid,item,deliveryStatus)
   _renderOrderDetail({oid,status})
   {
     if (!this.state.isOpen) return;
-    console.log(oid);
+  
     // type={deliveryStatus==0?'new':'recent'}
     return (
         <OrderDetail  {...{oid,status} }/>
@@ -133,9 +131,18 @@ export default class OrderItem extends Component {
         <View style={{  borderBottomColor:'#d1d3d4',
           borderBottomWidth:1,}}>
           <TouchableOpacity onPress={()=>{
-                              this.setState({isOpen:!this.state.isOpen});
+            this.props.navigator.showModal({
+              screen: "OrderDetail", // unique ID registered with Navigation.registerScreen
+              title: "OrderDetail", // title of the screen as appears in the nav bar (optional)
+              passProps: {
+                oid:oid,
+                status:status,
+              }, // simple serializable object that will pass as props to the modal (optional)
+              navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+              animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+            });
 
-                    
+
                             }}>
           <View style={{
             width:Settings.getX(540),
