@@ -27,7 +27,7 @@ export default class Tab extends Component {
               tabBarActiveTextColor="#EA7B21"
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}
             >
-              <Home tabLabel="home"
+              <Home tabLabel="Home"
                     activeIconImage={require("./Image/homeorange.png")}
                     inactiveIconImage={require("./Image/homegrey.png")}
                     navigator={this.props.navigator}/>

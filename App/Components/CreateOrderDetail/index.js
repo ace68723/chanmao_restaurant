@@ -14,6 +14,12 @@ import Alert from '../Alert'
 import ESTFormCell from './ESTFormCell'
 import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
 export default class CreateOrderDetail extends Component {
+  static navigatorStyle = {
+    navBarTitleTextCentered: true,
+    navBarTextColor:"#EA7B21",
+    navBarBackgroundColor:"D1D3D4",
+    navBarButtonColor:"#EA7B21"
+  }
   constructor(props) {
     super(props);
     this.state = {

@@ -63,8 +63,9 @@ export default class CreateOrder extends Component {
       console.log(dlexp);
       this.props.navigator.push({
         screen: 'CreateOrderDetail',
+        title: 'Order Detail',
         navigatorStyle: {
-          navBarHidden: true
+          navBarHidden: false
         },
         passProps: {address,lat,lng,area,dlexp,postal},
         animationType: 'slide-down'
