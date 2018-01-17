@@ -1,6 +1,7 @@
+import { API_LOGIN,API_AUTH } from '../../Config/API';
 export default  {
     login(username,password, channel, version){
-      const url = 'http://www.chanmao.ca/index.php?r=rrclient/login/';
+      const url = API_LOGIN;
       let options = {
           method: 'POST',
           mode:'cors',
@@ -15,8 +16,6 @@ export default  {
           "channel":channel,
           "version":version
       })
-
-      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
@@ -25,7 +24,7 @@ export default  {
         })
      },
      auth({token,rid}){
-       const url = 'http://www.chanmao.ca/index.php?r=rrclient/authorize/';
+       const url = API_AUTH;
        let options = {
            method: 'POST',
            mode:'cors',

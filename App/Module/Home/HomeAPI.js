@@ -1,6 +1,7 @@
+import { API_ORDERHANDLE } from '../../Config/API';
 export default  {
     orderHandle(token,rid,task,items,oid){
-      const url = 'http://www.chanmao.ca/index.php?r=rrclient/handle/';
+      const url = API_ORDERHANDLE;
       let options = {
           method: 'POST',
           mode:'cors',
@@ -11,7 +12,7 @@ export default  {
       // options.headers = Object.assign(options.headers,{
       //     uuid: io_data.uuid,
       // })
-  
+
       options.body = JSON.stringify({
         "token": token,
         "rid":rid,
@@ -19,7 +20,7 @@ export default  {
         "task": task,
         "items": items
       })
-  
+
       console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
@@ -29,4 +30,3 @@ export default  {
         })
      }
   }
-  

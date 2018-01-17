@@ -1,6 +1,7 @@
+import { API_GET_BILLING, API_GET_SUMMARY } from '../../Config/API';
 export default  {
     getBilling(token,rid){
-      const url = 'http://www.chanmao.ca/index.php?r=rrclient/billing/';
+      const url = API_GET_BILLING;
       let options = {
           method: 'POST',
           mode:'cors',
@@ -26,7 +27,7 @@ export default  {
         })
      },
      getSummary(token,rid,bill_end,bill_start){
-        const url = 'http://www.chanmao.ca/index.php?r=rrclient/summary/';
+        const url = API_GET_SUMMARY;
         let options = {
             method: 'POST',
             mode:'cors',

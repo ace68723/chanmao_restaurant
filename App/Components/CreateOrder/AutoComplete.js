@@ -9,9 +9,8 @@ import {
   FlatList,
 } from 'react-native';
 
-import Setting from '../../Config/Setting.js'
-
-const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8';
+import Setting from '../../Config/Setting'
+import {GOOGLE_API_KEY} from '../../Config/API'
 
 export default class App extends React.Component {
   constructor(props) {
