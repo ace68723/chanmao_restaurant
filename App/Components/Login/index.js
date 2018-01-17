@@ -52,6 +52,7 @@ export default class Login extends Component {
     try{
        this.refs.loading.startLoading();
        const data = await LoginModule.login(username, password);
+
        this.refs.loading.endLoading();
        this.props.navigator.resetTo({
            screen: 'Tab',

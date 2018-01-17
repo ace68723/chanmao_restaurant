@@ -32,6 +32,7 @@ export default class OrderDetail extends Component {
     this._changeSoldState = this._changeSoldState.bind(this);
   }
   componentDidMount() {
+    console.log(this.props);
     this._getOrderDetail();
   }
   async _getOrderDetail(){
@@ -312,7 +313,7 @@ export default class OrderDetail extends Component {
   const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal:Setting.getX(26),
+    
     backgroundColor:'white'
   },
   titleContainer:{

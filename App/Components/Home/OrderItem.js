@@ -19,15 +19,12 @@ export default class OrderItem extends Component {
     }
 
   }
-  componentDidMount()
-  {
-    console.log(this.props);
-  }
+
   // _renderOrderDetail(oid,item,deliveryStatus)
   _renderOrderDetail({oid,status})
   {
     if (!this.state.isOpen) return;
-    console.log(oid);
+  
     // type={deliveryStatus==0?'new':'recent'}
     return (
         <OrderDetail  {...{oid,status} }/>

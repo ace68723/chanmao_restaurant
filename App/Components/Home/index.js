@@ -164,7 +164,7 @@ export default class Home extends Component {
     this.list.scrollToIndex({'animated':'true','index':index,'viewPosition':1,'viewOffset':0 })
   }
   _renderItem ({item}){
-      if (!item.title) return <OrderItem {...item} scrollToIndex={this.scrollToIndexI} />
+      if (!item.title) return <OrderItem {...item} navigator={this.props.navigator} />
       return(
         <View style={{
           backgroundColor:item.color,
