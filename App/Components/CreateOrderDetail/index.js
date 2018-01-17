@@ -36,6 +36,8 @@ export default class CreateOrderDetail extends Component {
     this.onPress = this.onPress.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this.onPressEST = this.onPressEST.bind(this);
+    this.onPressCancel = this.onPressCancel.bind(this);
+
   }
 
   handleChangeValue(key, value) {
@@ -60,7 +62,7 @@ export default class CreateOrderDetail extends Component {
       tel : this.state.phone,
       uid : this.state.uid,
     }
-    
+
     console.log(reqData);
     const data  = await CreateOrderModule.createOrder(reqData);
     console.log(data);
@@ -82,6 +84,17 @@ export default class CreateOrderDetail extends Component {
       this.state.alert.buttonTitle = title;
     }
   }
+
+  onPressCancel(){
+    this.props.navigator.push({
+      screen: 'CreateOrder',
+      navigatorStyle: {
+        navBarHidden: true
+      },
+      animationType: 'slide-down'
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -131,6 +144,11 @@ export default class CreateOrderDetail extends Component {
             style={styles.button}>
             <Text style={styles.buttonTitle} onPress={this.onPress}>Place Order</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.buttonCancel}>
+            <Text style={styles.buttonTitle} onPress={this.onPressCancel}>Cancel</Text>
+          </TouchableOpacity>
       </View>
 
     );
@@ -143,6 +161,14 @@ const styles = StyleSheet.create({
   },
   button:{
     marginTop: Setting.getY(68),
+    height: Setting.getY(66),
+    width: Setting.getX(274),
+    backgroundColor: '#E2661A',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  buttonCancel:{
+    marginTop: Setting.getY(12),
     height: Setting.getY(66),
     width: Setting.getX(274),
     backgroundColor: '#E2661A',
