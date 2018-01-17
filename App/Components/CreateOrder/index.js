@@ -56,8 +56,9 @@ export default class CreateOrder extends Component {
       console.log(dlexp);
       this.props.navigator.push({
         screen: 'CreateOrderDetail',
+        title: 'Order Detail',
         navigatorStyle: {
-          navBarHidden: true
+          navBarHidden: false
         },
         passProps: {address,lat,lng,area,dlexp,postal},
         animationType: 'slide-down'
@@ -84,7 +85,7 @@ export default class CreateOrder extends Component {
                  + this.state.address;
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    //this.refs.loading.endLoading();
+    console.log(jsonResponse);
     this.state.coord = jsonResponse.results[0].geometry.location;
     this.state.postal = this._addressExtractor(jsonResponse.results[0], 'postal');
     console.log('final', this.state);
@@ -119,6 +120,7 @@ export default class CreateOrder extends Component {
         <FormCell
           style={styles.cell}
           title='Address'
+          keyExtractor={(item, index) => index}
           onChangeText={(text) => this.handleChangeValue('address', {text})}
           autoFocus={true}>
         </FormCell>

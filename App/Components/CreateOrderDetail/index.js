@@ -14,6 +14,12 @@ import Alert from '../Alert'
 import ESTFormCell from './ESTFormCell'
 import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
 export default class CreateOrderDetail extends Component {
+  static navigatorStyle = {
+    navBarTitleTextCentered: true,
+    navBarTextColor:"#EA7B21",
+    navBarBackgroundColor:"D1D3D4",
+    navBarButtonColor:"#EA7B21"
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +39,7 @@ export default class CreateOrderDetail extends Component {
       uid: '',
     };
     this.handleChangeValue = this.handleChangeValue.bind(this);
-    this.onPress = this.onPress.bind(this);
+    this.createOrder = this.createOrder.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this.onPressEST = this.onPressEST.bind(this);
     this.onPressCancel = this.onPressCancel.bind(this);
@@ -43,7 +49,7 @@ export default class CreateOrderDetail extends Component {
   handleChangeValue(key, value) {
     this.setState({[key]: value.text.text});
   }
-  async onPress() {
+  async createOrder() {
     var addressSplit = this.state.address.split(',');
     const reqData = {
       token: '',
@@ -100,7 +106,7 @@ export default class CreateOrderDetail extends Component {
       <View style={styles.container}>
           <View style={styles.infoText}>
             <Text style={styles.text}>Address: {this.state.address}</Text>
-            <Text style={styles.text}>Delivery Fee: ${this.state.dlexp}</Text>
+            <Text style={styles.textbot}>Delivery Fee: ${this.state.dlexp}</Text>
           </View>
           <FormCell
             style={styles.cell}
@@ -109,19 +115,19 @@ export default class CreateOrderDetail extends Component {
             onChangeText={(text) => this.handleChangeValue('unit', {text})}>
           </FormCell>
           <FormCell
-            style={styles.cellReq}
+            style={styles.cell}
             title='Buzz'
             value={this.state.buzz}
             onChangeText={(text) => this.handleChangeValue('buzz', {text})}>
           </FormCell>
           <FormCell
-            style={styles.cellReq}
+            style={styles.cell}
             title='*Price(Plus Tax)'
             value={this.state.price}
             onChangeText={(text) => this.handleChangeValue('price', {text})}>
           </FormCell>
           <FormCell
-            style={styles.cellReq}
+            style={styles.cell}
             title='*Name'
             value={this.state.name}
             onChangeText={(text) => this.handleChangeValue('name', {text})}>
@@ -142,7 +148,7 @@ export default class CreateOrderDetail extends Component {
 
           <TouchableOpacity
             style={styles.button}>
-            <Text style={styles.buttonTitle} onPress={this.onPress}>Place Order</Text>
+            <Text style={styles.buttonTitle} onPress={this.createOrder}>Place Order</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -160,12 +166,13 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   button:{
-    marginTop: Setting.getY(68),
+    marginTop: Setting.getY(48),
     height: Setting.getY(66),
     width: Setting.getX(274),
     backgroundColor: '#E2661A',
     alignItems: 'center',
     alignSelf: 'center',
+    justifyContent: 'center'
   },
   buttonCancel:{
     marginTop: Setting.getY(12),
@@ -177,23 +184,30 @@ const styles = StyleSheet.create({
   },
   buttonTitle:{
     color: '#ffffff',
-    fontSize: 33,
+    fontSize: 24,
     fontFamily: 'Noto Sans CJK SC(Regular)',
   },
   cell:{
-    marginTop: Setting.getY(34)
+    marginTop: Setting.getY(10)
   },
-  cell:{
-    marginTop: Setting.getY(34)
-    },
+  textbot: {
+    marginLeft: Setting.getX(28),
+    fontSize: 20,
+    color:'black',
+    fontFamily: 'Noto Sans CJK SC(Regular)',
+  },
   text: {
     marginLeft: Setting.getX(28),
-    marginBottom: Setting.getY(30),
-    fontSize: 24,
+    marginBottom: Setting.getY(15),
+    fontSize: 20,
+    color:'black',
     fontFamily: 'Noto Sans CJK SC(Regular)',
   },
   infoText: {
     marginTop: Setting.getY(26),
     marginBottom: Setting.getY(16),
+  },
+  ESTcell: {
+    marginTop: Setting.getY(26),
   }
 });

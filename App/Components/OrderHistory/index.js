@@ -43,23 +43,42 @@ export default class OrderHistory extends Component {
     }
     this.setDate = this.setDate.bind(this);
     this._printHistory = this._printHistory.bind(this);
+    this._disableDoubleClick = this._disableDoubleClick.bind(this);
   }
   componentDidMount() {
   }
+  _disableDoubleClick() {
+    this.setState({
+      waiting:true,
+    })
+    console.log(this.state.waiting)
+    setTimeout(() => {
+      this.setState({
+        waiting:false,
+      })
+    }, 1000);
+    console.log(this.state.waiting)
+
+  }
   async getSummary(){
     try{
+      this._disableDoubleClick();
        const bill_start = this.state.startDate;
        const bill_end = this.state.endDate;
-       this.refs.loading.startLoading();
+       const loadingTimeout = setTimeout(() => {
+        this.refs.loading.startLoading();
+       }, 300);//add loading if request more than 200ms
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
-       console.log(data);
        this.setState({
          list: data
        })
+       clearTimeout(loadingTimeout);
        this.refs.loading.endLoading();
-
+       
     }catch(error){
       console.log(error);
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
     }
   }
   _printHistory(){
@@ -74,14 +93,13 @@ export default class OrderHistory extends Component {
     orderArray:this.state.list,
 
   }
-  this.setState({waiting:true});
+  this._disableDoubleClick();
   PrintModule.printContent(data);
-  setTimeout(()=>this.setState({waiting:false}),500);
 }
   render(){
     return(
       <View style={styles.container}>
-              <Loading ref="loading" size={60}/>
+        <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {this.renderSelectDate()}
           {this.renderListFunction()}
@@ -89,7 +107,7 @@ export default class OrderHistory extends Component {
           <TouchableOpacity
             style={{
                position:'absolute',
-               top: height*0.74,
+               top: height*0.67,
                left: width*0.77,
                height: Settings.getX(84),
                width: Settings.getX(84),
@@ -143,7 +161,8 @@ export default class OrderHistory extends Component {
           marginRight: Settings.getX(30),
           marginLeft: Settings.getX(10),
           paddingLeft:10},styles.timeSelectButton]}
-                      onPress={()=>this.openDatePicker('end','YYYY/MM/DD')}>
+          onPress={()=>this.openDatePicker('end','YYYY/MM/DD')}
+        >
             <Text style={{
               fontSize:15,
                color:'#EA7B21',
@@ -164,12 +183,10 @@ export default class OrderHistory extends Component {
       this.setState({
         startDate: dateStr,
       })
-      console.log(startDate)
     }else{
       this.setState({
         endDate: dateStr,
       })
-      console.log(endDate)
 
     }
   }
@@ -200,8 +217,11 @@ export default class OrderHistory extends Component {
             Order Amount：{this.state.list.length}
           </Text>
         </View>
-        <TouchableOpacity style={styles.searchButtonStyle}
-        onPress={() => this.getSummary()}>
+        <TouchableOpacity 
+            style={styles.searchButtonStyle}
+            onPress={() => this.getSummary()}
+            disabled={this.state.waiting}
+        >
             <Image source={require('./Image/search.png')} style={{
               width:Settings.getX(26), height:Settings.getY(26)}} />
             <Text style={styles.searchButtonFont}>
