@@ -70,9 +70,7 @@ export default class CreateOrder extends Component {
         animationType: 'slide-down'
       });
     }
-    
   }
-  
 
   handleChangeValue(key, value) {
     // console.log(key, value.text.text);
@@ -95,6 +93,7 @@ export default class CreateOrder extends Component {
     this.state.coord = jsonResponse.results[0].geometry.location;
     this.state.postal = this._addressExtractor(jsonResponse.results[0], 'postal');
     console.log('final', this.state);
+    this._goCreateOrder();
   }
 
   _toggleAlert(title, message, buttonTitle){
@@ -111,6 +110,24 @@ export default class CreateOrder extends Component {
   render() {
     return (
       <View style={styles.container}>
+
+        <View style={{
+          backgroundColor:'white',
+          width:Setting.getX(540),
+          height:Setting.getY(76),
+          justifyContent:'center',
+          borderBottomColor: '#EA7B21',
+          borderBottomWidth: 1,
+        }}>
+          <Text style={{
+            color:'black',
+            fontSize:22,
+            marginLeft:Setting.getX(26),
+          }}>
+            Create Order
+          </Text>
+        </View>
+
         <Modal
           onRequestClose={() => console.log('123')}
           visible={this.state.showAlert}>
@@ -128,26 +145,6 @@ export default class CreateOrder extends Component {
           onChangeText={(text) => this.handleChangeValue('address', {text})}
           autoFocus={true}>
         </FormCell>
-        <TouchableOpacity 
-          onPress={() => this._goCreateOrder()}
-          style={{
-              marginTop:Setting.getY(208),
-              width:Setting.getX(250),
-              height:Setting.getX(250)/250*75,
-              alignItems: 'center',
-              backgroundColor:'#2f3038',
-              borderRadius: 8,
-              justifyContent:'center',
-              alignSelf:'center',
-              borderColor:'#C49A6C',
-              borderWidth:1
-          }}
-        activeOpacity={0.4}
-        >
-        <Text style={{fontSize:28,color:'#C49A6C'}}>
-        Next
-        </Text>
-      </TouchableOpacity>
       </View>
     );
   }
@@ -156,23 +153,10 @@ export default class CreateOrder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Setting.getY(10)
-  },
-  button:{
-    marginTop: Setting.getY(116),
-    height: Setting.getY(66),
-    width: Setting.getX(214),
-    backgroundColor: '#E2661A',
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  buttonTitle:{
-    color: '#ffffff',
-    fontSize: 33,
-    fontFamily: 'Noto Sans CJK SC(Regular)',
+    marginTop: Setting.getY(0)
   },
   cell:{
-    marginTop: Setting.getY(34),
+    marginTop: Setting.getY(0),
   },
   ESTcell:{
     marginTop: Setting.getY(60),

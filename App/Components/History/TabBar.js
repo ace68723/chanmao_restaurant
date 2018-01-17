@@ -1,3 +1,4 @@
+'use strict'
 
 import React, { Component } from 'react';
 import {
@@ -7,7 +8,6 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  Image,
   Animated
 } from 'react-native';
 
@@ -17,26 +17,13 @@ import Button from './Button';
 export default class TabBar extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
-    this.renderTab   = this.renderTab.bind(this);
-  }
-  // getDefaultProps() {
-  //   return {
-  //     activeTextColor: 'navy',
-  //     inactiveTextColor: 'black',
-  //     backgroundColor: null,
-  //   };
-  // }
-
-  renderTabOption(name, page) {
+    this.renderTab = this.renderTab.bind(this);
   }
 
-  renderTab(name, page, isTabActive, onPressHandler,activeIconImage,inactiveIconImage) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
-    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
+  renderTab(name, page, isTabActive, onPressHandler) {
+    const textColor = isTabActive ? "white" :  "#6D6E71";
     const fontWeight = isTabActive ? 'bold' : 'bold';
-    const fontSize =  isTabActive ? 19 : 19;
-    const iconImage = isTabActive ? activeIconImage : inactiveIconImage;
+    const fontSize =  isTabActive ? 19 : 19; 
     const backgroundColor = isTabActive ? '#EA7B21' : 'white';
     return (
       <Button
@@ -47,8 +34,7 @@ export default class TabBar extends Component {
         accessibilityTraits='button'
         onPress={() => onPressHandler(page)}
       >
-        <View style={[styles.tab, this.props.tabStyle,{backgroundColor:backgroundColor} ]}>
-          <Image source={iconImage} style={{width:20, height:20,}}/>
+        <View style={[styles.tab, {backgroundColor:backgroundColor} ]}>
           <Text style={[{color: textColor, fontWeight,fontSize } ]}>
             {name}
           </Text>
@@ -60,14 +46,6 @@ export default class TabBar extends Component {
   render() {
     const containerWidth = this.props.containerWidth;
     const numberOfTabs = this.props.tabs.length;
-    const tabUnderlineStyle = {
-      position: 'absolute',
-      width: containerWidth / numberOfTabs,
-      height: 4,
-      backgroundColor: 'navy',
-      bottom: 0,
-    };
-
     const translateX = this.props.scrollValue.interpolate({
       inputRange: [0, 1],
       outputRange: [0,  containerWidth / numberOfTabs],
@@ -77,21 +55,8 @@ export default class TabBar extends Component {
         {this.props.tabs.map((name, page) => {
           const isTabActive = this.props.activeTab === page;
           const renderTab = this.props.renderTab || this.renderTab;
-          const activeIconImage = this.props.activeIconImages[page];
-          const inactiveIconImage = this.props.inactiveIconImages[page];
-          return renderTab(name, page, isTabActive, this.props.goToPage,activeIconImage,inactiveIconImage);
+          return renderTab(name, page, isTabActive, this.props.goToPage);
         })}
-        <Animated.View
-          style={[
-            tabUnderlineStyle,
-            {
-              transform: [
-                { translateX },
-              ]
-            },
-            this.props.underlineStyle,
-          ]}
-        />
       </View>
     );
   }
