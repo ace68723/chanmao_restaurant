@@ -130,7 +130,9 @@ export default class OrderItem extends Component {
     return(
         <View style={{  borderBottomColor:'#d1d3d4',
           borderBottomWidth:1,}}>
-          <TouchableOpacity onPress={()=>{
+          <TouchableOpacity
+            disabled={status=='5'||status=='90'}
+            onPress={()=>{
 
             this.props.navigator.showModal({
               screen: "OrderDetail", // unique ID registered with Navigation.registerScreen
