@@ -36,6 +36,7 @@ export default class OrderDetail extends Component {
     this._renderOrderInfo=this._renderOrderInfo.bind(this);
     this._renderDeliveryButton=this._renderDeliveryButton.bind(this);
     this._renderDeliverType=this._renderDeliverType.bind(this);
+    this._renderTouchable=this._renderTouchable.bind(this);
   }
   componentDidMount() {
     console.log(this.props);
@@ -476,7 +477,7 @@ export default class OrderDetail extends Component {
       let soldOutArr = this.state.itemList.filter(item => item.sold == true);
       let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
       return(
-        <View style={[styles.confirmContainer,{height:120}]} >
+        <View style={[styles.confirmContainer,{height:60}]} >
           <View style={styles.confirmInfoView}>
             <View style={{flex:0.5,
             }}>
@@ -486,16 +487,12 @@ export default class OrderDetail extends Component {
               <Text style={styles.detailInfoFont}>Tel: {this.state.tel}</Text>
             </View>
           </View>
-          <View style={styles.confirmButtonView} >
-              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._handleOrder.bind(null,0)}>
-                <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
-              </TouchableOpacity>
-          </View>
+
         </View>
       )
     }else{
       return(
-        <View style={[styles.confirmContainer,{height:120}]} >
+        <View style={[styles.confirmContainer,{height:60}]} >
           <View style={styles.confirmInfoView}>
             <View style={{flex:0.5}}>
               <Text style={styles.detailInfoFont}>User: {this.state.user}</Text>
@@ -504,25 +501,55 @@ export default class OrderDetail extends Component {
               <Text style={styles.detailInfoFont}>Tel: {this.state.tel}</Text>
             </View>
           </View>
+
+        </View>
+      )
+    }
+  }
+  _renderTouchable()
+  {
+
+      if (this.state.itemList.length==0) return;
+      if (this.props.status == '0'){
+        let soldOutArr = this.state.itemList.filter(item => item.sold == true);
+        let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
+        return (
+          <View style={styles.confirmButtonView} >
+              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._handleOrder.bind(null,0)}>
+                <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
+              </TouchableOpacity>
+          </View>
+        )
+      }else {
+        return (
           <View style={styles.confirmButtonView} >
               <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._printOrder}>
                 <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>Print</Text>
               </TouchableOpacity>
           </View>
-        </View>
-      )
-    }
+        )
+      }
   }
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Loading ref="loading" size={60}/>
         {this._renderOrderType()}
         {this._renderOrderInfo()}
+        <ScrollView   style={{flex:1,
+          backgroundColor:'white',
+          borderTopWidth:1,
+          borderTopColor:'grey',
+          borderBottomWidth:1,
+          borderBottomColor:'grey',
+        }} showsVerticalScrollIndicator={true}>
         {this._renderList()}
         {this._renderDetails()}
+
         {this._renderConfirm()}
-      </ScrollView>
+        </ScrollView>
+        {this._renderTouchable()}
+      </View>
     );
   }
 }
@@ -594,7 +621,8 @@ export default class OrderDetail extends Component {
   },
   confirmButtonView:{
     alignItems:'center',
-    flex:0.7,
+    flex:0.3,
+    justifyContent:'center',
   },
   confirmButtonStyle:{
     height:Setting.getY(75),
