@@ -131,7 +131,7 @@ export default class CreateOrderDetail extends Component {
                   <Image style = {{
                         height:Setting.getY(34),
                         width:Setting.getY(24)}}
-                        source={require('./Image/back.png')}
+                        source={require('./image/back.png')}
                   />
             </TouchableOpacity>
             <Text style={{

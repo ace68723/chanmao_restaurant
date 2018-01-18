@@ -62,7 +62,7 @@ export default class PaymentHistory extends Component {
   render(){
     return(
       <View style={styles.container}>
-              <Loading ref="loading" size={60}/>
+        <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {this.renderDetialList()}
         </View>
@@ -95,7 +95,6 @@ export default class PaymentHistory extends Component {
         <View style={{flex:0.9}}>
           <ScrollView style={{
                     flex:0.9,
-                    height:400,
                     width: width,
                     paddingHorizontal:Settings.getX(12)
                     }}>
@@ -179,7 +178,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   listDetailView:{
-    flex:0.8,
+    flex:1,
   },
   listTitles:{
     flexDirection:'row',
