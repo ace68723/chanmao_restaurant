@@ -19,6 +19,8 @@ export default class HistoryPage extends Component {
     super(props);
     this.state = {
       list: [],
+      startDate:'YYYY/MM/DD',
+      endDate:'YYYY/MM/DD',
     }
     this._goGetSummary = this._goGetSummary.bind(this);
     this.getSummary = this.getSummary.bind(this);
@@ -41,7 +43,9 @@ export default class HistoryPage extends Component {
        const bill_end = record.bill_range_end;
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
        this.setState({
-        list: data
+        list: data,
+        startDate:bill_start,
+        endDate:bill_end,
       })
        clearTimeout(loadingTimeout);  
        this.refs.loading.endLoading();    
@@ -63,7 +67,7 @@ export default class HistoryPage extends Component {
               renderTabBar={() => <TabBar />}
               tabBarTextStyle = {{fontSize: 20, fontWeight: 'bold'}}
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}>
-              <OrderHistory list = {this.state.list}  tabLabel='Order History'/>
+              <OrderHistory list = {this.state.list} startDate = {this.state.startDate} endDate = {this.state.endDate} tabLabel='Order History'/>
               <PaymentHistory onPress={(record) => this._goGetSummary(record)}   tabLabel='Payment History'/>
             </ScrollableTabView>
           </View>

@@ -81,7 +81,6 @@ export default class Login extends Component {
            passProps: {},
            animationType: 'slide-down'
          });
-         this.refs.loading.endLoading();
       }catch(error){
         if(error == 'LOGIN_FAIL') {
          console.log(error)

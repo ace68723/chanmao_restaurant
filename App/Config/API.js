@@ -14,7 +14,7 @@ const APIConstants ={
 
     //Home
     API_ORDERHANDLE: Server + 'handle',
-
+    API_FETCHORDER: Server + 'FetchOrders',
     //OrderDetail
     API_GET_ORDER_DETAIL: Server + 'orderdetail',
     API_HANDLE_ORDER: Server + 'handle',

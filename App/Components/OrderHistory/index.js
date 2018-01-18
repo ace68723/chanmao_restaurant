@@ -31,8 +31,8 @@ export default class OrderHistory extends Component {
       printButtonName:'Print',
       startTitle:'Start',
       endTitle:'End',
-      startDate:'YYYY/MM/DD',
-      endDate:'YYYY/MM/DD',
+      startDate:props.startDate,
+      endDate:props.endDate,
       list: props.list,
       waiting: false,
       "page_num" :1,
@@ -48,7 +48,11 @@ export default class OrderHistory extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.list !== this.props.list) {
-      this.setState({ list: nextProps.list });
+      this.setState({ 
+        list: nextProps.list,
+        startDate: nextProps.startDate,
+        endDate: nextProps.endDate
+       });
     }
   }
 

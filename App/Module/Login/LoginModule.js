@@ -11,13 +11,17 @@ export default  {
          const token =userInfo.token;
          const rid = userInfo.rid;
          const uid =userInfo.uid;
+         const authortoken = userInfo.authortoken;
+         const interval = userInfo.interval;
          const firebaseURL = userInfo.firebase_url;
          const firebaseKEY = userInfo.firebase_key;
          const firebaseREF = userInfo.firebase_ref;
          const eo_data ={
              result: userInfo.result
          }
-         SaveUserInfo({ token,
+         SaveUserInfo({ authortoken,
+                        token,
+                        interval,
                         rid,
                         uid,
                         firebaseURL,
