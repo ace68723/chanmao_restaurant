@@ -42,7 +42,7 @@ export default class OrderDetail extends Component {
     console.log(this.props);
     this._getOrderDetail();
   }
-  
+
   async _getOrderDetail(){
     try{
        const oid = this.props.oid;
@@ -196,21 +196,27 @@ export default class OrderDetail extends Component {
     if(this.props.status==="0"){
       return items.map((item,index)=>{
           return(
-            <View key={index} style={styles.itemContainer}>
-              <View style={{flex:0.2}}>
-                <Text>{item.ds_id}</Text>
+            <TouchableOpacity onPress={()=>this._changeSoldState(index)} >
+
+  
+
+
+              <View key={index} style={styles.itemContainer}>
+                <View style={{flex:0.2}}>
+                  <Text>{item.ds_id}</Text>
+                </View>
+                <View style={{flex:0.4}}>
+                  <Text>{item.ds_name}</Text>
+                </View>
+                <View style={{flex:0.2}}>
+                  <Text>{item.amount}</Text>
+                </View>
+                <View style={{flex:0.2}}>
+                  <View style={[styles.checkBox,{ backgroundColor:this.state.itemList[index].sold ?'#F15A29' : 'white' }]}>
+                  </View>
+                </View>
               </View>
-              <View style={{flex:0.4}}>
-                <Text>{item.ds_name}</Text>
-              </View>
-              <View style={{flex:0.2}}>
-                <Text>{item.amount}</Text>
-              </View>
-              <View style={{flex:0.2}}>
-                <TouchableOpacity style={[styles.checkBox,{ backgroundColor:this.state.itemList[index].sold ?'#F15A29' : 'white' }]}
-                    onPress={()=>this._changeSoldState(index)}/>
-              </View>
-            </View>
+            </TouchableOpacity>
           )
         }
       )

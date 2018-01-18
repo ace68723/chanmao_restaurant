@@ -22,6 +22,7 @@ public class customPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new customAndroid(reactContext));
         modules.add(new SystemSound(reactContext));
+        modules.add(new DeviceToken(reactContext));
         return modules;
     }
 

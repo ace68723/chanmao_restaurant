@@ -37,7 +37,7 @@ export default class Login extends Component {
   }
   componentDidMount(){
       this.auth();
-
+      console.log(NativeModules.DeviceToken.gettoken());
 
   }
   _setUsername(username){
