@@ -13,7 +13,7 @@ import Setting from '../../Config/Setting';
 import TabBar from './TabBar';
 
 export default class HistoryPage extends Component {
-   
+
     render() {
         return (
             <ScrollableTabView
