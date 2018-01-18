@@ -119,7 +119,7 @@ export default class CreateOrderDetail extends Component {
           borderRightWidth: 0,
           borderColor: '#EA7B21',
         }}>
-            <TouchableOpacity 
+            <TouchableOpacity
                   onPress={this.onPressCancel}
                   style={{
                     position:'absolute',
@@ -131,7 +131,7 @@ export default class CreateOrderDetail extends Component {
                   <Image style = {{
                         height:Setting.getY(34),
                         width:Setting.getY(24)}}
-                        source={require('./image/back.png')}
+                        source={require('./Image/back.png')}
                   />
             </TouchableOpacity>
             <Text style={{
