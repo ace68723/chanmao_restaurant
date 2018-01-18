@@ -25,7 +25,7 @@ export default class Tab extends Component {
               style={{flex:1, }}
               renderTabBar={() => <TabBar />}
               tabBarActiveTextColor="#EA7B21"
-              prerenderingSiblingsNumber = {Infinity}
+              prerenderingSiblingsNumber = {1}
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}
             >
               <Home tabLabel="Home"

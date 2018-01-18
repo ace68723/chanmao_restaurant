@@ -42,8 +42,10 @@ export function GetDeviceInfo() {
   const version = realm.objectForPrimaryKey('cmr_system','version').value;
   return { channel,version }
 }
-export function SaveUserInfo({token,rid,uid,firebaseURL,firebaseKEY,firebaseREF}) {
+export function SaveUserInfo({interval,authortoken,token,rid,uid,firebaseURL,firebaseKEY,firebaseREF}) {
   realm.write(() => {
+    realm.create('cmr_system',{type: 'authortoken', value: authortoken}, true);
+    realm.create('cmr_system',{type: 'interval', value: interval}, true);
     realm.create('cmr_system',{type: 'token', value: token}, true);
     realm.create('cmr_system',{type: 'rid', value: rid}, true);
     realm.create('cmr_system',{type: 'uid', value: uid}, true);
@@ -54,6 +56,8 @@ export function SaveUserInfo({token,rid,uid,firebaseURL,firebaseKEY,firebaseREF}
 }
 export function InitUserInfo() {
   realm.write(() => {
+    realm.create('cmr_system',{type: 'authortoken', value: ''}, true);
+    realm.create('cmr_system',{type: 'interval', value: ''}, true);
     realm.create('cmr_system',{type: 'token', value: ''}, true);
     realm.create('cmr_system',{type: 'rid', value: ''}, true);
     realm.create('cmr_system',{type: 'uid', value: ''}, true);
@@ -63,12 +67,14 @@ export function InitUserInfo() {
   })
 }
 export function GetUserInfo() {
-  const token     = realm.objectForPrimaryKey('cmr_system','token').value;
-  const version   = realm.objectForPrimaryKey('cmr_system','version').value;
-  const rid       = realm.objectForPrimaryKey('cmr_system','rid').value;
-  const uid       = realm.objectForPrimaryKey('cmr_system','uid').value;
-  const channel   = realm.objectForPrimaryKey('cmr_system','channel').value;
-  return {token,version,rid,uid,channel}
+  const interval     = realm.objectForPrimaryKey('cmr_system','interval').value;
+  const authortoken  = realm.objectForPrimaryKey('cmr_system','authortoken').value;
+  const token        = realm.objectForPrimaryKey('cmr_system','token').value;
+  const version      = realm.objectForPrimaryKey('cmr_system','version').value;
+  const rid          = realm.objectForPrimaryKey('cmr_system','rid').value;
+  const uid          = realm.objectForPrimaryKey('cmr_system','uid').value;
+  const channel      = realm.objectForPrimaryKey('cmr_system','channel').value;
+  return {interval,authortoken,token,version,rid,uid,channel}
 }
 export function GetFirebaseInfo() {
   const firebaseURL = realm.objectForPrimaryKey('cmr_system','firebaseURL').value;

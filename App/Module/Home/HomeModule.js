@@ -1,4 +1,5 @@
 import HomeAPI from './HomeAPI';
+import { GetUserInfo } from '../Database';
 
 export default  {
   async orderHandle(token,rid,items,oid){
@@ -16,5 +17,21 @@ export default  {
       throw error
     }
 
-  }
+  },
+  async fetchOrder(){
+    try {
+      const { authortoken } = GetUserInfo();
+      const data = await HomeAPI.fetchOrder(authortoken);
+      if(data.ev_result === 0 ){
+         return data
+      }else{
+        const errorMessage = data.ev_message;
+        throw errorMessage
+      }
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+
+  },
 }
