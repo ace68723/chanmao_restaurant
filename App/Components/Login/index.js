@@ -15,10 +15,13 @@ import {
   Button,
   Alert,
   AsyncStorage,
+
+  DeviceEventEmitter,
 } from 'react-native';
 import Loading from '../Loading';
 import Setting from '../../Config/Setting';
 import LoginModule from '../../Module/Login/LoginModule';
+
 export default class Login extends Component {
   constructor(){
     super();
@@ -34,6 +37,11 @@ export default class Login extends Component {
     this._setPassword = this._setPassword.bind(this);
     this._submit = this._submit.bind(this);
     this.login = this.login.bind(this);
+  }
+  componentWillMount()
+  {
+    DeviceEventEmitter.addListener('token',(msg)=>{console.log(msg);
+  });
   }
   componentDidMount(){
       this.auth();
