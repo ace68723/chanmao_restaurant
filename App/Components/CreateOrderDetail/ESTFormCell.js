@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   },
   title:{
     color: '#6D6E71',
-    fontSize: 24,
+    fontSize: 22,
+    color:'black',
     textAlign: 'left',
     fontFamily: 'Noto Sans CJK SC(Regular)',
     marginLeft: Setting.getX(28),
@@ -93,7 +94,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#798BA5',
     width: Setting.getX(102),
-    height: Setting.getY(40),
+    height: Setting.getY(50),
+    justifyContent:'center',
     backgroundColor: 'white',
     marginRight: Setting.getX(24)
   },
@@ -105,8 +107,9 @@ const styles = StyleSheet.create({
   buttonSelected:{
     borderWidth: 2,
     borderColor: '#798BA5',
+    justifyContent:'center',
     width: Setting.getX(102),
-    height: Setting.getX(40),
+    height: Setting.getX(50),
     backgroundColor: '#798BA5',
     marginRight: Setting.getX(24)
   },
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'center',
-    marginTop: Setting.getY(44),
+    marginTop: Setting.getY(30),
     marginLeft: Setting.getX(28)
   }
 });

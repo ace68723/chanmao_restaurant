@@ -252,6 +252,12 @@ export default class OrderDetail extends Component {
          tel: data.tel,
          comment: data.comment,
          dltype:data.dltype,
+         restaurantName:data.restaurant_name,
+         restaurantAddress:data.restaurant_address,
+         restaurantPhoneNumber: data.restaurant_cel,
+         orderTime:data.order_time,
+         subTotal:data.subtotal,
+         tax:data.tax,
        })
          clearTimeout(loadingTimeout);
          this.refs.loading.endLoading();
@@ -275,6 +281,10 @@ export default class OrderDetail extends Component {
 
       const itemList = this.state.itemList;
       const data = await OrderDetailModule.handleOrder({oid,task,itemList});
+
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
+
       this.props.navigator.dismissModal({
         animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
       });
@@ -282,9 +292,6 @@ export default class OrderDetail extends Component {
       setTimeout(() =>{
         this._printOrder();
       }, 2000);
-      clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
-
     } catch (e) {
       console.log(e)
       clearTimeout(loadingTimeout);
@@ -305,14 +312,14 @@ export default class OrderDetail extends Component {
     let data = {
       type:'receipt',
       dltypeMessage:dltypeMessage,
-      restaurantName:'西北楼',
-      restaurantAddress:'3212 Yonge Street',
-      restaurantPhoneNumber: '647-684-6483',
-      orderTime:'2017-02-15 12:30:12',
+      restaurantName: this.state.restaurantName,
+      restaurantAddress: this.state.restaurantAddress,
+      restaurantPhoneNumber: this.state.restaurantPhoneNumber,
+      orderTime: this.state.orderTime,
+      subTotal: this.state.subTotal,
+      tax: this.state.tax,
       orderNumber:this.props.oid,
       orderArray:this.state.itemList,
-      subTotal:'',
-      tax:'',
       total:this.state.totalPrice,
       printTitles:this.state.printTitles,
       comment:this.state.comment,

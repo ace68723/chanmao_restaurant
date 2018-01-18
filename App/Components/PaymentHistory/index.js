@@ -41,13 +41,11 @@ export default class PaymentHistory extends Component {
   }
   componentDidMount() {
     this.getBilling();
-    console.log('123')
   }
   async getBilling(){
     try{
        this.refs.loading.startLoading();
        const data = await PaymentHistoryModule.getBilling();
-       console.log(data);
        this.setState({
          list: data
        })

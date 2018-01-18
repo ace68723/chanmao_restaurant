@@ -5,7 +5,9 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions,
+  Image
 } from 'react-native';
 
 import Setting from '../../Config/Setting.js'
@@ -13,7 +15,15 @@ import FormCell from './FormCell.js'
 import Alert from '../Alert'
 import ESTFormCell from './ESTFormCell'
 import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
+const {height, width} = Dimensions.get('window');
+
 export default class CreateOrderDetail extends Component {
+  static navigatorStyle = {
+        navBarTitleTextCentered: true,
+        navBarTextColor:"#EA7B21",
+        navBarBackgroundColor:"D1D3D4",
+        navBarButtonColor:"#EA7B21"
+      }
   constructor(props) {
     super(props);
     this.state = {
@@ -36,6 +46,8 @@ export default class CreateOrderDetail extends Component {
     this.onPress = this.onPress.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this.onPressEST = this.onPressEST.bind(this);
+    this.onPressCancel = this.onPressCancel.bind(this);
+
   }
 
   handleChangeValue(key, value) {
@@ -60,7 +72,7 @@ export default class CreateOrderDetail extends Component {
       tel : this.state.phone,
       uid : this.state.uid,
     }
-    
+
     console.log(reqData);
     const data  = await CreateOrderModule.createOrder(reqData);
     console.log(data);
@@ -82,9 +94,52 @@ export default class CreateOrderDetail extends Component {
       this.state.alert.buttonTitle = title;
     }
   }
+
+  onPressCancel(){
+    this.props.navigator.dismissModal({
+      animationType: 'screen'
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
+       <View style={{
+          backgroundColor:'white',
+          flex:0.08,
+          alignItems: 'center',
+          flexDirection: 'row',
+          borderWidth: 0,
+          borderTopWidth: 0,
+          borderBottomWidth:1,
+          borderLeftWidth: 0,
+          borderRightWidth: 0,
+          borderColor: '#EA7B21',
+        }}>
+            <TouchableOpacity
+                  onPress={this.onPressCancel}
+                  style={{
+                    position:'absolute',
+                    alignItems:'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                    left:0.05*width}}
+            >
+                  <Image style = {{
+                        height:Setting.getY(34),
+                        width:Setting.getY(24)}}
+                        source={require('./Image/back.png')}
+                  />
+            </TouchableOpacity>
+            <Text style={{
+                  fontSize:20,
+                  color:'#E2661A',
+                  position:'absolute',
+                  left:0.34*width}}>
+              Order Detail
+            </Text>
+        </View>
+        <View style = {{flex:0.92}}>
           <View style={styles.infoText}>
             <Text style={styles.text}>Address: {this.state.address}</Text>
             <Text style={styles.text}>Delivery Fee: ${this.state.dlexp}</Text>
@@ -96,19 +151,19 @@ export default class CreateOrderDetail extends Component {
             onChangeText={(text) => this.handleChangeValue('unit', {text})}>
           </FormCell>
           <FormCell
-            style={styles.cellReq}
+            style={styles.cell}
             title='Buzz'
             value={this.state.buzz}
             onChangeText={(text) => this.handleChangeValue('buzz', {text})}>
           </FormCell>
           <FormCell
-            style={styles.cellReq}
+            style={styles.cell}
             title='*Price(Plus Tax)'
             value={this.state.price}
             onChangeText={(text) => this.handleChangeValue('price', {text})}>
           </FormCell>
           <FormCell
-            style={styles.cellReq}
+            style={styles.cell}
             title='*Name'
             value={this.state.name}
             onChangeText={(text) => this.handleChangeValue('name', {text})}>
@@ -132,14 +187,15 @@ export default class CreateOrderDetail extends Component {
             <Text style={styles.buttonTitle} onPress={this.onPress}>Place Order</Text>
           </TouchableOpacity>
       </View>
-
+    </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    backgroundColor: 'white'
   },
   button:{
     marginTop: Setting.getY(68),
@@ -155,19 +211,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Noto Sans CJK SC(Regular)',
   },
   cell:{
-    marginTop: Setting.getY(34)
+    marginTop: Setting.getY(14)
   },
-  cell:{
-    marginTop: Setting.getY(34)
-    },
+
   text: {
     marginLeft: Setting.getX(28),
     marginBottom: Setting.getY(30),
-    fontSize: 24,
+    fontSize: 19,
     fontFamily: 'Noto Sans CJK SC(Regular)',
   },
   infoText: {
     marginTop: Setting.getY(26),
-    marginBottom: Setting.getY(16),
   }
 });

@@ -100,6 +100,7 @@ export default class App extends React.Component {
           <FlatList
             data={this.state.data}
             style={styles.listView}
+            keyExtractor={(item, index) => item.id}
             renderItem={({item}) => this.renderRow(item)}
             ItemSeparatorComponent={this.renderSeparator}
           />
