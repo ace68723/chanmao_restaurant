@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import Setting from '../../Config/Setting';
 import PrintModule from '../../Module/Print/PrintModule';
@@ -514,14 +515,14 @@ export default class OrderDetail extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Loading ref="loading" size={60}/>
         {this._renderOrderType()}
         {this._renderOrderInfo()}
         {this._renderList()}
         {this._renderDetails()}
         {this._renderConfirm()}
-      </View>
+      </ScrollView>
     );
   }
 }
