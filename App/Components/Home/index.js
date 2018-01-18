@@ -121,6 +121,13 @@ export default class Home extends Component {
   }
   componentDidMount(){
     this._listenForItems();
+    // this.interval= setInterval( () =>{
+    //
+    //   NativeModules.SystemSound.playSound();
+    // }, 500);
+    // setTimeout(()=> {
+    //   clearInterval(this.interval);
+    // }, 10000);
   }
   _listenForItems() {
       let newOrder,recentOrder;
