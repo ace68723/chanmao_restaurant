@@ -20,6 +20,7 @@ public class RNFirebaseMessagingService extends FirebaseInstanceIdService {
     // [START refresh_token]
     @Override
     public void onTokenRefresh() {
+
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d("testservice","Refreshed token: " + refreshedToken);

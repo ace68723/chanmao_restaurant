@@ -14,7 +14,7 @@ import {
   NativeModules,
   Button,
   Alert,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native';
 import Loading from '../Loading';
 import Setting from '../../Config/Setting';
@@ -37,6 +37,8 @@ export default class Login extends Component {
   }
   componentDidMount(){
       this.auth();
+
+
   }
   _setUsername(username){
     this.setState({username});
@@ -68,6 +70,7 @@ export default class Login extends Component {
   }
   async login(username, password){
     try{
+
        this.refs.loading.startLoading();
        const data = await LoginModule.login(username, password);
 
