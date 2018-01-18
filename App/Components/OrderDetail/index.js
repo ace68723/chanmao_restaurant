@@ -538,8 +538,10 @@ export default class OrderDetail extends Component {
         {this._renderOrderInfo()}
         <ScrollView   style={{flex:1,
           backgroundColor:'white',
-          borderWidth:2,
-          borderColor:'grey',
+          borderTopWidth:1,
+          borderTopColor:'grey',
+          borderBottomWidth:1,
+          borderBottomColor:'grey',
         }} showsVerticalScrollIndicator={true}>
         {this._renderList()}
         {this._renderDetails()}
