@@ -24,8 +24,8 @@ export default class OrderHistory extends Component {
     navBarBackgroundColor:"white",
     navBarButtonColor:"#EA7B21"
   }
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state={
       totalAmount: 2008.1,
       printButtonName:'Print',
@@ -33,9 +33,7 @@ export default class OrderHistory extends Component {
       endTitle:'End',
       startDate:'YYYY/MM/DD',
       endDate:'YYYY/MM/DD',
-      list: [
-
-      ],
+      list: props.list,
       waiting: false,
       "page_num" :1,
       "page_size":50,
@@ -45,8 +43,15 @@ export default class OrderHistory extends Component {
     this._printHistory = this._printHistory.bind(this);
     this._disableDoubleClick = this._disableDoubleClick.bind(this);
   }
+
   componentDidMount() {
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.list !== this.props.list) {
+      this.setState({ list: nextProps.list });
+    }
+  }
+
   _disableDoubleClick() {
     this.setState({
       waiting:true,

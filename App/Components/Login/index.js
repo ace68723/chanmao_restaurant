@@ -62,7 +62,6 @@ export default class Login extends Component {
            animationType: 'slide-down'
          });
       }catch(error){
-
         return
       }
   }
@@ -71,7 +70,6 @@ export default class Login extends Component {
        this.refs.loading.startLoading();
        const data = await LoginModule.login(username, password);
 
-       this.refs.loading.endLoading();
        this.props.navigator.resetTo({
            screen: 'Tab',
            navigatorStyle: {
@@ -80,6 +78,7 @@ export default class Login extends Component {
            passProps: {},
            animationType: 'slide-down'
          });
+         this.refs.loading.endLoading();
       }catch(error){
         if(error == 'LOGIN_FAIL') {
          console.log(error)
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
     width:Setting.getX(274),
     fontSize:24,
     fontFamily:'Noto Sans CJK SC',
-    textAlign: 'center',
+    textAlign: 'left',
 
   },
   buttonView:{

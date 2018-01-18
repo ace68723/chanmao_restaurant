@@ -23,8 +23,8 @@ export default class PaymentHistory extends Component {
     navBarBackgroundColor:"white",
     navBarButtonColor:"#EA7B21"
   }
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state={
       totalAmount: 2008.1,
       printButtonName:'Print',
@@ -38,9 +38,13 @@ export default class PaymentHistory extends Component {
       "page_size":50,
       token: '',
     }
+    this.pressProxy = this.pressProxy.bind(this);
   }
   componentDidMount() {
     this.getBilling();
+  }
+  pressProxy(record) {
+    this.props.onPress(record)
   }
   async getBilling(){
     try{
@@ -65,7 +69,6 @@ export default class PaymentHistory extends Component {
       </View>
     )
   }
-
 
   renderListTitle(){
     return(
@@ -106,8 +109,11 @@ export default class PaymentHistory extends Component {
   renderRecords(){
     return this.state.list.map((record, index)=>{
       return(
-        <View style={styles.recordView}
-                key={index}>
+        <TouchableOpacity 
+                style={styles.recordView}
+                key={index}
+                onPress={()=>this.pressProxy(record)}
+                >
           <View style={{flex:0.25}}>
             <Text style={styles.recordTitleFont}>{record.bill_range_start}</Text>
           </View>
@@ -120,7 +126,7 @@ export default class PaymentHistory extends Component {
           <View style={{flex:0.3}}>
             <Text style={styles.recordTitleFont}>{record.service_charge}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       )
     })
   }

@@ -102,11 +102,10 @@ export default class CreateOrder extends Component {
         <View style={{
           backgroundColor:'white',
           width:Setting.getX(540),
-          height:Setting.getY(76),
           justifyContent:'center',
           borderBottomColor: '#EA7B21',
           borderBottomWidth: 1,
-        }}>
+          flex:0.075        }}>
           <Text style={{
             color:'black',
             fontSize:22,
@@ -131,11 +130,11 @@ export default class CreateOrder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Setting.getY(0),
-    backgroundColor: 'white'
+    justifyContent: 'flex-start'
   },
   cell:{
-    marginTop: Setting.getY(0),
+    flex:0.925,
+    justifyContent: 'flex-end'
   },
   ESTcell:{
     marginTop: Setting.getY(60),
