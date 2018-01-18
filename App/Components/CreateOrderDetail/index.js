@@ -97,6 +97,9 @@ export default class CreateOrderDetail extends Component {
 
   onPressCancel(){
     this.props.navigator.dismissModal({
+      navigatorStyle: {
+        navBarHidden: true
+      },
       animationType: 'screen'
     });
   }
@@ -202,12 +205,13 @@ const styles = StyleSheet.create({
     height: Setting.getY(66),
     width: Setting.getX(274),
     backgroundColor: '#E2661A',
+    justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
   },
   buttonTitle:{
     color: '#ffffff',
-    fontSize: 33,
+    fontSize: 24,
     fontFamily: 'Noto Sans CJK SC(Regular)',
   },
   cell:{
