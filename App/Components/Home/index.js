@@ -16,16 +16,9 @@ import Loading from '../Loading';
 import OrderItem from './OrderItem';
 import HomeModule from '../../Module/Home/HomeModule';
 
-import * as firebase from 'firebase';
 import TimerMixin from 'react-timer-mixin';
 import { GetUserInfo } from '../../Module/Database';
-const firebaseConfig = {
-  apiKey: "AIzaSyAtQAN3PhdIsFEHkEJfiuQQHVcm9ZSfYFQ",
-  databaseURL: "https://cm-rrclient-3.firebaseio.com",
-};
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
 export default class Home extends Component {
   mixins: [TimerMixin];
   constructor()
@@ -53,7 +46,7 @@ export default class Home extends Component {
     this.timer = setTimeout(() => {
       this._fetchOrder();
     }, interval);
-  
+
   }
   async _fetchOrder() {
     try{
@@ -73,7 +66,7 @@ export default class Home extends Component {
      console.log(error);
    }
   }
-  
+
   scrollToIndexI(index)
   {
     console.log(index);
