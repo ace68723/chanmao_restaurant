@@ -44,12 +44,11 @@ export default class CreateOrder extends Component {
     }
   }
   async _goCreateOrder() {
-    // this.refs.loading.startLoading();
     const {address,postal} = this.state;
     const lat = this.state.coord.lat;
     const lng = this.state.coord.lng;
     const data = await CreateOrderModule.areaCheck(lng,lat)
-    // this.refs.loading.endLoading();
+    this.refs.loading.endLoading();
     console.log(data);
     if(data.result === 0) {
       const dlexp = data.dlexp;
@@ -72,8 +71,7 @@ export default class CreateOrder extends Component {
   }
 
   async _getGeoPoint(){
-    //this.refs.loading.startLoading();
-
+    this.refs.loading.startLoading();
     const url = 'https://maps.googleapis.com/maps/api/geocode/json?key='
                  + GOOGLE_API_KEY
                  + '&address='
@@ -94,7 +92,7 @@ export default class CreateOrder extends Component {
   render() {
     return (
       <View style={styles.container}>
-
+        <Loading ref="loading" size={60}/>
         <View style={{
           backgroundColor:'white',
           width:Setting.getX(540),

@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 
 import Setting from '../../Config/Setting'
-// import {GOOGLE_API_KEY} from '../../Config/API'
+import {GOOGLE_API_KEY} from '../../Config/API'
 
-const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8'
+//const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -21,13 +21,10 @@ export default class App extends React.Component {
       isLoading: false,
       data: [],
       value: '',
-      showList: false
     };
     this.searchLocation = this.searchLocation.bind(this);
     this.renderRow = this.renderRow.bind(this);
     this.renderSeparator = this.renderSeparator.bind(this);
-    this.onFocusInput = this.onFocusInput.bind(this);
-    this.onBlurInput = this.onBlurInput.bind(this);
   }
 
   async searchLocation(query) {
@@ -38,7 +35,6 @@ export default class App extends React.Component {
     this.setState({ isLoading: true, value: query });
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    //console.log(jsonResponse.predictions)
     this.setState({
       isLoading: false,
       data: jsonResponse.predictions
@@ -49,10 +45,8 @@ export default class App extends React.Component {
     return (
       <TouchableOpacity
         onPress={() => this.onListItemClicked(prediction)}
-        style={styles.listItem}
-      >
-        <Text
-          style={{ fontSize: 20 }}>{prediction.description}</Text>
+        style={styles.listItem}>
+        <Text style={{ fontSize: 20 }}>{prediction.description}</Text>
       </TouchableOpacity>
     );
   }
@@ -64,7 +58,6 @@ export default class App extends React.Component {
   async onListItemClicked(prediction) {
     this.setState({
       value: prediction.description,
-      data: [],
       isLoading: true,
     });
     const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${
@@ -73,16 +66,7 @@ export default class App extends React.Component {
     const response = await fetch(url);
     const jsonResponse = await response.json();
     this.setState({ isLoading: false });
-    this.setState({ showList: true });
     this.props.onChangeText(prediction);
-  }
-
-  onFocusInput(){
-    this.setState({ showList: true });
-  }
-
-  onBlurInput(){
-    this.setState({ showList: true });
   }
 
   render() {
@@ -98,27 +82,20 @@ export default class App extends React.Component {
           underlineColorAndroid='rgba(0,0,0,0)'
           placeholder='Address' />
 
-        {this.state.showList && this.state.value != '' &&
-          <FlatList
+        <FlatList
             data={this.state.data}
             style={styles.listView}
             keyExtractor={(item, index) => item.id}
             renderItem={({item}) => this.renderRow(item)}
             ItemSeparatorComponent={this.renderSeparator}
-          />
-        }
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    //flex: 1,
-    // backgroundColor: 'grey',
-    // flexDirection: 'column',
-    // justifyContent: 'flex-start',
-  },
+  container: {},
   input: {
     textAlign: 'left',
     width: Setting.getX(540),
@@ -130,7 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   listView: {
-    elevation: 5, // fix that shit...
+    elevation: 1,
     backgroundColor: 'white',
     position: 'absolute',
     marginTop: Setting.getY(60),
