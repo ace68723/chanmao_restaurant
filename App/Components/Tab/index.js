@@ -47,7 +47,6 @@ export default class Tab extends Component {
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}
             >
               <Home tabLabel="Home"
-                    onPressLogout = {() => this._logOut()} 
                     activeIconImage={require("./Image/homeorange.png")}
                     inactiveIconImage={require("./Image/homegrey.png")}
                     navigator={this.props.navigator}/>

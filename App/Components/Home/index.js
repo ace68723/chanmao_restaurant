@@ -33,17 +33,19 @@ export default class Home extends Component {
     this.scrollToIndexI=this.scrollToIndexI.bind(this);
     this._fetchOrder = this._fetchOrder.bind(this);
     this.updateOrders = this.updateOrders.bind(this);
-    this._logOut = this._logOut.bind(this);
+    // this._logOut = this._logOut.bind(this);
+  }
+  componentWillMount() {
+    
   }
   componentDidMount(){
-    this.refs.loading.endLoading();
     this._fetchOrder();
     this.updateOrders();
   }
-  _logOut(){
-    this.props.onPressLogout()
-    }
-  updateOrders() {
+  // _logOut(){
+  //   this.props.onPressLogout()
+  //   }
+  async updateOrders() {
     let { interval } = GetUserInfo();
     interval = parseInt(interval*1000,10);
     this.timer = setTimeout(() => {
@@ -55,8 +57,6 @@ export default class Home extends Component {
     try{
       this.refs.loading.startLoading();
       const data = await HomeModule.fetchOrder();
-      console.log(data)
-
       if (data.ev_result === 0) {
         let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
         this.setState({
@@ -65,6 +65,7 @@ export default class Home extends Component {
           Orders: Orders
         })
       }
+      console.log(this.state.Orders)
       this.refs.loading.endLoading();
      }catch(error){
       if (error == '用户超时，请退出重新登陆') {
@@ -72,7 +73,7 @@ export default class Home extends Component {
           "ERROR",
           '用户超时，请退出重新登陆',
           [
-            {text: 'Ok', onPress:()=>this._logOut()},
+            {text: 'Ok'},
           ],
           { cancelable: false }
         )
@@ -81,7 +82,7 @@ export default class Home extends Component {
           "ERROR",
           '请退出重新登陆',
           [
-            {text: 'Ok', onPress:()=>this._logOut()},
+            {text: 'Ok'},
           ],
           { cancelable: false }
         )
@@ -96,6 +97,7 @@ export default class Home extends Component {
     this.list.scrollToIndex({'animated':'true','index':index,'viewPosition':1,'viewOffset':0 })
   }
   _renderItem ({item}){
+    console.log({item})
       if (!item.title) return
        <OrderItem  {...item} navigator={this.props.navigator} />
       return(
@@ -118,8 +120,7 @@ export default class Home extends Component {
       )
   }
   render() {
-
-
+    console.log(this.state)
     return (
       <ScrollView style={styles.container}>
         <Loading ref="loading" size={60}/>
