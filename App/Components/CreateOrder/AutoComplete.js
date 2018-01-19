@@ -10,7 +10,9 @@ import {
 } from 'react-native';
 
 import Setting from '../../Config/Setting'
-import {GOOGLE_API_KEY} from '../../Config/API'
+// import {GOOGLE_API_KEY} from '../../Config/API'
+
+const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     position: 'absolute',
     marginTop: Setting.getY(60),
-    height: Setting.getY(380),
+    height: Setting.getY(860),
     width: Setting.getX(540),
   },
   listItem: {

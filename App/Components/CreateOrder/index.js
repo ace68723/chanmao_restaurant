@@ -66,14 +66,9 @@ export default class CreateOrder extends Component {
     }
   }
 
-  handleChangeValue(key, value) {
-    // console.log(key, value.text.text);
-    if (key == 'address'){
-      this.setState({['address']: value.text.text.description});
-      this._getGeoPoint();
-      return;
-    }
-    this.setState({[key]: value.text.text});
+  handleChangeValue(value) {
+    this.setState({['address']: value.text.text.description});
+    this._getGeoPoint();
   }
 
   async _getGeoPoint(){
@@ -85,7 +80,7 @@ export default class CreateOrder extends Component {
                  + this.state.address;
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    console.log(jsonResponse);
+    // console.log(jsonResponse);
     this.state.coord = jsonResponse.results[0].geometry.location;
     this.state.postal = this._addressExtractor(jsonResponse.results[0], 'postal');
     console.log('final', this.state);
@@ -98,7 +93,7 @@ export default class CreateOrder extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
 
         <View style={{
           backgroundColor:'white',
@@ -107,7 +102,6 @@ export default class CreateOrder extends Component {
           justifyContent:'center',
           borderBottomColor: '#EA7B21',
           borderBottomWidth: 1,
-          flex:0.075        
         }}>
           <Text style={{
             color:'black',
@@ -122,9 +116,9 @@ export default class CreateOrder extends Component {
           style={styles.cell}
           title='Address'
           keyExtractor={(item, index) => index}
-          onChangeText={(text) => this.handleChangeValue('address', {text})}>
+          onChangeText={(text) => this.handleChangeValue( {text} )}>
         </FormCell>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -136,10 +130,8 @@ const styles = StyleSheet.create({
   },
   cell:{
     flex:0.925,
-    justifyContent: 'flex-end'
-  },
-  ESTcell:{
-    marginTop: Setting.getY(60),
+    justifyContent: 'flex-end',
+    height:Setting.getY(76),
   },
 
 });

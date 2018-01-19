@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   title:{
     color: '#6D6E71',
-    fontSize: 22,
+    fontSize: 24,
     color:'black',
     textAlign: 'left',
     fontFamily: 'Noto Sans CJK SC(Regular)',

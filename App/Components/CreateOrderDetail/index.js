@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Image
+  Image,
+  KeyboardAvoidingView
 } from 'react-native';
 
 import Setting from '../../Config/Setting.js'
@@ -142,7 +143,7 @@ export default class CreateOrderDetail extends Component {
               Order Detail
             </Text>
         </View>
-        <View style = {{flex:0.92}}>
+        <KeyboardAvoidingView style = {{flex:0.92}}>
           <View style={styles.infoText}>
             <Text style={styles.text}>Address: {this.state.address}</Text>
             <Text style={styles.text}>Delivery Fee: ${this.state.dlexp}</Text>
@@ -163,17 +164,20 @@ export default class CreateOrderDetail extends Component {
             style={styles.cell}
             title='*Price(Plus Tax)'
             value={this.state.price}
+            isMandatory={true}
             onChangeText={(text) => this.handleChangeValue('price', {text})}>
           </FormCell>
           <FormCell
             style={styles.cell}
             title='*Name'
+            isMandatory={true}
             value={this.state.name}
             onChangeText={(text) => this.handleChangeValue('name', {text})}>
           </FormCell>
           <FormCell
             style={styles.cell}
             title='*Telephone'
+            isMandatory={true}
             value={this.state.phone}
             onChangeText={(text) => this.handleChangeValue('phone', {text})}>
           </FormCell>
@@ -189,7 +193,7 @@ export default class CreateOrderDetail extends Component {
             style={styles.button}>
             <Text style={styles.buttonTitle} onPress={this.onPress}>Place Order</Text>
           </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </View>
     );
   }
@@ -209,6 +213,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
   },
+  ESTcell:{
+    marginTop: Setting.getY(30),
+  },
   buttonTitle:{
     color: '#ffffff',
     fontSize: 24,
@@ -220,7 +227,7 @@ const styles = StyleSheet.create({
 
   text: {
     marginLeft: Setting.getX(28),
-    marginBottom: Setting.getY(30),
+    marginBottom: Setting.getY(15),
     fontSize: 19,
     fontFamily: 'Noto Sans CJK SC(Regular)',
   },
