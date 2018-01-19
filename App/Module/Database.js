@@ -3,6 +3,10 @@ const Realm               = require('realm');
 //=============================
 //              new
 //=============================
+import {
+  NativeModules,
+  DeviceEventEmitter,
+} from 'react-native';
 
 const cmr_system_scheam = {
   name: 'cmr_system',
@@ -28,6 +32,7 @@ export function DatabaseInit() {
   realm.write(() => {
     realm.create('cmr_system',{type: 'channel', value: 'cm-4'}, true);
     realm.create('cmr_system',{type: 'version', value: '1.1.0-beta'}, true);
+    realm.create('cmr_system',{type: 'deviceToken', value: ''}, true);
   })
   if(cmr_system.length <5) {
     realm.write(() => {
@@ -36,11 +41,18 @@ export function DatabaseInit() {
       realm.create('cmr_system',{type: 'uid', value: ''}, true);
     })
   }
+  NativeModules.DeviceToken.gettoken();
+  DeviceEventEmitter.addListener('token',(deviceToken)=>{
+    realm.write(() => {
+      realm.create('cmr_system',{type: 'deviceToken', value: deviceToken}, true);
+    })
+  });
 }
 export function GetDeviceInfo() {
   const channel = realm.objectForPrimaryKey('cmr_system','channel').value;
   const version = realm.objectForPrimaryKey('cmr_system','version').value;
-  return { channel,version }
+  const deviceToken  = realm.objectForPrimaryKey('cmr_system','deviceToken').value;
+  return { channel,version,deviceToken }
 }
 export function SaveUserInfo({interval,authortoken,token,rid,uid,firebaseURL,firebaseKEY,firebaseREF}) {
   realm.write(() => {
@@ -64,6 +76,7 @@ export function InitUserInfo() {
     realm.create('cmr_system',{type: 'firebaseURL', value: ''}, true);
     realm.create('cmr_system',{type: 'firebaseKEY', value: ''}, true);
     realm.create('cmr_system',{type: 'firebaseREF', value: ''}, true);
+    realm.create('cmr_system',{type: 'deviceToken', value: ''}, true);
   })
 }
 export function GetUserInfo() {
@@ -84,8 +97,14 @@ export function GetFirebaseInfo() {
 }
 export function LogOut() {
   realm.write(() => {
+    realm.create('cmr_system',{type: 'authortoken', value: ''}, true);
+    realm.create('cmr_system',{type: 'interval', value: ''}, true);
     realm.create('cmr_system',{type: 'token', value: ''}, true);
     realm.create('cmr_system',{type: 'rid', value: ''}, true);
     realm.create('cmr_system',{type: 'uid', value: ''}, true);
+    realm.create('cmr_system',{type: 'firebaseURL', value: ''}, true);
+    realm.create('cmr_system',{type: 'firebaseKEY', value: ''}, true);
+    realm.create('cmr_system',{type: 'firebaseREF', value: ''}, true);
+    realm.create('cmr_system',{type: 'deviceToken', value: ''}, true);
   })
 }

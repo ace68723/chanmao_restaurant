@@ -1,19 +1,15 @@
 import LoginAPI from './LoginAPI';
 import { GetDeviceInfo, GetUserInfo, SaveUserInfo, InitUserInfo } from '../Database';
 import DeviceInfo from 'react-native-device-info';
-import {
-  NativeModules,
-} from 'react-native';
 
 export default  {
   async login(username,password){
     try {
-      const deviceToken = NativeModules.DeviceToken.gettoken();
       const UUID = DeviceInfo.getUniqueID();
       const OS = DeviceInfo.getSystemName()
       const sysVersion = DeviceInfo.getSystemVersion()
       const sysOS = OS +sysVersion;
-      const { channel,version } = GetDeviceInfo();
+      const { channel, version, deviceToken } = GetDeviceInfo();
       const userInfo = await LoginAPI.login(deviceToken,username,password, channel, version, UUID,sysOS);
 
       if(userInfo.result === 0 ){
