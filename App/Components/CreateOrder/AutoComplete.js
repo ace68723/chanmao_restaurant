@@ -71,7 +71,7 @@ export default class App extends React.Component {
     const response = await fetch(url);
     const jsonResponse = await response.json();
     this.setState({ isLoading: false });
-    this.setState({ showList: false });
+    this.setState({ showList: true });
     this.props.onChangeText(prediction);
   }
 
@@ -80,7 +80,7 @@ export default class App extends React.Component {
   }
 
   onBlurInput(){
-    this.setState({ showList: false });
+    this.setState({ showList: true });
   }
 
   render() {

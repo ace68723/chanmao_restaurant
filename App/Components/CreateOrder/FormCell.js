@@ -27,8 +27,7 @@ export default class Formcell extends Component {
     return (
       <View style={[this.props.style,styles.container ]}>
           <AutoComplete
-            onChangeText={(text) => this.props.onChangeText({text})}
-            autoFocus={this.props.autoFocus}>
+            onChangeText={(text) => this.props.onChangeText({text})}>
           </AutoComplete>
       </View>
     );
