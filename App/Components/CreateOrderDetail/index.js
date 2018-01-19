@@ -8,12 +8,13 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Alert
 } from 'react-native';
+import LoginModule from '../../Module/Login/LoginModule';
 
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell.js'
-import Alert from '../Alert'
 import ESTFormCell from './ESTFormCell'
 import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
 const {height, width} = Dimensions.get('window');
@@ -48,35 +49,72 @@ export default class CreateOrderDetail extends Component {
     this._toggleAlert = this._toggleAlert.bind(this);
     this.onPressEST = this.onPressEST.bind(this);
     this.onPressCancel = this.onPressCancel.bind(this);
+    this._logOut = this._logOut.bind(this);
 
   }
 
   handleChangeValue(key, value) {
     this.setState({[key]: value.text.text});
   }
-  async onPress() {
-    var addressSplit = this.state.address.split(',');
-    const reqData = {
-      token: '',
-      rid: 5,
-      lat : this.state.lat,
-      lng : this.state.lng,
-      address : this.state.address,
-      postal : this.state.postal,
-      apt_no : this.state.unit,
-      buzz : this.state.buzz,
-      city : addressSplit[1],
-      dlexp : this.state.dlexp,
-      comment : '',
-      name : this.state.name,
-      pretax : this.state.price,
-      tel : this.state.phone,
-      uid : this.state.uid,
+  _logOut(){
+    this.setState({waiting:true});
+    setTimeout(()=>this.setState({waiting:false}),500);
+    this.props.navigator.resetTo({
+        screen: 'Login',
+        navigatorStyle: {
+          navBarHidden: true
+        },
+        passProps: {},
+        animationType: 'fade'
+      });
+    LoginModule.logout();
     }
-
-    console.log(reqData);
-    const data  = await CreateOrderModule.createOrder(reqData);
-    console.log(data);
+  async onPress() {
+    try{
+      var addressSplit = this.state.address.split(',');
+      const reqData = {
+        token: '',
+        rid: 5,
+        lat : this.state.lat,
+        lng : this.state.lng,
+        address : this.state.address,
+        postal : this.state.postal,
+        apt_no : this.state.unit,
+        buzz : this.state.buzz,
+        city : addressSplit[1],
+        dlexp : this.state.dlexp,
+        comment : '',
+        name : this.state.name,
+        pretax : this.state.price,
+        tel : this.state.phone,
+        uid : this.state.uid,
+      }
+  
+      console.log(reqData);
+      const data  = await CreateOrderModule.createOrder(reqData);
+      console.log(data);
+    }catch(error){
+      if (error == '用户超时，请退出重新登陆') {
+        Alert.alert(
+          "ERROR",
+          '用户超时，请退出重新登陆',
+          [
+            {text: 'Ok', onPress:()=>this._logOut()},
+          ],
+          { cancelable: false }
+        )
+      } else {
+        Alert.alert(
+          "ERROR",
+          '参数不够, 请填满信息',
+          [
+            {text: 'Ok',},
+          ],
+          { cancelable: false }
+        )
+      }
+   }
+    
   }
   onPressEST(value) {
     // console.log(value);

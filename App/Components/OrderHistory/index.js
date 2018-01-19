@@ -41,6 +41,7 @@ export default class OrderHistory extends Component {
     }
     this.setDate = this.setDate.bind(this);
     this._printHistory = this._printHistory.bind(this);
+    this._logOut = this._logOut.bind(this);
   }
 
   componentDidMount() {
@@ -54,7 +55,9 @@ export default class OrderHistory extends Component {
        });
     }
   }
-
+  _logOut(){
+    this.props.onPressLogout()
+    }
   async getSummary(){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
@@ -73,9 +76,25 @@ export default class OrderHistory extends Component {
        this.refs.loading.endLoading();
        
     }catch(error){
-      console.log(error);
-      clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
+      if (error == '用户超时，请退出重新登陆') {
+        Alert.alert(
+          "ERROR",
+          '用户超时，请退出重新登陆',
+          [
+            {text: 'Ok', onPress:()=>this._logOut()},
+          ],
+          { cancelable: false }
+        )
+      } else {
+        Alert.alert(
+          "ERROR",
+          '请退出重新登陆',
+          [
+            {text: 'Ok', onPress:()=>this._logOut()},
+          ],
+          { cancelable: false }
+        )
+      }
     }
   }
   _printHistory(){

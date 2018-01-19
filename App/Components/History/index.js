@@ -5,12 +5,14 @@ import {
   View,
   Text,
   StyleSheet,
+  Alert
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import OrderHistory from '../OrderHistory/index';
 import PaymentHistory from '../PaymentHistory/index';
 import Setting from '../../Config/Setting';
 import TabBar from './TabBar';
+import LoginModule from '../../Module/Login/LoginModule';
 import Loading from '../Loading';
 import PaymentHistoryModule from '../../Module/PaymentHistory/PaymentHistoryModule';
 
@@ -24,6 +26,7 @@ export default class HistoryPage extends Component {
     }
     this._goGetSummary = this._goGetSummary.bind(this);
     this.getSummary = this.getSummary.bind(this);
+    this._logOut = this._logOut.bind(this);
   }
   
 
@@ -34,6 +37,19 @@ export default class HistoryPage extends Component {
     console.log(record)
     this.getSummary(record)
  }
+ _logOut(){
+  this.setState({waiting:true});
+  setTimeout(()=>this.setState({waiting:false}),500);
+  this.props.navigator.resetTo({
+      screen: 'Login',
+      navigatorStyle: {
+        navBarHidden: true
+      },
+      passProps: {},
+      animationType: 'fade'
+    });
+  LoginModule.logout();
+  }
   async getSummary(record){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
@@ -52,9 +68,16 @@ export default class HistoryPage extends Component {
        this.refs.Tabs.goToPage(0);
        
     }catch(error){
-      console.log(error);
-      clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
+      if (error == '用户超时，请退出重新登陆') {
+        Alert.alert(
+          "ERROR",
+          '用户超时，请退出重新登陆',
+          [
+            {text: 'Ok', onPress:()=>this._logOut()},
+          ],
+          { cancelable: false }
+        )
+      }
     }
   }
     render() {
@@ -67,8 +90,16 @@ export default class HistoryPage extends Component {
               renderTabBar={() => <TabBar />}
               tabBarTextStyle = {{fontSize: 20, fontWeight: 'bold'}}
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}>
-              <OrderHistory list = {this.state.list} startDate = {this.state.startDate} endDate = {this.state.endDate} tabLabel='Order History'/>
-              <PaymentHistory onPress={(record) => this._goGetSummary(record)}   tabLabel='Payment History'/>
+              <OrderHistory 
+                    onPressLogout = {() => this._logOut()} 
+                    list = {this.state.list} 
+                    startDate = {this.state.startDate} 
+                    endDate = {this.state.endDate} 
+                    tabLabel='Order History'/>
+              <PaymentHistory 
+                    onPress={(record) => this._goGetSummary(record)} 
+                    onPressLogout = {() => this._logOut()}  
+                    tabLabel='Payment History'/>
             </ScrollableTabView>
           </View>
         );
