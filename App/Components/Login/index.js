@@ -77,9 +77,9 @@ export default class Login extends Component {
   }
   async login(username, password){
     try{
-
+       const deviceToken = NativeModules.DeviceToken.gettoken();
        this.refs.loading.startLoading();
-       const data = await LoginModule.login(username, password);
+       const data = await LoginModule.login(deviceToken,username, password);
 
        this.props.navigator.resetTo({
            screen: 'Tab',

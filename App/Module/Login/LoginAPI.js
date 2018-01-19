@@ -1,6 +1,6 @@
 import { API_LOGIN,API_AUTH } from '../../Config/API';
 export default  {
-    login(UUID,sysOS,username,password, channel, version){
+    login(deviceToken,UUID,sysOS,username,password, channel, version){
       const url = API_LOGIN;
       let options = {
           method: 'POST',

@@ -6,10 +6,10 @@ const OS = DeviceInfo.getSystemName()
 const sysVersion = DeviceInfo.getSystemVersion()
 const sysOS = OS +sysVersion;
 export default  {
-  async login(username,password){
+  async login(deviceToken,username,password){
     try {
       const { channel,version } = GetDeviceInfo();
-      const userInfo = await LoginAPI.login(username,password, channel, version,UUID,sysOS);
+      const userInfo = await LoginAPI.login(deviceToken,username,password, channel, version, UUID,sysOS);
 
       if(userInfo.result === 0 ){
          const token =userInfo.token;
