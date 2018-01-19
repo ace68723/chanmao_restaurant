@@ -15,17 +15,11 @@ import AutoComplete from './AutoComplete.js'
 export default class Formcell extends Component {
   constructor(props) {
     super(props);
-    this.onPressAddress = this.onPressAddress.bind(this);
   }
-  onPressAddress() {
-    if (this.props.isAddress){
 
-    }
-  }
   render() {
-    let {id, title, value, isMandatory, isAddress} = this.props;
     return (
-      <View style={[this.props.style,styles.container ]}>
+      <View style={[ this.props.style,styles.container ]}>
           <AutoComplete
             onChangeText={(text) => this.props.onChangeText({text})}>
           </AutoComplete>
