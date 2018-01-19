@@ -15,7 +15,6 @@ import {
   Button,
   Alert,
   AsyncStorage,
-
   DeviceEventEmitter,
 } from 'react-native';
 import Loading from '../Loading';
@@ -45,7 +44,6 @@ export default class Login extends Component {
   }
   componentDidMount(){
       this.auth();
-      console.log(NativeModules.DeviceToken.gettoken());
 
   }
   _setUsername(username){
@@ -77,9 +75,9 @@ export default class Login extends Component {
   }
   async login(username, password){
     try{
-       const deviceToken = NativeModules.DeviceToken.gettoken();
+
        this.refs.loading.startLoading();
-       const data = await LoginModule.login(deviceToken,username, password);
+       const data = await LoginModule.login(username, password);
 
        this.props.navigator.resetTo({
            screen: 'Tab',
