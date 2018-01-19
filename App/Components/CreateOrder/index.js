@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
   Modal
 } from 'react-native';
 import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
@@ -97,15 +98,17 @@ export default class CreateOrder extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
 
         <View style={{
           backgroundColor:'white',
           width:Setting.getX(540),
+          height:Setting.getY(76),
           justifyContent:'center',
           borderBottomColor: '#EA7B21',
           borderBottomWidth: 1,
-          flex:0.075        }}>
+          flex:0.075        
+        }}>
           <Text style={{
             color:'black',
             fontSize:22,
@@ -121,7 +124,7 @@ export default class CreateOrder extends Component {
           keyExtractor={(item, index) => index}
           onChangeText={(text) => this.handleChangeValue('address', {text})}>
         </FormCell>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -129,7 +132,7 @@ export default class CreateOrder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start'
+    // justifyContent: 'flex-start'
   },
   cell:{
     flex:0.925,
