@@ -5,11 +5,11 @@ import DeviceInfo from 'react-native-device-info';
 export default  {
   async login(username,password){
     try {
+      const { channel, version, deviceToken } = GetDeviceInfo();
       const UUID = DeviceInfo.getUniqueID();
       const OS = DeviceInfo.getSystemName()
       const sysVersion = DeviceInfo.getSystemVersion()
       const sysOS = OS +sysVersion;
-      const { channel, version, deviceToken } = GetDeviceInfo();
       const userInfo = await LoginAPI.login(deviceToken,username,password, channel, version, UUID,sysOS);
 
       if(userInfo.result === 0 ){
@@ -22,7 +22,7 @@ export default  {
          const firebaseKEY = userInfo.firebase_key;
          const firebaseREF = userInfo.firebase_ref;
          const eo_data ={
-             result: userInfo.result
+             result: userInfo.result,
          }
          SaveUserInfo({ authortoken,
                         token,

@@ -19,6 +19,7 @@ import {
 import Loading from '../Loading';
 import Setting from '../../Config/Setting';
 import LoginModule from '../../Module/Login/LoginModule';
+import { GetDeviceInfo } from '../../Module/Database';
 
 export default class Login extends Component {
   constructor(){
@@ -30,6 +31,7 @@ export default class Login extends Component {
       password:'aidentest',
       buttonText:'GO',
       waiting: false,
+      ver:''
     }
     this._setUsername = this._setUsername.bind(this);
     this._setPassword = this._setPassword.bind(this);
@@ -37,11 +39,14 @@ export default class Login extends Component {
     this.login = this.login.bind(this);
   }
   componentWillMount() {
-
+    
   }
   componentDidMount(){
       this.auth();
-
+      const {version} = GetDeviceInfo();
+      this.setState({
+        ver: version,
+      })
   }
   _setUsername(username){
     this.setState({username});
@@ -75,7 +80,6 @@ export default class Login extends Component {
 
        this.refs.loading.startLoading();
        const data = await LoginModule.login(username, password);
-
        this.props.navigator.resetTo({
            screen: 'Tab',
            navigatorStyle: {
@@ -132,7 +136,7 @@ export default class Login extends Component {
         </View>
         <View style={styles.copyrightView}>
           <Text style={styles.copyrightFont}>Chanmao Inc. 版权所有</Text>
-          <Text style={styles.copyrightFont}>版本号 V1.0.0</Text>
+          <Text style={styles.copyrightFont}>版本号 V{this.state.ver}</Text>
         </View>
       </View>
     );

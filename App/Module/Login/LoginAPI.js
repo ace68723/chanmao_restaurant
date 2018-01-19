@@ -6,17 +6,16 @@ export default  {
           method: 'POST',
           mode:'cors',
           headers: {
-              'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
             
           }
       }
-      options.headers = JSON.stringify({
-        'Cmversion':version,
-        'Cmuuid':UUID,
-        'Cmos':sysOS,
-        'Devicetoken':deviceToken
-    })
-      
+      options.headers = Object.assign(options.headers,{
+         'Cmversion':version,
+         'Cmuuid':UUID,
+         'Cmos':sysOS,
+         'Devicetoken':deviceToken
+      })
       options.body = JSON.stringify({
           "name": username,
           "password":password,

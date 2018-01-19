@@ -41,7 +41,6 @@ export default class OrderHistory extends Component {
     }
     this.setDate = this.setDate.bind(this);
     this._printHistory = this._printHistory.bind(this);
-    this._disableDoubleClick = this._disableDoubleClick.bind(this);
   }
 
   componentDidMount() {
@@ -56,27 +55,16 @@ export default class OrderHistory extends Component {
     }
   }
 
-  _disableDoubleClick() {
-    this.setState({
-      waiting:true,
-    })
-    console.log(this.state.waiting)
-    setTimeout(() => {
-      this.setState({
-        waiting:false,
-      })
-    }, 1000);
-    console.log(this.state.waiting)
-
-  }
   async getSummary(){
+    const loadingTimeout = setTimeout(() => {
+      this.refs.loading.startLoading();
+     }, 300);//add loading if request more than 200ms
     try{
-      this._disableDoubleClick();
-       const bill_start = this.state.startDate;
+      this.setState({waiting:true});
+      setTimeout(()=>this.setState({waiting:false}),500);       
+      const bill_start = this.state.startDate;
        const bill_end = this.state.endDate;
-       const loadingTimeout = setTimeout(() => {
-        this.refs.loading.startLoading();
-       }, 300);//add loading if request more than 200ms
+      
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
        this.setState({
          list: data

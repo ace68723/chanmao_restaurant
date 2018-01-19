@@ -34,7 +34,7 @@ export default class Loading extends Component {
        >
          <View style={styles.modalContainer}>
            <View style={styles.innerContainer}>
-             <ActivityIndicator size={60} color="#c49a6c" animating={this.state.isShowing} style={{marginBottom:20}}/>
+             <ActivityIndicator size={60} color="#ea7b21" animating={this.state.isShowing} style={{marginBottom:20}}/>
            </View>
          </View>
 
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
   modalContainer: {
    flex: 1,
    justifyContent: 'center',
-   backgroundColor: 'rgba(50, 50, 50, 0.8)',
+   backgroundColor: '#000000',
+   opacity:0.4
  },
  innerContainer: {
    alignItems: 'center',
