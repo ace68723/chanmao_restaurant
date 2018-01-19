@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import Setting from '../../Config/Setting';
 import PrintModule from '../../Module/Print/PrintModule';
@@ -35,11 +36,210 @@ export default class OrderDetail extends Component {
     this._renderOrderInfo=this._renderOrderInfo.bind(this);
     this._renderDeliveryButton=this._renderDeliveryButton.bind(this);
     this._renderDeliverType=this._renderDeliverType.bind(this);
+    this._renderTouchable=this._renderTouchable.bind(this);
   }
   componentDidMount() {
     console.log(this.props);
     this._getOrderDetail();
   }
+
+  async _getOrderDetail(){
+    try{
+       const oid = this.props.oid;
+       const loadingTimeout = setTimeout(() => {
+         this.refs.loading.startLoading();
+       }, 300);//add loading if request more than 200ms
+
+       const data = await OrderDetailModule.getOrderDetail(oid);
+       console.log(data)
+       this.setState({
+         itemList: data.items,
+         totalPrice: data.total,
+         user: data.name,
+         tel: data.tel,
+         comment: data.comment,
+         dltype:data.dltype,
+         restaurantName:data.restaurant_name,
+         restaurantAddress:data.restaurant_address,
+         restaurantPhoneNumber: data.restaurant_cel,
+         orderTime:data.order_time,
+         subTotal:data.subtotal,
+         tax:data.tax,
+       })
+         clearTimeout(loadingTimeout);
+         this.refs.loading.endLoading();
+
+    }catch(error){
+      console.log(error);
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
+    }
+  }
+  async _handleOrder(task){
+
+    try {
+      this.setState({waiting:true})
+      setTimeout(()=>this.setState({waiting:false}),500)
+
+      const oid = this.props.oid;
+      const loadingTimeout = setTimeout(() => {
+        this.refs.loading.startLoading();
+      }, 100);//add loading if request more than 200ms
+
+      const itemList = this.state.itemList;
+      const data = await OrderDetailModule.handleOrder({oid,task,itemList});
+
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
+
+      this.props.navigator.dismissModal({
+        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+      });
+      await this._printOrder();
+      setTimeout(() =>{
+        this._printOrder();
+      }, 2000);
+    } catch (e) {
+      console.log(e)
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
+    }
+  }
+  _printerWatting = false;
+  async _printOrder(){
+    if(this._printerWatting) return;
+    this._printerWatting = true;
+    console.log('_printOrder')
+    let dltypeMessage;
+    if(this.state.dltype == 0 ){
+      dltypeMessage = 'Pick Up';
+    }else{
+      dltypeMessage = 'Delivery';
+    }
+    let data = {
+      type:'receipt',
+      dltypeMessage:dltypeMessage,
+      restaurantName: this.state.restaurantName,
+      restaurantAddress: this.state.restaurantAddress,
+      restaurantPhoneNumber: this.state.restaurantPhoneNumber,
+      orderTime: this.state.orderTime,
+      subTotal: this.state.subTotal,
+      tax: this.state.tax,
+      orderNumber:this.props.oid,
+      orderArray:this.state.itemList,
+      total:this.state.totalPrice,
+      printTitles:this.state.printTitles,
+      comment:this.state.comment,
+    }
+    await PrintModule.printContent(data);
+
+    this._printerWatting = false;
+  }
+  _changeSoldState(index){
+    let temp = this.state.itemList;
+    temp[index].sold = !this.state.itemList[index].sold;
+    this.setState({itemList:temp},()=>console.log(this.state.itemList[index]));
+  }
+
+
+
+  _renderList(){
+
+    if (this.state.itemList.length==0) return;
+    return(
+          <View style= {{height:this.state.itemList.length * 30 + 40, borderBottomWidth:1,
+            borderColor:'#D1D3D4'}}>
+        {this._renderListTitle()}
+        <View style = {{height: this.state.itemList.length * 30}}>
+          {this._renderItems(this.state.itemList)}
+        </View>
+      </View>
+    )
+  }
+  _renderListTitle(){
+    if(this.props.status==="0"){
+    return(
+        <View style={styles.titleContainer}>
+          <View style={{width:70}}>
+            <Text style={styles.titleFont}>Dish No.</Text>
+          </View>
+          <View style={{width:100}}>
+            <Text style={styles.titleFont}>Dish Name</Text>
+          </View>
+          <View style={{width:60,marginLeft:20}}>
+            <Text style={styles.titleFont}>Amount</Text>
+          </View>
+          <View style={{width:70, marginLeft:10}}>
+            <Text style={styles.titleFont}>Sold Out</Text>
+          </View>
+        </View>
+      )
+    }
+    else{
+      return(
+          <View style={styles.titleContainer}>
+            <View style={{width:70}}>
+              <Text style={styles.titleFont}>Dish No.</Text>
+            </View>
+            <View style={{width:160}}>
+              <Text style={styles.titleFont}>Dish Name</Text>
+            </View>
+            <View style={{width:60,marginLeft:20}}>
+              <Text style={styles.titleFont}>Amount</Text>
+            </View>
+
+          </View>
+        )
+    }
+  }
+  _renderItems(items){
+    if(this.props.status==="0"){
+      return items.map((item,index)=>{
+          return(
+            <TouchableOpacity onPress={()=>this._changeSoldState(index)} >
+
+  
+
+
+              <View key={index} style={styles.itemContainer}>
+                <View style={{flex:0.2}}>
+                  <Text>{item.ds_id}</Text>
+                </View>
+                <View style={{flex:0.4}}>
+                  <Text>{item.ds_name}</Text>
+                </View>
+                <View style={{flex:0.2}}>
+                  <Text>{item.amount}</Text>
+                </View>
+                <View style={{flex:0.2}}>
+                  <View style={[styles.checkBox,{ backgroundColor:this.state.itemList[index].sold ?'#F15A29' : 'white' }]}>
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )
+        }
+      )
+    }else{
+      return items.map((item,index)=>{
+          return(
+            <View key={index} style={styles.itemContainer}>
+              <View style={{flex:0.2}}>
+                <Text>{item.ds_id}</Text>
+              </View>
+              <View style={{flex:0.6}}>
+                <Text>{item.ds_name}</Text>
+              </View>
+              <View style={{flex:0.2}}>
+                <Text>{item.amount}</Text>
+              </View>
+            </View>
+          )
+        }
+      )
+    }
+  }
+
   _renderDeliverType(dltype){
     if(dltype == 0){
       return(
@@ -67,8 +267,7 @@ export default class OrderDetail extends Component {
       )
     }
   }
-  _renderDeliveryButton(status)
-  {
+  _renderDeliveryButton(status){
     let statusMessage;
     let statusColor;
     switch (status) {
@@ -129,8 +328,7 @@ export default class OrderDetail extends Component {
       </View>
     )
   }
-  _renderOrderInfo()
-  {
+  _renderOrderInfo(){
 
       if (this.state.itemList.length==0) return;
     return(
@@ -236,203 +434,23 @@ export default class OrderDetail extends Component {
       </View>
     )
   }
-  async _getOrderDetail(){
-    try{
-       const oid = this.props.oid;
-       const loadingTimeout = setTimeout(() => {
-         this.refs.loading.startLoading();
-       }, 300);//add loading if request more than 200ms
 
-       const data = await OrderDetailModule.getOrderDetail(oid);
-       console.log(data)
-       this.setState({
-         itemList: data.items,
-         totalPrice: data.total,
-         user: data.name,
-         tel: data.tel,
-         comment: data.comment,
-         dltype:data.dltype,
-       })
-         clearTimeout(loadingTimeout);
-         this.refs.loading.endLoading();
-
-    }catch(error){
-      console.log(error);
-      clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
-    }
-  }
-  async _handleOrder(task){
-
-    try {
-      this.setState({waiting:true})
-      setTimeout(()=>this.setState({waiting:false}),500)
-
-      const oid = this.props.oid;
-      const loadingTimeout = setTimeout(() => {
-        this.refs.loading.startLoading();
-      }, 100);//add loading if request more than 200ms
-
-      const itemList = this.state.itemList;
-      const data = await OrderDetailModule.handleOrder({oid,task,itemList});
-      this.props.navigator.dismissModal({
-        animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
-      });
-      await this._printOrder();
-      setTimeout(() =>{
-        this._printOrder();
-      }, 2000);
-      clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
-
-    } catch (e) {
-      console.log(e)
-      clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
-    }
-  }
-  _printerWatting = false;
-  async _printOrder(){
-    if(this._printerWatting) return;
-    this._printerWatting = true;
-    console.log('_printOrder')
-    let dltypeMessage;
-    if(this.state.dltype == 0 ){
-      dltypeMessage = 'Pick Up';
-    }else{
-      dltypeMessage = 'Delivery';
-    }
-    let data = {
-      type:'receipt',
-      dltypeMessage:dltypeMessage,
-      restaurantName:'西北楼',
-      restaurantAddress:'3212 Yonge Street',
-      restaurantPhoneNumber: '647-684-6483',
-      orderTime:'2017-02-15 12:30:12',
-      orderNumber:this.props.oid,
-      orderArray:this.state.itemList,
-      subTotal:'',
-      tax:'',
-      total:this.state.totalPrice,
-      printTitles:this.state.printTitles,
-      comment:this.state.comment,
-    }
-    await PrintModule.printContent(data);
-
-    this._printerWatting = false;
-  }
-
-  _renderListTitle(){
-    if(this.props.type == 'new'){
-    return(
-        <View style={styles.titleContainer}>
-          <View style={{width:70}}>
-            <Text style={styles.titleFont}>Dish No.</Text>
-          </View>
-          <View style={{width:100}}>
-            <Text style={styles.titleFont}>Dish Name</Text>
-          </View>
-          <View style={{width:60,marginLeft:20}}>
-            <Text style={styles.titleFont}>Amount</Text>
-          </View>
-          <View style={{width:70, marginLeft:10}}>
-            <Text style={styles.titleFont}>Sold Out</Text>
-          </View>
-        </View>
-      )
-    }
-    else{
-      return(
-          <View style={styles.titleContainer}>
-            <View style={{width:70}}>
-              <Text style={styles.titleFont}>Dish No.</Text>
-            </View>
-            <View style={{width:160}}>
-              <Text style={styles.titleFont}>Dish Name</Text>
-            </View>
-            <View style={{width:60,marginLeft:20}}>
-              <Text style={styles.titleFont}>Amount</Text>
-            </View>
-
-          </View>
-        )
-    }
-  }
-  _renderItems(items){
-    if(this.props.type == 'new'){
-      return items.map((item,index)=>{
-          return(
-            <View key={index} style={styles.itemContainer}>
-              <View style={{flex:0.2}}>
-                <Text>{item.ds_id}</Text>
-              </View>
-              <View style={{flex:0.4}}>
-                <Text>{item.ds_name}</Text>
-              </View>
-              <View style={{flex:0.2}}>
-                <Text>{item.amount}</Text>
-              </View>
-              <View style={{flex:0.2}}>
-                <TouchableOpacity style={[styles.checkBox,{ backgroundColor:this.state.itemList[index].sold ?'#F15A29' : 'white' }]}
-                    onPress={()=>this._changeSoldState(index)}/>
-              </View>
-            </View>
-          )
-        }
-      )
-    }else{
-      return items.map((item,index)=>{
-          return(
-            <View key={index} style={styles.itemContainer}>
-              <View style={{flex:0.2}}>
-                <Text>{item.ds_id}</Text>
-              </View>
-              <View style={{flex:0.6}}>
-                <Text>{item.ds_name}</Text>
-              </View>
-              <View style={{flex:0.2}}>
-                <Text>{item.amount}</Text>
-              </View>
-            </View>
-          )
-        }
-      )
-    }
-  }
-  _changeSoldState(index){
-    let temp = this.state.itemList;
-    temp[index].sold = !this.state.itemList[index].sold;
-    this.setState({itemList:temp},()=>console.log(this.state.itemList[index]));
-  }
-  _renderList(){
-
-    if (this.state.itemList.length==0) return;
-    return(
-          <View style= {{height:this.state.itemList.length * 30 + 40, borderBottomWidth:1,
-            borderColor:'#D1D3D4'}}>
-        {this._renderListTitle()}
-        <View style = {{height: this.state.itemList.length * 30}}>
-          {this._renderItems(this.state.itemList)}
-        </View>
-      </View>
-    )
-  }
   _renderTimesOptions(){
-  return timeStr.map((timeStr,index)=>{
-        return(
-          <View key={index} style={{flex:1}} >
-            <TouchableOpacity style={[styles.timeButtonStyle,
-                                      {backgroundColor: this.state.estimateTime==timeStr ? '#798BA5':'white'}
-                                    ]}
-                  onPress={()=>this.setState({estimateTime:timeStr})}>
+    return timeStr.map((timeStr,index)=>{
+          return(
+            <View key={index} style={{flex:1}} >
+              <TouchableOpacity style={[styles.timeButtonStyle,
+                                        {backgroundColor: this.state.estimateTime==timeStr ? '#798BA5':'white'}
+                                      ]}
+                    onPress={()=>this.setState({estimateTime:timeStr})}>
 
-              <Text style={{fontSize:16, color: this.state.estimateTime==timeStr ? 'white':'#798BA5'}}>{timeStr}</Text>
+                <Text style={{fontSize:16, color: this.state.estimateTime==timeStr ? 'white':'#798BA5'}}>{timeStr}</Text>
 
-            </TouchableOpacity>
-          </View>
-        )
-      }
-    )
+              </TouchableOpacity>
+            </View>
+          )
+        }
+      )
 
   }
   _renderDetails(){
@@ -468,7 +486,7 @@ export default class OrderDetail extends Component {
       let soldOutArr = this.state.itemList.filter(item => item.sold == true);
       let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
       return(
-        <View style={[styles.confirmContainer,{height:120}]} >
+        <View style={[styles.confirmContainer,{height:60}]} >
           <View style={styles.confirmInfoView}>
             <View style={{flex:0.5,
             }}>
@@ -478,16 +496,12 @@ export default class OrderDetail extends Component {
               <Text style={styles.detailInfoFont}>Tel: {this.state.tel}</Text>
             </View>
           </View>
-          <View style={styles.confirmButtonView} >
-              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._handleOrder.bind(null,0)}>
-                <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
-              </TouchableOpacity>
-          </View>
+
         </View>
       )
     }else{
       return(
-        <View style={[styles.confirmContainer,{height:120}]} >
+        <View style={[styles.confirmContainer,{height:60}]} >
           <View style={styles.confirmInfoView}>
             <View style={{flex:0.5}}>
               <Text style={styles.detailInfoFont}>User: {this.state.user}</Text>
@@ -496,14 +510,33 @@ export default class OrderDetail extends Component {
               <Text style={styles.detailInfoFont}>Tel: {this.state.tel}</Text>
             </View>
           </View>
+
+        </View>
+      )
+    }
+  }
+  _renderTouchable(){
+
+      if (this.state.itemList.length==0) return;
+      if (this.props.status == '0'){
+        let soldOutArr = this.state.itemList.filter(item => item.sold == true);
+        let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
+        return (
+          <View style={styles.confirmButtonView} >
+              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._handleOrder.bind(null,0)}>
+                <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
+              </TouchableOpacity>
+          </View>
+        )
+      }else {
+        return (
           <View style={styles.confirmButtonView} >
               <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._printOrder}>
                 <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>Print</Text>
               </TouchableOpacity>
           </View>
-        </View>
-      )
-    }
+        )
+      }
   }
   render() {
     return (
@@ -511,9 +544,18 @@ export default class OrderDetail extends Component {
         <Loading ref="loading" size={60}/>
         {this._renderOrderType()}
         {this._renderOrderInfo()}
+        <ScrollView   style={{flex:1,
+          backgroundColor:'white',
+          borderTopWidth:1,
+          borderTopColor:'grey',
+          borderBottomWidth:1,
+          borderBottomColor:'grey',
+        }} showsVerticalScrollIndicator={true}>
         {this._renderList()}
         {this._renderDetails()}
         {this._renderConfirm()}
+        </ScrollView>
+        {this._renderTouchable()}
       </View>
     );
   }
@@ -586,7 +628,8 @@ export default class OrderDetail extends Component {
   },
   confirmButtonView:{
     alignItems:'center',
-    flex:0.7,
+    flex:0.3,
+    justifyContent:'center',
   },
   confirmButtonStyle:{
     height:Setting.getY(75),

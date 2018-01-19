@@ -24,18 +24,16 @@ export default class OrderHistory extends Component {
     navBarBackgroundColor:"white",
     navBarButtonColor:"#EA7B21"
   }
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state={
       totalAmount: 2008.1,
       printButtonName:'Print',
       startTitle:'Start',
       endTitle:'End',
-      startDate:'YYYY/MM/DD',
-      endDate:'YYYY/MM/DD',
-      list: [
-
-      ],
+      startDate:props.startDate,
+      endDate:props.endDate,
+      list: props.list,
       waiting: false,
       "page_num" :1,
       "page_size":50,
@@ -45,8 +43,19 @@ export default class OrderHistory extends Component {
     this._printHistory = this._printHistory.bind(this);
     this._disableDoubleClick = this._disableDoubleClick.bind(this);
   }
+
   componentDidMount() {
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.list !== this.props.list) {
+      this.setState({ 
+        list: nextProps.list,
+        startDate: nextProps.startDate,
+        endDate: nextProps.endDate
+       });
+    }
+  }
+
   _disableDoubleClick() {
     this.setState({
       waiting:true,
@@ -139,33 +148,42 @@ export default class OrderHistory extends Component {
   renderSelectDate(){
     return(
       <View style={styles.timeView} >
-
-        <TouchableOpacity style={[{
-           marginLeft: Settings.getX(30),
-           marginRight: Settings.getX(10),
-           paddingLeft:10},
-           styles.timeSelectButton]}
+   
+        <TouchableOpacity style={{
+           flex:0.5,
+           justifyContent:'center'}}
            onPress={()=>this.openDatePicker('start','YYYY/MM/DD')}>
-            <Text style={{
-              fontSize:15,
-               color:'#EA7B21',
-               fontFamily:'Noto Sans CJK SC'
-            }}>{this.state.startTitle}</Text>
-            <Text style={{fontSize:12,
-              color:'#6D6E71',
-              fontFamily:'Noto Sans CJK SC',
-              paddingLeft:Settings.getX(20)
-          }}>{this.state.startDate}</Text>
+           <View style = {[{
+           marginLeft: Settings.getX(30),
+           marginRight: Settings.getX(10)},
+           styles.timeSelectButton]} >
+              <Text style={{
+                  fontSize:15,
+                  color:'#EA7B21',
+                  paddingLeft:10,
+                  fontFamily:'Noto Sans CJK SC'
+                }}>{this.state.startTitle}</Text>
+                <Text style={{fontSize:12,
+                  color:'#6D6E71',
+                  fontFamily:'Noto Sans CJK SC',
+                  paddingLeft:Settings.getX(20)
+              }}>{this.state.startDate}</Text>
+           </View>
+            
         </TouchableOpacity>
-        <TouchableOpacity style={[{
-          marginRight: Settings.getX(30),
-          marginLeft: Settings.getX(10),
-          paddingLeft:10},styles.timeSelectButton]}
+        <TouchableOpacity style={{
+          flex:0.5,
+          justifyContent:'center'}}
           onPress={()=>this.openDatePicker('end','YYYY/MM/DD')}
         >
-            <Text style={{
+         <View style = {[{
+           marginRight: Settings.getX(30),
+           marginLeft: Settings.getX(10),},
+           styles.timeSelectButton]} >
+        <Text style={{
               fontSize:15,
                color:'#EA7B21',
+               paddingLeft:10,
                fontFamily:'Noto Sans CJK SC'
             }}>{this.state.endTitle}</Text>
             <Text style={{fontSize:12,
@@ -173,6 +191,8 @@ export default class OrderHistory extends Component {
               fontFamily:'Noto Sans CJK SC',
               paddingLeft:Settings.getX(20)
           }}>{this.state.endDate}</Text>
+        </View>
+           
         </TouchableOpacity>
 
       </View>
@@ -299,8 +319,7 @@ const styles = StyleSheet.create({
     flex:0.1,
   },
   timeSelectButton:{
-    flex:0.5,
-    marginTop: Settings.getY(25),
+    height: '65%',
     borderColor: '#EA7B21',
     borderWidth: 1,
     borderRadius: 8,

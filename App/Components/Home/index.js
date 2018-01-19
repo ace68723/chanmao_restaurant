@@ -12,10 +12,13 @@ import {
   AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting';
-
+import Loading from '../Loading';
 import OrderItem from './OrderItem';
+import HomeModule from '../../Module/Home/HomeModule';
 
 import * as firebase from 'firebase';
+import TimerMixin from 'react-timer-mixin';
+import { GetUserInfo } from '../../Module/Database';
 const firebaseConfig = {
   apiKey: "AIzaSyAtQAN3PhdIsFEHkEJfiuQQHVcm9ZSfYFQ",
   databaseURL: "https://cm-rrclient-3.firebaseio.com",
@@ -24,145 +27,53 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 export default class Home extends Component {
+  mixins: [TimerMixin];
   constructor()
   {
     super();
     this.state={
       reRender:0,
-      // newOrder:[
-      //   {
-      //     isOpen:false,
-      //     orderNumber:'3019281',
-      //     time:'12:33:49',
-      //     price:'85.22',
-      //     deliveryStatus:0,
-      //     manu:[{
-      //       itemNumber:'K20',
-      //       name:'item1',
-      //       amount:1,
-      //       soldoutOrNot:false,
-      //     },
-      //     {
-      //       itemNumber:'K21',
-      //       name:'item2',
-      //       amount:1,
-      //       soldoutOrNot:false,
-      //     }
-      //     ],
-      //   },
-      //   {
-      //     isOpen:false,
-      //     orderNumber:'3019282',
-      //     time:'12:33:49',
-      //     price:'85.22',
-      //     deliveryStatus:0,
-      //     manu:[{
-      //       itemNumber:'K22',
-      //       name:'item1',
-      //       amount:1,
-      //       soldoutOrNot:false,
-      //     },
-      //     {
-      //       itemNumber:'K23',
-      //       name:'item2',
-      //       amount:1,
-      //       soldoutOrNot:false,
-      //     }
-      //     ],
-      //   },
-      // ],
-      // recentOrder:[
-      //   {
-      //     isOpen:false,
-      //     orderNumber:'3019285',
-      //     time:'12:33:49',
-      //     price:'85.22',
-      //     deliveryStatus:1,
-      //     manu:[{
-      //       itemNumber:'K26',
-      //       name:'item5',
-      //       amount:1,
-      //       soldoutOrNot:false,
-      //     },
-      //     {
-      //       itemNumber:'K28',
-      //       name:'item7',
-      //       amount:1,
-      //       soldoutOrNot:false,
-      //     }
-      //     ],
-      //   },
-      //   {
-      //     isOpen:false,
-      //     orderNumber:'3019286',
-      //     time:'12:33:49',
-      //     price:'85.22',
-      //     deliveryStatus:2,
-      //     manu:[{
-      //       itemNumber:'K27',
-      //       name:'item5',
-      //       amount:1,
-      //       soldoutOrNot:false,
-      //     },
-      //     {
-      //       itemNumber:'K29',
-      //       name:'item7',
-      //       amount:1,
-      //       soldoutOrNot:false,
-      //     }
-      //     ],
-      //   },
-      // ]
-      stickyHeaderIndices: [],
+      newOrder:[],
+      Orders:[],
+      recentOrder: [],
     }
     this._renderItem=this._renderItem.bind(this);
-    this._listenForItems = this._listenForItems.bind(this);
     this.scrollToIndexI=this.scrollToIndexI.bind(this);
+    this._fetchOrder = this._fetchOrder.bind(this);
+    this.updateOrders = this.updateOrders.bind(this);
   }
   componentDidMount(){
-    this._listenForItems();
+    this.refs.loading.endLoading();
+    this._fetchOrder();
+    this.updateOrders();
   }
-  _listenForItems() {
-      let newOrder,recentOrder;
-      let headerIndices=[];
-      const starCountRef = firebase.database().ref('rrclient/5/');
-
-      starCountRef.on('value',(snapshot)=> {
-        if(!snapshot.val()) {
-          let Orders=[{title:'NEW ORDER',color:'#ea7B21'}]
-          this.setState({
-            Orders:Orders,
-          });
-          return
-        };
-        newOrder = snapshot.val().new;
-        recentOrder = snapshot.val().done;
-        headerIndices.push(0);
-        if(recentOrder){
-          recentOrder =  Object.entries(recentOrder).map(e => Object.assign(e[1], { key: e[0] }));
-        } else {
-          recentOrder = [];
-        }
-        if(newOrder){
-          newOrder = Object.entries(newOrder).map(e => Object.assign(e[1], { key: e[0] }));
-        } else {
-          newOrder = [];
-        }
-        let Orders=[{title:'NEW ORDER',color:'#ea7B21'},...newOrder,{title:'RECENT ORDER',color:'#798BA5'}, ...recentOrder];
-
-        headerIndices.push(newOrder.length+1);
-        console.log(newOrder);
-        console.log(recentOrder);
-        console.log(Orders);
+  updateOrders() {
+    let { interval } = GetUserInfo();
+    interval = parseInt(interval*1000,10);
+    this.timer = setTimeout(() => {
+      this._fetchOrder();
+    }, interval);
+  
+  }
+  async _fetchOrder() {
+    try{
+      this.refs.loading.startLoading();
+      const data = await HomeModule.fetchOrder();
+      if (data.ev_result === 0) {
+        let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
         this.setState({
-          newOrder:newOrder,
-          recentOrder: recentOrder,
-          Orders:Orders,
-          stickyHeaderIndices:headerIndices,
-        });
-        console.log(this.state.stickyHeaderIndices);
-      });
+          newOrder:data.ea_new,
+          recentOrder: data.ea_done,
+          Orders: Orders
+        })
+      }
+      console.log(this.state)
+      this.refs.loading.endLoading();
+     }catch(error){
+     console.log(error);
+   }
   }
+  
   scrollToIndexI(index)
   {
     console.log(index);
@@ -195,6 +106,7 @@ export default class Home extends Component {
 
     return (
       <ScrollView style={styles.container}>
+              <Loading ref="loading" size={60}/>
         <View style={{
           backgroundColor:'white',
           width:Settings.getX(540),

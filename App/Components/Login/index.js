@@ -14,11 +14,12 @@ import {
   NativeModules,
   Button,
   Alert,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native';
 import Loading from '../Loading';
 import Setting from '../../Config/Setting';
 import LoginModule from '../../Module/Login/LoginModule';
+
 export default class Login extends Component {
   constructor(){
     super();
@@ -35,8 +36,12 @@ export default class Login extends Component {
     this._submit = this._submit.bind(this);
     this.login = this.login.bind(this);
   }
+  componentWillMount() {
+
+  }
   componentDidMount(){
       this.auth();
+
   }
   _setUsername(username){
     this.setState({username});
@@ -62,16 +67,15 @@ export default class Login extends Component {
            animationType: 'slide-down'
          });
       }catch(error){
-
         return
       }
   }
   async login(username, password){
     try{
+
        this.refs.loading.startLoading();
        const data = await LoginModule.login(username, password);
 
-       this.refs.loading.endLoading();
        this.props.navigator.resetTo({
            screen: 'Tab',
            navigatorStyle: {
@@ -158,7 +162,7 @@ const styles = StyleSheet.create({
     width:Setting.getX(274),
     fontSize:24,
     fontFamily:'Noto Sans CJK SC',
-    textAlign: 'center',
+    textAlign: 'left',
 
   },
   buttonView:{

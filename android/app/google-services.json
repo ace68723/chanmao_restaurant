@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "767008577931",
+    "firebase_url": "https://cmrestaurant-aa620.firebaseio.com",
+    "project_id": "cmrestaurant-aa620",
+    "storage_bucket": "cmrestaurant-aa620.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767008577931:android:ab323615ff9e73ea",
+        "android_client_info": {
+          "package_name": "com.cm_restaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767008577931-flbjss3q2bg7vunru58g48ublba4ecla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv9ThrbZbgXAIxsR3uO-p44dkY-4TaWIM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

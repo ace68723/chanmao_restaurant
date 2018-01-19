@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#798BA5',
     width: Setting.getX(102),
-    height: Setting.getY(40),
+    height: Setting.getY(50),
+    justifyContent:'center',
     backgroundColor: 'white',
     marginRight: Setting.getX(24)
   },
@@ -106,8 +107,9 @@ const styles = StyleSheet.create({
   buttonSelected:{
     borderWidth: 2,
     borderColor: '#798BA5',
+    justifyContent:'center',
     width: Setting.getX(102),
-    height: Setting.getX(40),
+    height: Setting.getX(50),
     backgroundColor: '#798BA5',
     marginRight: Setting.getX(24)
   },

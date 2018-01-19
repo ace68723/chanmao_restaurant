@@ -1,21 +1,29 @@
 import { API_LOGIN,API_AUTH } from '../../Config/API';
 export default  {
-    login(username,password, channel, version){
+    login(deviceToken,username,password, channel, version, UUID,sysOS){
       const url = API_LOGIN;
       let options = {
           method: 'POST',
           mode:'cors',
           headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+            
           }
       }
-
+      options.headers = JSON.stringify({
+        'Cmversion':version,
+        'Cmuuid':UUID,
+        'Cmos':sysOS,
+        'Devicetoken':deviceToken
+    })
+      
       options.body = JSON.stringify({
           "name": username,
           "password":password,
           "channel":channel,
           "version":version
       })
+      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {

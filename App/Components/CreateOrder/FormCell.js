@@ -37,7 +37,6 @@ export default class Formcell extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: "center",
     height:Setting.getY(60),
   },
   title:{
