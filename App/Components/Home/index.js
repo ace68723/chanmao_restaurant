@@ -36,7 +36,7 @@ export default class Home extends Component {
     // this._logOut = this._logOut.bind(this);
   }
   componentWillMount() {
-    
+
   }
   componentDidMount(){
     this._fetchOrder();
@@ -98,8 +98,9 @@ export default class Home extends Component {
   }
   _renderItem ({item}){
     console.log({item})
-      if (!item.title) return
-       <OrderItem  {...item} navigator={this.props.navigator} />
+      if (!item.title) return(
+          <OrderItem  {...item} navigator={this.props.navigator} />
+      )
       return(
         <View style={{
           backgroundColor:item.color,
