@@ -12,8 +12,6 @@ import {
 import Setting from '../../Config/Setting'
 import {GOOGLE_API_KEY} from '../../Config/API'
 
-//const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8'
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -80,8 +78,8 @@ export default class App extends React.Component {
           onSubmitEditing={this.onBlurInput}
           autoFocus={this.props.autoFocus}
           underlineColorAndroid='rgba(0,0,0,0)'
-          placeholder='Address' />
-
+          placeholder='Address'
+        />
         <FlatList
             data={this.state.data}
             style={styles.listView}
