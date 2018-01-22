@@ -22,7 +22,8 @@ export default  {
           "channel":channel,
           "version":version
       })
-      console.log(options)
+      alert(deviceToken)
+      console.log('devicetoken',options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {

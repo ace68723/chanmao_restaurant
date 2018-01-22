@@ -14,28 +14,29 @@ import OrderDetail from '../OrderDetail/index';
 export default class OrderItem extends Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.state = {
       isOpen:false
     }
-
-  }
+    this._fetchOrder  = this._fetchOrder.bind(this);
+    }
   componentDidMount() {
-    console.log(this.props)
   }
-  // _renderOrderDetail(oid,item,deliveryStatus)
+ _fetchOrder() {
+  this.props.fetchOrder()
+}
   _renderOrderDetail({oid,status})
   {
     if (!this.state.isOpen) return;
 
     // type={deliveryStatus==0?'new':'recent'}
     return (
-        <OrderDetail  {...{oid,status} }/>
+        <OrderDetail   {...{oid,status} }/>
 
     )
   }
 
-  _renderDeliveryButton({status})
-  {
+  _renderDeliveryButton({status}) {
     let statusMessage;
     let statusColor;
     switch (status) {
@@ -125,33 +126,30 @@ export default class OrderItem extends Component {
       )
     }
   }
+  
   render() {
     const {dltype,oid,time,total,status} = this.props;
-
-// disabled={(status>1)}
     return(
         <View style={{  borderBottomColor:'#d1d3d4',
           borderBottomWidth:1,}}>
           <TouchableOpacity
             disabled={status=='5'||status=='90'}
             onPress={()=>{
-
             this.props.navigator.showModal({
-              screen: "OrderDetail", // unique ID registered with Navigation.registerScreen
-              title: oid, // title of the screen as appears in the nav bar (optional)
+              screen: "OrderDetail", 
+              title: oid, 
               passProps: {
+                onfetchOrder: () => this._fetchOrder(),
                 oid:oid,
                 status:status,
                 time:time,
-              }, // simple serializable object that will pass as props to the modal (optional)
-              navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-              animationType: 'slide-up' // 'none' / 'slide-up' , appear animation for the modal (optional, default 'slide-up')
+              }, 
+              navigatorStyle: {}, 
+              animationType: 'slide-up' 
             });
-
-
                             }}>
           <View style={{
-            width:Settings.getX(540),
+          width:Settings.getX(540),
             height:Settings.getY(118),
             backgroundColor:'white',
           }}>
