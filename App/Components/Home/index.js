@@ -10,7 +10,9 @@ import {
   ScrollView,
   Image,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  NativeModules,
+  DeviceEventEmitter
 } from 'react-native';
 import Settings from '../../Config/Setting';
 import Loading from '../Loading';
@@ -28,15 +30,20 @@ export default class Home extends Component {
       newOrder:[],
       Orders:[],
       recentOrder: [],
+      refreshing: false,
     }
     this._renderItem=this._renderItem.bind(this);
     this.scrollToIndexI=this.scrollToIndexI.bind(this);
     this._fetchOrder = this._fetchOrder.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
     this.updateOrders = this.updateOrders.bind(this);
     // this._logOut = this._logOut.bind(this);
   }
   componentWillMount() {
-
+    DeviceEventEmitter.addListener('Message',(Message)=>{
+      NativeModules.SystemSound.playSound();
+      console.log('sound');
+    });
   }
   componentDidMount(){
     this._fetchOrder();
@@ -53,6 +60,7 @@ export default class Home extends Component {
     }, interval);
 
   }
+
   async _fetchOrder() {
     try{
       this.refs.loading.startLoading();
@@ -62,7 +70,8 @@ export default class Home extends Component {
         this.setState({
           newOrder:data.ea_new,
           recentOrder: data.ea_done,
-          Orders: Orders
+          Orders: Orders,
+          refreshing: false
         })
       }
       this.refs.loading.endLoading();
@@ -88,7 +97,14 @@ export default class Home extends Component {
       }
    }
   }
-
+  handleRefresh = () => {
+    this.setState({
+      refreshing:true,
+    },
+    () => {
+      this._fetchOrder();
+    })
+  }
   scrollToIndexI(index) {
     this.list.scrollToIndex({'animated':'true','index':index,'viewPosition':1,'viewOffset':0 })
   }
@@ -142,6 +158,8 @@ export default class Home extends Component {
             stickyHeaderIndices={[0]}
             ref={(ref) => { this.list = ref; }}
             keyExtractor={(item, index) => index}
+            refreshing = {this.state.refreshing}
+            onRefresh = {this.handleRefresh}
           />
       </ScrollView>
     );

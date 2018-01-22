@@ -26,6 +26,7 @@ export default class OrderHistory extends Component {
   }
   constructor(props){
     super(props);
+    console.log(props)
     this.state={
       totalAmount: 2008.1,
       printButtonName:'Print',
@@ -45,6 +46,8 @@ export default class OrderHistory extends Component {
   }
 
   componentDidMount() {
+    console.log('123')
+    this.getSummary();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.list !== this.props.list) {
@@ -61,7 +64,7 @@ export default class OrderHistory extends Component {
   async getSummary(){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
-     }, 300);//add loading if request more than 200ms
+     }, 100);//add loading if request more than 200ms
     try{
       this.setState({waiting:true});
       setTimeout(()=>this.setState({waiting:false}),500);       
@@ -76,6 +79,9 @@ export default class OrderHistory extends Component {
        this.refs.loading.endLoading();
        
     }catch(error){
+      console.log(error)
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
       if (error == '用户超时，请退出重新登陆') {
         Alert.alert(
           "ERROR",
@@ -85,16 +91,24 @@ export default class OrderHistory extends Component {
           ],
           { cancelable: false }
         )
-      } else {
+
+      } else if(error == '所选日期内没有任何记录') {
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
         Alert.alert(
           "ERROR",
-          '请退出重新登陆',
+          '所选日期内没有任何记录',
           [
-            {text: 'Ok', onPress:()=>this._logOut()},
+            {text: 'Ok'},
           ],
           { cancelable: false }
         )
+      } else {
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+        return
       }
+      
     }
   }
   _printHistory(){

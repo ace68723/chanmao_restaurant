@@ -104,6 +104,7 @@ export function DatabaseInit() {
       realm.create('cmr_system',{type: 'deviceToken', value: deviceToken}, true);
     })
   });
+  
 }
 export function GetDeviceInfo() {
   const channel = realm.objectForPrimaryKey('cmr_system','channel').value;

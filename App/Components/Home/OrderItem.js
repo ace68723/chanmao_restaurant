@@ -14,7 +14,6 @@ import OrderDetail from '../OrderDetail/index';
 export default class OrderItem extends Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.state = {
       isOpen:false
     }

@@ -15,14 +15,14 @@ import TabBar from './TabBar';
 import LoginModule from '../../Module/Login/LoginModule';
 import Loading from '../Loading';
 import PaymentHistoryModule from '../../Module/PaymentHistory/PaymentHistoryModule';
-
+var today=new Date(Date.now()-24*60*60*1000);
 export default class HistoryPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       list: [],
-      startDate:'YYYY/MM/DD',
-      endDate:'YYYY/MM/DD',
+      startDate:(today.getDate()) + "/" + (today.getMonth()+1) + "/" + today.getFullYear(),
+      endDate:(today.getDate()+1) + "/" + (today.getMonth()+1) + "/" + today.getFullYear(),
     }
     this._goGetSummary = this._goGetSummary.bind(this);
     this.getSummary = this.getSummary.bind(this);
@@ -31,7 +31,7 @@ export default class HistoryPage extends Component {
   
 
   componentDidMount() {
-    
+    console.log(this.state)
   }
   _goGetSummary(record) {
     console.log(record)
