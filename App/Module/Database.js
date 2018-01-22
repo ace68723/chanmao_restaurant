@@ -16,6 +16,63 @@ const cmr_system_scheam = {
     value:'string',
   }
 }
+const cmr_sales_transaction_scheam = {
+  name: 'cmr_sales_transaction',
+  primaryKey: 'transaction_id',
+  properties: {
+    transaction_id:'string',
+    transaction_date_time:'string',
+    transaction_retail_price:'int',
+    transaction_retail_subtotal:'int',
+    transaction_retail_tax:'int',
+    transaction_delivery:{type: 'data', objectType: 'cmr_delivery_in_transaction'},
+    transaction_products:{type: 'list', objectType: 'cmr_products_in_transaction'},
+    transaction_customer:{type: 'data', objectType: 'cmr_customer_in_transaction'},
+  }
+}
+const cmr_delivery_in_transaction_scheam = {
+  name: 'cmr_delivery_in_transaction',
+  properties: {
+    delivery_type:'string',
+    delivery_comment:'string',
+    delivery_status:'string',
+    delivery_prepare_time:'string',
+  }
+}
+const cmr_products_in_transaction_scheam = {
+  name: 'cmr_products_in_transaction',
+  properties: {
+    product_id:'string',
+    product_internal_id:'string',
+    product_name:'string',
+    product_quantity:'string',
+  }
+}
+const cmr_customer_in_transaction_scheam = {
+  name: 'cmr_customer_in_transaction',
+  properties: {
+    customer_name:'string',
+    customer_tel:'string',
+  }
+}
+const cmr_info_scheam = {
+  name: 'cmr_info',
+  primaryKey: 'info_name',
+  properties: {
+    info_name:'string',
+    info_tel:'string',
+    info_address:'string',
+  }
+}
+const cmr_product_sold_out_scheam = {
+  name: 'cmr_product_sold_out',
+  primaryKey: 'product_id',
+  properties: {
+    product_id:'string',
+    product_sold_out:'bool',
+    product_update_time:'string',
+  }
+}
 
 
 let realm
