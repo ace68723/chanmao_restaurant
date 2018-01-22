@@ -17,6 +17,7 @@ const timeStr = ['< 10', '20', '30', '> 40'];
 
 export default class OrderDetail extends Component {
   constructor(props){
+    console.log(props)
     super(props);
     this.state = {
       totalPrice:'',
@@ -49,7 +50,6 @@ export default class OrderDetail extends Component {
        const loadingTimeout = setTimeout(() => {
          this.refs.loading.startLoading();
        }, 300);//add loading if request more than 200ms
-
        const data = await OrderDetailModule.getOrderDetail(oid);
        console.log(data)
        this.setState({
@@ -66,8 +66,9 @@ export default class OrderDetail extends Component {
          subTotal:data.subtotal,
          tax:data.tax,
        })
-         clearTimeout(loadingTimeout);
-         this.refs.loading.endLoading();
+      this._renderDetails();
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
 
     }catch(error){
       console.log(error);
@@ -76,11 +77,9 @@ export default class OrderDetail extends Component {
     }
   }
   async _handleOrder(task){
-
     try {
       this.setState({waiting:true})
       setTimeout(()=>this.setState({waiting:false}),500)
-
       const oid = this.props.oid;
       const loadingTimeout = setTimeout(() => {
         this.refs.loading.startLoading();
@@ -95,6 +94,7 @@ export default class OrderDetail extends Component {
       this.props.navigator.dismissModal({
         animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
       });
+      await this.props.onfetchOrder();
       await this._printOrder();
       setTimeout(() =>{
         this._printOrder();
@@ -196,11 +196,7 @@ export default class OrderDetail extends Component {
     if(this.props.status==="0"){
       return items.map((item,index)=>{
           return(
-            <TouchableOpacity onPress={()=>this._changeSoldState(index)} >
-
-  
-
-
+            <TouchableOpacity  key={index} onPress={()=>this._changeSoldState(index)} >
               <View key={index} style={styles.itemContainer}>
                 <View style={{flex:0.2}}>
                   <Text>{item.ds_id}</Text>
@@ -439,11 +435,14 @@ export default class OrderDetail extends Component {
     return timeStr.map((timeStr,index)=>{
           return(
             <View key={index} style={{flex:1}} >
-              <TouchableOpacity style={[styles.timeButtonStyle,
-                                        {backgroundColor: this.state.estimateTime==timeStr ? '#798BA5':'white'}
-                                      ]}
-                    onPress={()=>this.setState({estimateTime:timeStr})}>
-
+              <TouchableOpacity 
+              style={[styles.timeButtonStyle,
+                    {backgroundColor: this.state.estimateTime==timeStr ? '#798BA5':'white'}
+                     ]}
+                    onPress={()=>{
+                      this.setState({estimateTime:timeStr});
+                      // this._handleOrder(0)
+                    }}>
                 <Text style={{fontSize:16, color: this.state.estimateTime==timeStr ? 'white':'#798BA5'}}>{timeStr}</Text>
 
               </TouchableOpacity>
@@ -453,10 +452,11 @@ export default class OrderDetail extends Component {
       )
 
   }
-  _renderDetails(){
-
-    if (this.state.itemList.length==0) return;
-    if(this.props.type == 'new'){
+  _renderDetails() {
+    console.log(this.state.itemList.length);
+    console.log(this.props.type)
+    if (this.state.itemList.length === 0) return;
+    if (this.props.status === '0'){
       return(
         <View style={[styles.detailContainer,{height:130}]}>
           <View style={{flex:0.5}}>

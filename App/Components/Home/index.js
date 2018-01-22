@@ -65,7 +65,6 @@ export default class Home extends Component {
           Orders: Orders
         })
       }
-      console.log(this.state.Orders)
       this.refs.loading.endLoading();
      }catch(error){
       if (error == '用户超时，请退出重新登陆') {
@@ -90,16 +89,15 @@ export default class Home extends Component {
    }
   }
 
-  scrollToIndexI(index)
-  {
-    console.log(index);
-    console.log(this.list);
+  scrollToIndexI(index) {
     this.list.scrollToIndex({'animated':'true','index':index,'viewPosition':1,'viewOffset':0 })
   }
   _renderItem ({item}){
-    console.log({item})
-      if (!item.title) return
-       <OrderItem  {...item} navigator={this.props.navigator} />
+      if (!item.title) return (
+       <OrderItem 
+       fetchOrder = {() => this._fetchOrder()}  
+       {...item} navigator={this.props.navigator} />
+      )
       return(
         <View style={{
           backgroundColor:item.color,
@@ -120,7 +118,6 @@ export default class Home extends Component {
       )
   }
   render() {
-    console.log(this.state)
     return (
       <ScrollView style={styles.container}>
         <Loading ref="loading" size={60}/>
@@ -140,17 +137,12 @@ export default class Home extends Component {
         </View>
 
           <FlatList
-
             data={this.state.Orders}
             renderItem={this._renderItem}
             stickyHeaderIndices={[0]}
             ref={(ref) => { this.list = ref; }}
             keyExtractor={(item, index) => index}
           />
-
-
-
-
       </ScrollView>
     );
   }
