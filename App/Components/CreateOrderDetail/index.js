@@ -150,7 +150,7 @@ export default class CreateOrderDetail extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         <View style={{
           backgroundColor:'white',
           flex:0.08,
@@ -237,7 +237,7 @@ export default class CreateOrderDetail extends Component {
             <Text style={styles.buttonTitle} onPress={this.onPress}>Place Order</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
