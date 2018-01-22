@@ -41,4 +41,5 @@ public class DeviceToken extends ReactContextBaseJavaModule {
             }
         }).start();
     }
+
 }
