@@ -11,14 +11,15 @@ import {
 
 import Setting from '../../Config/Setting.js'
 
-const wtf = '< ';
-const wtf2 = '> ';
+const MORE_THAN_TEXT = '< ';
+const LESS_THAN_TEXT = '> ';
 
 export default class Formcell extends Component {
 
   constructor(props) {
     super(props);
   }
+
   render() {
     let {id, title, value, selected} = this.props;
     return (
@@ -27,11 +28,11 @@ export default class Formcell extends Component {
           <View style={ styles.buttons }>
             {selected == '0' ? (
               <TouchableOpacity style={styles.buttonSelected} onPress={() => { this.props.onPress('0') }}>
-                <Text style={styles.buttonTitleSelected}>{wtf}10</Text>
+                <Text style={styles.buttonTitleSelected}>{MORE_THAN_TEXT}10</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.button} onPress={() => { this.props.onPress('0') }}>
-                <Text style={styles.buttonTitle}>{wtf}10</Text>
+                <Text style={styles.buttonTitle}>{MORE_THAN_TEXT}10</Text>
               </TouchableOpacity>
             )}
 
@@ -56,15 +57,13 @@ export default class Formcell extends Component {
 
             {selected == '3' ? (
               <TouchableOpacity style={styles.buttonSelected} onPress={() => { this.props.onPress('3') }} >
-                <Text style={styles.buttonTitleSelected}>{wtf2}40</Text>
+                <Text style={styles.buttonTitleSelected}>{LESS_THAN_TEXT}40</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.button} onPress={() => { this.props.onPress('3') }} >
-                <Text style={styles.buttonTitle}>{wtf2}40</Text>
+                <Text style={styles.buttonTitle}>{LESS_THAN_TEXT}40</Text>
               </TouchableOpacity>
             )}
-
-
           </View>
 
       </View>

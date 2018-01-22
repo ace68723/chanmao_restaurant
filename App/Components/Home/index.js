@@ -36,7 +36,7 @@ export default class Home extends Component {
     // this._logOut = this._logOut.bind(this);
   }
   componentWillMount() {
-    
+
   }
   componentDidMount(){
     this._fetchOrder();
@@ -94,8 +94,8 @@ export default class Home extends Component {
   }
   _renderItem ({item}){
       if (!item.title) return (
-       <OrderItem 
-       fetchOrder = {() => this._fetchOrder()}  
+       <OrderItem
+       fetchOrder = {() => this._fetchOrder()}
        {...item} navigator={this.props.navigator} />
       )
       return(

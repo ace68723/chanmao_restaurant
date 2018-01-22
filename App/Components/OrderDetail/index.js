@@ -435,7 +435,7 @@ export default class OrderDetail extends Component {
     return timeStr.map((timeStr,index)=>{
           return(
             <View key={index} style={{flex:1}} >
-              <TouchableOpacity 
+              <TouchableOpacity
               style={[styles.timeButtonStyle,
                     {backgroundColor: this.state.estimateTime==timeStr ? '#798BA5':'white'}
                      ]}
