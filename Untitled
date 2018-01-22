@@ -1,0 +1,4 @@
+            <Text style={styles.detailInfoFont}>Estimate Time: </Text>
+            <View style={styles.timeContainer}>
+              {this._renderTimesOptions()}
+            </View>

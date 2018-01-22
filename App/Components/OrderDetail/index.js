@@ -458,15 +458,13 @@ export default class OrderDetail extends Component {
     if (this.state.itemList.length === 0) return;
     if (this.props.status === '0'){
       return(
-        <View style={[styles.detailContainer,{height:130}]}>
-          <View style={{flex:0.5}}>
+        <View style={[styles.detailContainer,{height:100}]}>
+          <View style={{flex:0.4}}>
             <Text style={styles.detailInfoFont}>Total After Tax: {this.state.totalPrice}</Text>
             <Text style={styles.detailInfoFont}>Comment: {this.state.comment}</Text>
-            <Text style={styles.detailInfoFont}>Estimate Time: </Text>
+
           </View>
-          <View style={styles.timeContainer}>
-            {this._renderTimesOptions()}
-          </View>
+
         </View>
       )
     }else{
@@ -521,14 +519,28 @@ export default class OrderDetail extends Component {
       if (this.props.status == '0'){
         let soldOutArr = this.state.itemList.filter(item => item.sold == true);
         let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
-        return (
-          <View style={styles.confirmButtonView} >
-              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4}>
-                <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
-              </TouchableOpacity>
-          </View>
-        )
-      }else {
+        if (soldOutArr.length>0){
+          return (
+            <View style={styles.confirmButtonView} >
+                <TouchableOpacity onPress={this._handleOrder(1)} style={styles.confirmButtonStyle} activeOpacity={0.4}>
+                  <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>Sold Out</Text>
+                </TouchableOpacity>
+            </View>
+          );
+        }
+        else {
+          return(
+            <View style={styles.confirmButtonView} >
+            <Text style={styles.detailInfoFont}>Estimate Time: </Text>
+            <View style={styles.timeContainer}>
+              {this._renderTimesOptions()}
+            </View>
+
+            </View>
+          );
+        }
+      }
+      else {
         return (
           <View style={styles.confirmButtonView} >
               <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._printOrder}>
@@ -599,7 +611,8 @@ export default class OrderDetail extends Component {
   timeContainer:{
     flexDirection:'row',
     flex:0.5,
-    paddingTop:26
+    paddingTop:15,
+    marginLeft:15,
   },
   timeButtonStyle:{
     height:Setting.getY(50),
