@@ -10,7 +10,9 @@ import {
   ScrollView,
   Image,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  DeviceEventEmitter,
+  NativeModules,
 } from 'react-native';
 import Settings from '../../Config/Setting';
 import Loading from '../Loading';
@@ -36,7 +38,11 @@ export default class Home extends Component {
     // this._logOut = this._logOut.bind(this);
   }
   componentWillMount() {
-
+    console.log("start");
+    DeviceEventEmitter.addListener('Message',(Message)=>{
+      NativeModules.SystemSound.playSound();
+      console.log('sound');
+    });
   }
   componentDidMount(){
     this._fetchOrder();

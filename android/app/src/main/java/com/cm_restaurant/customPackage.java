@@ -23,6 +23,7 @@ public class customPackage implements ReactPackage {
         modules.add(new customAndroid(reactContext));
         modules.add(new SystemSound(reactContext));
         modules.add(new DeviceToken(reactContext));
+        modules.add(new SoundMessage(reactContext));
         return modules;
     }
 

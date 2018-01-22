@@ -22,19 +22,8 @@ public class RNFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    mReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("Message","MessageReceived");
-                } catch (InterruptedException e){
 
-
-                }
-            }
-        }).start();
+        SoundMessage.sendEvent();
         Log.i("Service", "===============通知来啦=================");
         Log.i("Service", "onMessageReceived: " + remoteMessage.getFrom());
         if (remoteMessage.getData().size() > 0) {
