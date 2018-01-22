@@ -11,13 +11,12 @@ import {
   KeyboardAvoidingView,
   Alert
 } from 'react-native';
-import LoginModule from '../../Module/Login/LoginModule';
 
+import LoginModule from '../../Module/Login/LoginModule';
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell.js'
 import ESTFormCell from './ESTFormCell'
 import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
-const {height, width} = Dimensions.get('window');
 
 export default class CreateOrderDetail extends Component {
   static navigatorStyle = {
@@ -54,12 +53,12 @@ export default class CreateOrderDetail extends Component {
 
     this.onFocusInput = this.onFocusInput.bind(this);
     this.onBlurInput = this.onBlurInput.bind(this);
-
   }
 
   handleChangeValue(key, value) {
     this.setState({[key]: value.text.text});
   }
+
   _logOut(){
     this.setState({waiting:true});
     setTimeout(()=>this.setState({waiting:false}),500);
@@ -72,7 +71,8 @@ export default class CreateOrderDetail extends Component {
         animationType: 'fade'
       });
     LoginModule.logout();
-    }
+  }
+
   async onPress() {
     try{
       var addressSplit = this.state.address.split(',');
@@ -118,11 +118,9 @@ export default class CreateOrderDetail extends Component {
         )
       }
    }
-
   }
 
   onPressEST(value) {
-    // console.log(value);
     const options = ['<10', '20', '30', '>40'];
     this.setState({['est']: options[Number.parseInt(value.value, 10)]});
     this.setState({['selected']: value.value});
