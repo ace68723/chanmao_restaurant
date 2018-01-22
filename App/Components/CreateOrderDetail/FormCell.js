@@ -39,6 +39,8 @@ export default class Formcell extends Component {
         <TextInput
           underlineColorAndroid={"rgba(0,0,0,0)"}
           style={ styles.input }
+          onFocus={this.props.onFocusInput}
+          onBlur={this.props.onBlurInput}
           onChangeText={(text) => this.props.onChangeText({text})}
         />
       </View>
