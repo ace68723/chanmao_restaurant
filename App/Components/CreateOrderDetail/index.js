@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  ScrollView,
   KeyboardAvoidingView
 } from 'react-native';
 
@@ -42,12 +43,16 @@ export default class CreateOrderDetail extends Component {
       est: '',
       selected: '',
       uid: '',
+      isAvoidingKeyboard: false,
     };
     this.handleChangeValue = this.handleChangeValue.bind(this);
     this.onPress = this.onPress.bind(this);
     this._toggleAlert = this._toggleAlert.bind(this);
     this.onPressEST = this.onPressEST.bind(this);
     this.onPressCancel = this.onPressCancel.bind(this);
+
+    this.onFocusInput = this.onFocusInput.bind(this);
+    this.onBlurInput = this.onBlurInput.bind(this);
 
   }
 
@@ -73,27 +78,20 @@ export default class CreateOrderDetail extends Component {
       tel : this.state.phone,
       uid : this.state.uid,
     }
-
-    console.log(reqData);
+    // console.log(reqData);
     const data  = await CreateOrderModule.createOrder(reqData);
-    console.log(data);
+    // console.log(data);
   }
+
   onPressEST(value) {
     // console.log(value);
     const options = ['<10', '20', '30', '>40'];
     this.setState({['est']: options[Number.parseInt(value.value, 10)]});
     this.setState({['selected']: value.value});
   }
+
   _toggleAlert(title, message, buttonTitle){
-    if (this.state.showAlert == true){
-      this.setState({['showAlert']: false});
-    }
-    else{
-      this.setState({['showAlert']: true});
-      this.state.alert.title = title;
-      this.state.alert.message = message;
-      this.state.alert.buttonTitle = title;
-    }
+    Alert.openAlert(title, message, buttonTitle, );
   }
 
   onPressCancel(){
@@ -105,10 +103,17 @@ export default class CreateOrderDetail extends Component {
     });
   }
 
+  onFocusInput(){
+    console.log(1);
+  }
+  onBlurInput(){
+    console.log(2);
+  }
+
   render() {
     return (
       <View style={styles.container}>
-       <View style={{
+        <View style={{
           backgroundColor:'white',
           flex:0.08,
           alignItems: 'center',
@@ -143,7 +148,7 @@ export default class CreateOrderDetail extends Component {
               Order Detail
             </Text>
         </View>
-        <KeyboardAvoidingView style = {{flex:0.92}}>
+        <KeyboardAvoidingView style={{flex:0.92}} keyboardVerticalOffset={90}>
           <View style={styles.infoText}>
             <Text style={styles.text}>Address: {this.state.address}</Text>
             <Text style={styles.text}>Delivery Fee: ${this.state.dlexp}</Text>
@@ -179,22 +184,22 @@ export default class CreateOrderDetail extends Component {
             title='*Telephone'
             isMandatory={true}
             value={this.state.phone}
+            onFocus={this.onFocusInput()}
+            onBlur={this.onBlurInput()}
             onChangeText={(text) => this.handleChangeValue('phone', {text})}>
           </FormCell>
-
           <ESTFormCell
             style={styles.ESTcell}
             title='Estimate Time'
             onPress={(value) => this.onPressEST({value})}
             selected={this.state.selected}>
           </ESTFormCell>
-
           <TouchableOpacity
             style={styles.button}>
             <Text style={styles.buttonTitle} onPress={this.onPress}>Place Order</Text>
           </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </View>
+        </KeyboardAvoidingView>
+      </View>
     );
   }
 }
@@ -202,7 +207,7 @@ export default class CreateOrderDetail extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   button:{
     marginTop: Setting.getY(68),
