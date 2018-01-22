@@ -13,10 +13,29 @@ import CreateOrder from '../CreateOrder';
 import HistoryPage from '../History';
 import AboutUs from '../AboutUs';
 import TabBar from './TabBar';
+import LoginModule from '../../Module/Login/LoginModule';
 
 import Setting from '../../Config/Setting';
 
 export default class Tab extends Component {
+  constructor() {
+    super();
+    this._logOut = this._logOut.bind(this);
+
+  }
+  _logOut(){
+    this.setState({waiting:true});
+    setTimeout(()=>this.setState({waiting:false}),500);
+    this.props.navigator.resetTo({
+        screen: 'Login',
+        navigatorStyle: {
+          navBarHidden: true
+        },
+        passProps: {},
+        animationType: 'fade'
+      });
+    LoginModule.logout();
+    }
     render() {
         return (
             <ScrollableTabView
@@ -36,6 +55,7 @@ export default class Tab extends Component {
                     inactiveIconImage={require("./Image/historygrey.png")}
                     navigator={this.props.navigator}/>
               <CreateOrder tabLabel="Create Order"
+                    onPressLogout = {() => this._logOut()}  
                     activeIconImage={require("./Image/neworange.png")}
                     inactiveIconImage={require("./Image/newgrey.png")}
                     navigator={this.props.navigator}/>

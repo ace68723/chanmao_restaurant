@@ -12,14 +12,16 @@ import {
 import Settings from '../../Config/Setting';
 import OrderDetail from '../OrderDetail/index';
 export default class OrderItem extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isOpen:false
     }
 
   }
-
+  componentDidMount() {
+    console.log(this.props)
+  }
   // _renderOrderDetail(oid,item,deliveryStatus)
   _renderOrderDetail({oid,status})
   {

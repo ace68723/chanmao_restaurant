@@ -12,6 +12,8 @@ import {
   AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting';
+import LoginModule from '../../Module/Login/LoginModule';
+
 import Setting from '../../Config/Setting';
 import Loading from '../Loading';
 import PaymentHistoryModule from '../../Module/PaymentHistory/PaymentHistoryModule';
@@ -39,6 +41,7 @@ export default class PaymentHistory extends Component {
       token: '',
     }
     this.pressProxy = this.pressProxy.bind(this);
+    this._logOut = this._logOut.bind(this);
   }
   componentDidMount() {
     this.getBilling();
@@ -46,6 +49,9 @@ export default class PaymentHistory extends Component {
   pressProxy(record) {
     this.props.onPress(record)
   }
+  _logOut(){
+    this.props.onPressLogout()
+    }
   async getBilling(){
     try{
        this.refs.loading.startLoading();
@@ -56,7 +62,16 @@ export default class PaymentHistory extends Component {
        this.refs.loading.endLoading();
 
     }catch(error){
-      console.log(error);
+      if (error == '用户超时，请退出重新登陆') {
+        Alert.alert(
+          "ERROR",
+          '用户超时，请退出重新登陆',
+          [
+            {text: 'Ok', onPress:()=>this._logOut()},
+          ],
+          { cancelable: false }
+        )
+      }
     }
   }
   render(){

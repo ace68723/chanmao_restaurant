@@ -7,14 +7,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Modal
+  Modal,
+  Alert
 } from 'react-native';
 import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell'
 import AutoComplete from './AutoComplete.js'
 
-import Alert from '../Alert'
 import Loading from '../Loading';
 
 const GOOGLE_API_KEY = 'AIzaSyDpms3QxNnZNxDq5aqkalcRkYn16Kfqix8';
@@ -33,8 +33,11 @@ export default class CreateOrder extends Component {
     this._getGeoPoint = this._getGeoPoint.bind(this);
     this._addressExtractor = this._addressExtractor.bind(this);
     this._goCreateOrder = this._goCreateOrder.bind(this);
+    this._logOut = this._logOut.bind(this);
   }
-
+  _logOut(){
+    this.props.onPressLogout()
+    }
   _addressExtractor(data, key){
     const mapping = {'postal': "postal_code"};
     for(var i = 0; i < data.address_components.length; i++){
@@ -44,6 +47,8 @@ export default class CreateOrder extends Component {
     }
   }
   async _goCreateOrder() {
+    try{ 
+    // this.refs.loading.startLoading();
     const {address,postal} = this.state;
     const lat = this.state.coord.lat;
     const lng = this.state.coord.lng;
@@ -63,8 +68,28 @@ export default class CreateOrder extends Component {
         animationType: 'screen'
       });
     }
+   }catch(error){
+      if (error == '用户超时，请退出重新登陆') {
+        Alert.alert(
+          "ERROR",
+          '用户超时，请退出重新登陆',
+          [
+            {text: 'Ok', onPress:()=>this._logOut()},
+          ],
+          { cancelable: false }
+        )
+      } else {
+        Alert.alert(
+          "ERROR",
+          '请退出重新登陆',
+          [
+            {text: 'Ok', onPress:()=>this._logOut()},
+          ],
+          { cancelable: false }
+        )
+      }
   }
-
+  }
   handleChangeValue(value) {
     this.setState({['address']: value.text.text.description});
     this._getGeoPoint();

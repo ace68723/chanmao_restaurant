@@ -9,16 +9,15 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Alert,
   AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting';
 import Loading from '../Loading';
 import OrderItem from './OrderItem';
 import HomeModule from '../../Module/Home/HomeModule';
-
 import TimerMixin from 'react-timer-mixin';
 import { GetUserInfo } from '../../Module/Database';
-
 export default class Home extends Component {
   mixins: [TimerMixin];
   constructor()
@@ -34,13 +33,19 @@ export default class Home extends Component {
     this.scrollToIndexI=this.scrollToIndexI.bind(this);
     this._fetchOrder = this._fetchOrder.bind(this);
     this.updateOrders = this.updateOrders.bind(this);
+    // this._logOut = this._logOut.bind(this);
+  }
+  componentWillMount() {
+    
   }
   componentDidMount(){
-    this.refs.loading.endLoading();
     this._fetchOrder();
     this.updateOrders();
   }
-  updateOrders() {
+  // _logOut(){
+  //   this.props.onPressLogout()
+  //   }
+  async updateOrders() {
     let { interval } = GetUserInfo();
     interval = parseInt(interval*1000,10);
     this.timer = setTimeout(() => {
@@ -60,10 +65,28 @@ export default class Home extends Component {
           Orders: Orders
         })
       }
-      console.log(this.state)
+      console.log(this.state.Orders)
       this.refs.loading.endLoading();
      }catch(error){
-     console.log(error);
+      if (error == '用户超时，请退出重新登陆') {
+        Alert.alert(
+          "ERROR",
+          '用户超时，请退出重新登陆',
+          [
+            {text: 'Ok'},
+          ],
+          { cancelable: false }
+        )
+      } else {
+        Alert.alert(
+          "ERROR",
+          '请退出重新登陆',
+          [
+            {text: 'Ok'},
+          ],
+          { cancelable: false }
+        )
+      }
    }
   }
 
@@ -74,7 +97,9 @@ export default class Home extends Component {
     this.list.scrollToIndex({'animated':'true','index':index,'viewPosition':1,'viewOffset':0 })
   }
   _renderItem ({item}){
-      if (!item.title) return <OrderItem {...item} navigator={this.props.navigator} />
+    console.log({item})
+      if (!item.title) return
+       <OrderItem  {...item} navigator={this.props.navigator} />
       return(
         <View style={{
           backgroundColor:item.color,
@@ -95,11 +120,10 @@ export default class Home extends Component {
       )
   }
   render() {
-
-
+    console.log(this.state)
     return (
       <ScrollView style={styles.container}>
-              <Loading ref="loading" size={60}/>
+        <Loading ref="loading" size={60}/>
         <View style={{
           backgroundColor:'white',
           width:Settings.getX(540),
