@@ -11,13 +11,12 @@ import {
   KeyboardAvoidingView,
   Alert
 } from 'react-native';
-import LoginModule from '../../Module/Login/LoginModule';
 
+import LoginModule from '../../Module/Login/LoginModule';
 import Setting from '../../Config/Setting.js'
 import FormCell from './FormCell.js'
 import ESTFormCell from './ESTFormCell'
 import CreateOrderModule from '../../Module/CreateOrder/CreateOrderModule';
-const {height, width} = Dimensions.get('window');
 
 export default class CreateOrderDetail extends Component {
   static navigatorStyle = {
@@ -43,6 +42,7 @@ export default class CreateOrderDetail extends Component {
       est: '',
       selected: '',
       uid: '',
+      topPadding: 0,
     };
     this.handleChangeValue = this.handleChangeValue.bind(this);
     this.onPress = this.onPress.bind(this);
@@ -51,11 +51,14 @@ export default class CreateOrderDetail extends Component {
     this.onPressCancel = this.onPressCancel.bind(this);
     this._logOut = this._logOut.bind(this);
 
+    this.onFocusInput = this.onFocusInput.bind(this);
+    this.onBlurInput = this.onBlurInput.bind(this);
   }
 
   handleChangeValue(key, value) {
     this.setState({[key]: value.text.text});
   }
+
   _logOut(){
     this.setState({waiting:true});
     setTimeout(()=>this.setState({waiting:false}),500);
@@ -68,7 +71,8 @@ export default class CreateOrderDetail extends Component {
         animationType: 'fade'
       });
     LoginModule.logout();
-    }
+  }
+
   async onPress() {
     try{
       var addressSplit = this.state.address.split(',');
@@ -89,7 +93,7 @@ export default class CreateOrderDetail extends Component {
         tel : this.state.phone,
         uid : this.state.uid,
       }
-  
+
       console.log(reqData);
       const data  = await CreateOrderModule.createOrder(reqData);
       console.log(data);
@@ -114,24 +118,16 @@ export default class CreateOrderDetail extends Component {
         )
       }
    }
-    
   }
+
   onPressEST(value) {
-    // console.log(value);
     const options = ['<10', '20', '30', '>40'];
     this.setState({['est']: options[Number.parseInt(value.value, 10)]});
     this.setState({['selected']: value.value});
   }
+
   _toggleAlert(title, message, buttonTitle){
-    if (this.state.showAlert == true){
-      this.setState({['showAlert']: false});
-    }
-    else{
-      this.setState({['showAlert']: true});
-      this.state.alert.title = title;
-      this.state.alert.message = message;
-      this.state.alert.buttonTitle = title;
-    }
+    Alert.openAlert(title, message, buttonTitle, );
   }
 
   onPressCancel(){
@@ -143,12 +139,18 @@ export default class CreateOrderDetail extends Component {
     });
   }
 
+  onFocusInput(){
+    this.setState({topPadding: -90});
+  }
+  onBlurInput(){
+    this.setState({topPadding: 0});
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-       <View style={{
+      <View style={[styles.container, {top: this.state.topPadding}]}>
+        <View style={{
           backgroundColor:'white',
-          flex:0.08,
           alignItems: 'center',
           flexDirection: 'row',
           borderWidth: 0,
@@ -157,6 +159,7 @@ export default class CreateOrderDetail extends Component {
           borderLeftWidth: 0,
           borderRightWidth: 0,
           borderColor: '#EA7B21',
+          flex:0.08,
         }}>
             <TouchableOpacity
                   onPress={this.onPressCancel}
@@ -181,7 +184,7 @@ export default class CreateOrderDetail extends Component {
               Order Detail
             </Text>
         </View>
-        <KeyboardAvoidingView style = {{flex:0.92}}>
+        <View style={{flex:0.92}}>
           <View style={styles.infoText}>
             <Text style={styles.text}>Address: {this.state.address}</Text>
             <Text style={styles.text}>Delivery Fee: ${this.state.dlexp}</Text>
@@ -210,6 +213,8 @@ export default class CreateOrderDetail extends Component {
             title='*Name'
             isMandatory={true}
             value={this.state.name}
+            onFocusInput={this.onFocusInput}
+            onBlurInput={this.onBlurInput}
             onChangeText={(text) => this.handleChangeValue('name', {text})}>
           </FormCell>
           <FormCell
@@ -217,22 +222,22 @@ export default class CreateOrderDetail extends Component {
             title='*Telephone'
             isMandatory={true}
             value={this.state.phone}
+            onFocusInput={this.onFocusInput}
+            onBlurInput={this.onBlurInput}
             onChangeText={(text) => this.handleChangeValue('phone', {text})}>
           </FormCell>
-
           <ESTFormCell
             style={styles.ESTcell}
             title='Estimate Time'
             onPress={(value) => this.onPressEST({value})}
             selected={this.state.selected}>
           </ESTFormCell>
-
           <TouchableOpacity
             style={styles.button}>
             <Text style={styles.buttonTitle} onPress={this.onPress}>Place Order</Text>
           </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </View>
+        </View>
+      </View>
     );
   }
 }
@@ -240,7 +245,7 @@ export default class CreateOrderDetail extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   button:{
     marginTop: Setting.getY(68),
