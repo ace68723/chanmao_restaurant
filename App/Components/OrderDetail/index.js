@@ -198,7 +198,7 @@ export default class OrderDetail extends Component {
           return(
             <TouchableOpacity onPress={()=>this._changeSoldState(index)} >
 
-  
+
 
 
               <View key={index} style={styles.itemContainer}>
@@ -456,7 +456,7 @@ export default class OrderDetail extends Component {
   _renderDetails(){
 
     if (this.state.itemList.length==0) return;
-    if(this.props.type == 'new'){
+    if(this.props.status==="0"){
       return(
         <View style={[styles.detailContainer,{height:130}]}>
           <View style={{flex:0.5}}>
