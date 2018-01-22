@@ -441,7 +441,7 @@ export default class OrderDetail extends Component {
                      ]}
                     onPress={()=>{
                       this.setState({estimateTime:timeStr});
-                      // this._handleOrder(0)
+                      this._handleOrder(0)
                     }}>
                 <Text style={{fontSize:16, color: this.state.estimateTime==timeStr ? 'white':'#798BA5'}}>{timeStr}</Text>
 
@@ -523,7 +523,7 @@ export default class OrderDetail extends Component {
         let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
         return (
           <View style={styles.confirmButtonView} >
-              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4} onPress={this._handleOrder.bind(null,0)}>
+              <TouchableOpacity style={styles.confirmButtonStyle} activeOpacity={0.4}>
                 <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>{confirmText}</Text>
               </TouchableOpacity>
           </View>
