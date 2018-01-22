@@ -16,20 +16,7 @@ const cmr_system_scheam = {
     value:'string',
   }
 }
-const cmr_sales_transaction_scheam = {
-  name: 'cmr_sales_transaction',
-  primaryKey: 'transaction_id',
-  properties: {
-    transaction_id:'string',
-    transaction_date_time:'string',
-    transaction_retail_price:'int',
-    transaction_retail_subtotal:'int',
-    transaction_retail_tax:'int',
-    transaction_delivery:{type: 'data', objectType: 'cmr_delivery_in_transaction'},
-    transaction_products:{type: 'list', objectType: 'cmr_products_in_transaction'},
-    transaction_customer:{type: 'data', objectType: 'cmr_customer_in_transaction'},
-  }
-}
+
 const cmr_delivery_in_transaction_scheam = {
   name: 'cmr_delivery_in_transaction',
   properties: {
@@ -39,8 +26,8 @@ const cmr_delivery_in_transaction_scheam = {
     delivery_prepare_time:'string',
   }
 }
-const cmr_products_in_transaction_scheam = {
-  name: 'cmr_products_in_transaction',
+const cmr_product_in_transaction_scheam = {
+  name: 'cmr_product_in_transaction',
   properties: {
     product_id:'string',
     product_internal_id:'string',
@@ -64,8 +51,8 @@ const cmr_info_scheam = {
     info_address:'string',
   }
 }
-const cmr_product_sold_out_scheam = {
-  name: 'cmr_product_sold_out',
+const cmr_products_sold_out_scheam = {
+  name: 'cmr_products_sold_out',
   primaryKey: 'product_id',
   properties: {
     product_id:'string',
@@ -73,14 +60,39 @@ const cmr_product_sold_out_scheam = {
     product_update_time:'string',
   }
 }
-
+const cmr_sales_transaction_status_scheam = {
+  name: 'cmr_sales_transaction_status',
+  primaryKey: 'transaction_id',
+  properties: {
+    transaction_id:'string',
+    delivery_status:'string',
+    delivery_type:'string',
+    transaction_retail_price:'string',
+    update_time:'int',
+  }
+}
+const cmr_sales_transaction_scheam = {
+  name: 'cmr_sales_transaction',
+  primaryKey: 'transaction_id',
+  properties: {
+    transaction_id:'string',
+    transaction_date_time:'string',
+    transaction_retail_price:'string',
+    transaction_retail_subtotal:'string',
+    transaction_retail_tax:'string',
+    transaction_delivery:{type: 'cmr_delivery_in_transaction', optional:true},
+    transaction_status:{type: 'cmr_sales_transaction_status', optional:true}
+    // transaction_products:{type: 'list', objectType: 'cmr_product_in_transaction',optional:true},
+    // transaction_customer:{type: 'data', objectType: 'cmr_customer_in_transaction',optional:true},
+  }
+}
 
 let realm
 export function DatabaseInit() {
   realm = new Realm({
       path: 'cmr_1.1.0.realm',
       schema: [
-                cmr_system_scheam
+                cmr_system_scheam,
               ],
       schemaVersion: 1,
   })
@@ -163,5 +175,34 @@ export function LogOut() {
     realm.create('cmr_system',{type: 'firebaseKEY', value: ''}, true);
     realm.create('cmr_system',{type: 'firebaseREF', value: ''}, true);
     realm.create('cmr_system',{type: 'deviceToken', value: ''}, true);
+  })
+}
+export function saveOrder(io_data) {
+  const data = {
+    transaction_id: io_data.transaction_id,
+    transaction_date_time: io_data.transaction_date_time,
+    transaction_retail_price: io_data.transaction_retail_price,
+    transaction_retail_subtotal: io_data.transaction_retail_subtotal,
+    transaction_retail_tax: io_data.transaction_retail_tax,
+    transaction_delivery:{
+      delivery_type: io_data.transaction_delivery.delivery_type,
+      delivery_comment: io_data.transaction_delivery.delivery_comment,
+      delivery_status: io_data.transaction_delivery.delivery_status,
+      delivery_prepare_time: io_data.transaction_delivery.delivery_prepare_time,
+    },
+    // transaction_products:{
+    //   product_id:io_data.transaction_products.product_id,
+    //   product_internal_id:io_data.transaction_products.product_internal_id,
+    //   product_name:io_data.transaction_products.product_name,
+    //   product_quantity:io_data.transaction_products.product_quantity,
+    // },
+    // transaction_customer:{
+    //   customer_name:io_data.transaction_customer.customer_name,
+    //   customer_tel:io_data.transaction_customer.customer_tel,
+    // },
+  }
+  console.log(data)
+  realm.write(() => {
+    realm.create('cmr_sales_transaction',data, true);
   })
 }
