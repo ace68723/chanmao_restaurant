@@ -43,7 +43,7 @@ export default class CreateOrderDetail extends Component {
       est: '',
       selected: '',
       uid: '',
-      isAvoidingKeyboard: false,
+      topPadding: 0,
     };
     this.handleChangeValue = this.handleChangeValue.bind(this);
     this.onPress = this.onPress.bind(this);
@@ -142,18 +142,17 @@ export default class CreateOrderDetail extends Component {
   }
 
   onFocusInput(){
-    console.log(1);
+    this.setState({topPadding: -90});
   }
   onBlurInput(){
-    console.log(2);
+    this.setState({topPadding: 0});
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {top: this.state.topPadding}]}>
         <View style={{
           backgroundColor:'white',
-          flex:0.08,
           alignItems: 'center',
           flexDirection: 'row',
           borderWidth: 0,
@@ -162,6 +161,7 @@ export default class CreateOrderDetail extends Component {
           borderLeftWidth: 0,
           borderRightWidth: 0,
           borderColor: '#EA7B21',
+          flex:0.08,
         }}>
             <TouchableOpacity
                   onPress={this.onPressCancel}
@@ -186,7 +186,7 @@ export default class CreateOrderDetail extends Component {
               Order Detail
             </Text>
         </View>
-        <KeyboardAvoidingView style={{flex:0.92}} keyboardVerticalOffset={90}>
+        <View style={{flex:0.92}}>
           <View style={styles.infoText}>
             <Text style={styles.text}>Address: {this.state.address}</Text>
             <Text style={styles.text}>Delivery Fee: ${this.state.dlexp}</Text>
@@ -215,6 +215,8 @@ export default class CreateOrderDetail extends Component {
             title='*Name'
             isMandatory={true}
             value={this.state.name}
+            onFocusInput={this.onFocusInput}
+            onBlurInput={this.onBlurInput}
             onChangeText={(text) => this.handleChangeValue('name', {text})}>
           </FormCell>
           <FormCell
@@ -222,8 +224,8 @@ export default class CreateOrderDetail extends Component {
             title='*Telephone'
             isMandatory={true}
             value={this.state.phone}
-            onFocus={this.onFocusInput()}
-            onBlur={this.onBlurInput()}
+            onFocusInput={this.onFocusInput}
+            onBlurInput={this.onBlurInput}
             onChangeText={(text) => this.handleChangeValue('phone', {text})}>
           </FormCell>
           <ESTFormCell
@@ -236,7 +238,7 @@ export default class CreateOrderDetail extends Component {
             style={styles.button}>
             <Text style={styles.buttonTitle} onPress={this.onPress}>Place Order</Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
+        </View>
       </View>
     );
   }
