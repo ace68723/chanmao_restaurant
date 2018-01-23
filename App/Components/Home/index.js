@@ -80,15 +80,12 @@ export default class Home extends Component {
               refreshing: false
             })
           } else {
-            const soundInterval = setInterval(() => {
-              NativeModules.SystemSound.playSound();
-            }, 300);//add loading if request more than 200ms
-            
+            NativeModules.SystemSound.playSound();
             Alert.alert(
               "Message",
               '您有新订单',
               [
-                {text: 'Ok', onPress:()=>clearInterval(soundInterval)},
+                {text: 'Ok'},
               ],
               { cancelable: false }
             )
