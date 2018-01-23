@@ -39,10 +39,7 @@ export default  {
                 'Content-Type': 'application/json'
             }
         }
-        // options.headers = JSON.stringify({
-        //     "Authortoken": authtoken
-        // })
-        console.log(options)
+
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {

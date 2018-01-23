@@ -27,6 +27,7 @@ export default  {
         })
      },
      handleOrder(reqData){
+         console.log(reqData)
        const url = API_HANDLE_ORDER;
        let options = {
            method: 'POST',
@@ -41,7 +42,8 @@ export default  {
           "rid": reqData.rid,
           "oid": reqData.oid,
           "items": reqData.items,
-          "task": reqData.task
+          "task": reqData.task,
+          "pptime":reqData.pptime
        })
      return fetch(url,options)
           .then((response) => response.json())

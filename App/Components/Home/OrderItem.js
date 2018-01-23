@@ -21,9 +21,9 @@ export default class OrderItem extends Component {
     }
   componentDidMount() {
   }
- _fetchOrder() {
-  this.props.fetchOrder()
-}
+  _fetchOrder() {
+    this.props.fetchOrder()
+  }
   _renderOrderDetail({oid,status})
   {
     if (!this.state.isOpen) return;
@@ -125,7 +125,7 @@ export default class OrderItem extends Component {
       )
     }
   }
-  
+
   render() {
     const {dltype,oid,time,total,status} = this.props;
     return(
@@ -135,16 +135,16 @@ export default class OrderItem extends Component {
             disabled={status=='5'||status=='90'}
             onPress={()=>{
             this.props.navigator.showModal({
-              screen: "OrderDetail", 
-              title: oid, 
+              screen: "OrderDetail",
+              title: oid,
               passProps: {
                 onfetchOrder: () => this._fetchOrder(),
                 oid:oid,
                 status:status,
                 time:time,
-              }, 
-              navigatorStyle: {}, 
-              animationType: 'slide-up' 
+              },
+              navigatorStyle: {},
+              animationType: 'slide-up'
             });
                             }}>
           <View style={{

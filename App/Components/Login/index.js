@@ -77,10 +77,13 @@ export default class Login extends Component {
       }
   }
   async login(username, password){
+    const loadingTimeout = setTimeout(() => {
+      this.refs.loading.startLoading();
+    }, 300);//add loading if request more than 200ms
     try{
-
-       this.refs.loading.startLoading();
        const data = await LoginModule.login(username, password);
+       clearTimeout(loadingTimeout);
+       this.refs.loading.endLoading();
        this.props.navigator.resetTo({
            screen: 'Tab',
            navigatorStyle: {
@@ -90,11 +93,22 @@ export default class Login extends Component {
            animationType: 'slide-down'
          });
       }catch(error){
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
         if(error == 'LOGIN_FAIL') {
          console.log(error)
          Alert.alert(
            "ERROR",
            'Login failed. Please check your account information and try again',
+           [
+             {text: 'Ok', onPress:()=>this.refs.loading.endLoading()},
+           ],
+           { cancelable: false }
+         )
+        } else if (error == '用户名或密码错误'){
+         Alert.alert(
+           "ERROR",
+           '用户名或密码错误',
            [
              {text: 'Ok', onPress:()=>this.refs.loading.endLoading()},
            ],
