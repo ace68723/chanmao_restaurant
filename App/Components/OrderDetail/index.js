@@ -77,30 +77,29 @@ export default class OrderDetail extends Component {
     }
   }
   async _handleOrder(task){
+    const loadingTimeout = setTimeout(() => {
+      this.refs.loading.startLoading();
+    }, 300);//add loading if request more than 200ms
     try {
       this.setState({waiting:true})
       setTimeout(()=>this.setState({waiting:false}),500)
       const oid = this.props.oid;
-      const loadingTimeout = setTimeout(() => {
-        this.refs.loading.startLoading();
-      }, 100);//add loading if request more than 200ms
-
       let itemList;
       if (task=='0') itemList=this.state.itemList;
       if (task=='1') itemList=this.state.itemList.filter(item => item.sold == true);
       const data = await OrderDetailModule.handleOrder({oid,task,itemList});
-
+      await this.props.onfetchOrder();
       clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
-
       this.props.navigator.dismissModal({
         animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
       });
-      await this.props.onfetchOrder();
-      await this._printOrder();
-      setTimeout(() =>{
-        this._printOrder();
-      }, 2000);
+      if (task=='0'){
+        await this._printOrder();
+        setTimeout(() =>{
+          this._printOrder();
+        }, 4000);
+      }
+
     } catch (e) {
       console.log(e)
       clearTimeout(loadingTimeout);

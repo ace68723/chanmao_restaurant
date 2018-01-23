@@ -78,15 +78,12 @@ export default class Home extends Component {
               refreshing: false
             })
           } else {
-            const soundInterval = setInterval(() => {
-              NativeModules.SystemSound.playSound();
-            }, 300);//add loading if request more than 200ms
-            
+            NativeModules.SystemSound.playSound();
             Alert.alert(
               "Message",
               '您有新订单',
               [
-                {text: 'Ok', onPress:()=>clearInterval(soundInterval)},
+                {text: 'Ok'},
               ],
               { cancelable: false }
             )
@@ -112,6 +109,7 @@ export default class Home extends Component {
       }
       this.refs.loading.endLoading();
      }catch(error){
+      this.refs.loading.endLoading();
       if (error == '用户超时，请退出重新登陆') {
         Alert.alert(
           "ERROR",
