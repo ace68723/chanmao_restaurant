@@ -31,6 +31,7 @@ export default class Home extends Component {
       Orders:[],
       recentOrder: [],
       refreshing: false,
+      checkOid: '',
     }
     this._renderItem=this._renderItem.bind(this);
     this.scrollToIndexI=this.scrollToIndexI.bind(this);
@@ -67,13 +68,41 @@ export default class Home extends Component {
       this.refs.loading.startLoading();
       const data = await HomeModule.fetchOrder();
       if (data.ev_result === 0) {
-        let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
-        this.setState({
-          newOrder:data.ea_new,
-          recentOrder: data.ea_done,
-          Orders: Orders,
-          refreshing: false
-        })
+        if(data.ea_new) {
+          const i = data.ea_new.length-1;
+          if(data.ea_new[i].oid === this.state.checkOid) {
+            console.log('no sound');
+            let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
+            this.setState({
+              newOrder:data.ea_new,
+              recentOrder: data.ea_done,
+              Orders: Orders,
+              // checkOid: data.ev_new[i].oid,
+              refreshing: false
+            })
+          } else {
+            console.log('sound');
+            NativeModules.SystemSound.playSound();
+            let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
+            this.setState({
+              newOrder:data.ea_new,
+              recentOrder: data.ea_done,
+              Orders: Orders,
+              checkOid: data.ea_new[i].oid,
+              refreshing: false
+            })
+          }
+        } else {
+          console.log('3')
+          let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
+            this.setState({
+              newOrder:data.ea_new,
+              recentOrder: data.ea_done,
+              Orders: Orders,
+              // checkOid: data.ev_new[i-1].oid,
+              refreshing: false
+            })
+        }
       }
       this.refs.loading.endLoading();
      }catch(error){
@@ -89,7 +118,7 @@ export default class Home extends Component {
       } else {
         Alert.alert(
           "ERROR",
-          '请退出重新登陆',
+          error,
           [
             {text: 'Ok'},
           ],
