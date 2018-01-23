@@ -122,7 +122,7 @@ export default class Home extends Component {
       } else {
         Alert.alert(
           "ERROR",
-          error,
+          'Token Missing',
           [
             {text: 'Ok'},
           ],
