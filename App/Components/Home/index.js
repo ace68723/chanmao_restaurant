@@ -111,6 +111,7 @@ export default class Home extends Component {
       }
       this.refs.loading.endLoading();
      }catch(error){
+      this.refs.loading.endLoading();
       if (error == '用户超时，请退出重新登陆') {
         Alert.alert(
           "ERROR",
