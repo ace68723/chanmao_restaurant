@@ -62,9 +62,20 @@ export default class Home extends Component {
   }
 
   async _fetchOrder() {
-    try{
+    const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
+    }, 300);//add loading if request more than 200ms
+    try{
       const data = await HomeModule.fetchOrder();
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
+      data.ea_done.sort(function(a,b){
+        return parseInt(a.oid)  - parseInt(b.oid);
+      })
+      data.ea_new.sort(function(a,b){
+          return parseInt(a.oid)  - parseInt(b.oid);
+      })
+      console.log(data)
       if (data.ev_result === 0) {
         if(data.ea_new.length !== 0) {
           const i = data.ea_new.length-1;
@@ -110,9 +121,9 @@ export default class Home extends Component {
             })
         }
       }
-      this.refs.loading.endLoading();
      }catch(error){
-      this.refs.loading.endLoading();
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();      
       if (error == '用户超时，请退出重新登陆') {
         Alert.alert(
           "ERROR",
@@ -172,7 +183,7 @@ export default class Home extends Component {
   }
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Loading ref="loading" size={60}/>
         <View style={{
           backgroundColor:'white',
@@ -198,7 +209,7 @@ export default class Home extends Component {
             refreshing = {this.state.refreshing}
             onRefresh = {this.handleRefresh}
           />
-      </ScrollView>
+      </View>
     );
   }
 }

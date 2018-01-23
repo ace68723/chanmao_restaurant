@@ -64,7 +64,7 @@ export default class OrderHistory extends Component {
   async getSummary(){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
-     }, 100);//add loading if request more than 200ms
+     }, 300);//add loading if request more than 200ms
     try{
       this.setState({waiting:true});
       setTimeout(()=>this.setState({waiting:false}),500);       

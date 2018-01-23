@@ -45,11 +45,11 @@ export default class OrderDetail extends Component {
   }
 
   async _getOrderDetail(){
+    const loadingTimeout = setTimeout(() => {
+      this.refs.loading.startLoading();
+    }, 300);//add loading if request more than 200ms
     try{
        const oid = this.props.oid;
-       const loadingTimeout = setTimeout(() => {
-         this.refs.loading.startLoading();
-       }, 300);//add loading if request more than 200ms
        const data = await OrderDetailModule.getOrderDetail(oid);
        console.log(data)
        this.setState({
@@ -76,18 +76,19 @@ export default class OrderDetail extends Component {
       this.refs.loading.endLoading();
     }
   }
-  async _handleOrder(task){
+  async _handleOrder(task,estimateTime){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
     }, 300);//add loading if request more than 200ms
     try {
+      const pptime = estimateTime;
       this.setState({waiting:true})
       setTimeout(()=>this.setState({waiting:false}),500)
       const oid = this.props.oid;
       let itemList;
       if (task=='0') itemList=this.state.itemList;
       if (task=='1') itemList=this.state.itemList.filter(item => item.sold == true);
-      const data = await OrderDetailModule.handleOrder({oid,task,itemList});
+      const data = await OrderDetailModule.handleOrder({oid,task,itemList,pptime});
       await this.props.onfetchOrder();
       clearTimeout(loadingTimeout);
       this.props.navigator.dismissModal({
@@ -106,7 +107,6 @@ export default class OrderDetail extends Component {
       this.refs.loading.endLoading();
     }
   }
-  _printerWatting = false;
   async _printOrder(){
     if(this._printerWatting) return;
     this._printerWatting = true;
@@ -441,8 +441,12 @@ export default class OrderDetail extends Component {
                     {backgroundColor: this.state.estimateTime==timeStr ? '#798BA5':'white'}
                      ]}
                     onPress={()=>{
-                      this.setState({estimateTime:timeStr});
-                      this._handleOrder(0)
+                      this.setState(
+                        {estimateTime:timeStr},() => {this._handleOrder(0,this.state.estimateTime)}
+                        )
+              
+                      
+                      // 
                     }}>
                 <Text style={{fontSize:16, color: this.state.estimateTime==timeStr ? 'white':'#798BA5'}}>{timeStr}</Text>
 
@@ -454,7 +458,6 @@ export default class OrderDetail extends Component {
 
   }
   _renderDetails() {
-    console.log(this.state.itemList.length);
     if (this.state.itemList.length === 0) return;
     if (this.props.status === '0'){
       return(
@@ -482,7 +485,6 @@ export default class OrderDetail extends Component {
     if (this.state.itemList.length==0) return;
     if(this.props.status == '0'){
       let soldOutArr = this.state.itemList.filter(item => item.sold == true);
-      console.log(soldOutArr);
       let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
       return(
         <View style={[styles.confirmContainer,{height:60}]} >
@@ -515,7 +517,6 @@ export default class OrderDetail extends Component {
     }
   }
   _renderTouchable(){
-
       if (this.state.itemList.length==0) return;
       if (this.props.status == '0'){
         let soldOutArr = this.state.itemList.filter(item => item.sold == true);
@@ -523,7 +524,7 @@ export default class OrderDetail extends Component {
         if (soldOutArr.length>0){
           return (
             <View style={styles.confirmButtonView} >
-                <TouchableOpacity   onPress={() => this._handleOrder(1)}  style={styles.confirmButtonStyle} activeOpacity={0.4}>
+                <TouchableOpacity   onPress={() => this._handleOrder(1,this.state.estimateTime)}  style={styles.confirmButtonStyle} activeOpacity={0.4}>
                   <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>Sold Out</Text>
                 </TouchableOpacity>
             </View>

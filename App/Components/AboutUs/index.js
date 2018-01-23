@@ -53,7 +53,7 @@ export default class AboutUs extends Component {
             fontSize:22,
             marginLeft:Setting.getX(26),
           }}>
-            Abous Us
+            About Us
           </Text>
         </View>
 

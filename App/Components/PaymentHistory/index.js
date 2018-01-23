@@ -53,15 +53,20 @@ export default class PaymentHistory extends Component {
     this.props.onPressLogout()
     }
   async getBilling(){
+    const loadingTimeout = setTimeout(() => {
+      this.refs.loading.startLoading();
+    }, 300);//add loading if request more than 200ms
     try{
-       this.refs.loading.startLoading();
        const data = await PaymentHistoryModule.getBilling();
+       clearTimeout(loadingTimeout);
+       this.refs.loading.endLoading();
        this.setState({
          list: data
        })
-       this.refs.loading.endLoading();
 
     }catch(error){
+      clearTimeout(loadingTimeout);
+      this.refs.loading.endLoading();
       if (error == '用户超时，请退出重新登陆') {
         Alert.alert(
           "ERROR",
