@@ -39,7 +39,7 @@ export default class Login extends Component {
     this.login = this.login.bind(this);
   }
   componentWillMount() {
-    
+
   }
   componentDidMount(){
       this.auth();
@@ -47,6 +47,7 @@ export default class Login extends Component {
       this.setState({
         ver: version,
       })
+
   }
   _setUsername(username){
     this.setState({username});

@@ -219,6 +219,32 @@ public class customAndroid extends ReactContextBaseJavaModule {
         });
     }
 
+    @ReactMethod
+    public void printLine(String item0, String item1, String item2, int width0,int width1,int width2,int align0, int align1, int align2)
+    {
+        TableItem item = new TableItem();
+        String[] itemTitle={item0,item1,item2};
+        item.setText(itemTitle);
+        int[] align={align0,align1,align2};
+        item.setAlign(align);
+        int[] width={width0,width1,width2};
+        item.setWidth(width);
+        printTable(item);
+    }
+
+    public void printTable(TableItem tableItem) {
+
+
+        try {
+
+            Log.i("kaltin", "printTable: "+tableItem.getText()[0]+tableItem.getText()[1]+tableItem.getText()[2]);
+            woyouService.printColumnsString(tableItem.getText(), tableItem.getWidth(), tableItem.getAlign(), null);
+
+            woyouService.lineWrap(1, null);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @ReactMethod
