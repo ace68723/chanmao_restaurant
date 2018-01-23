@@ -17,7 +17,6 @@ import Button from './Button';
 export default class TabBar extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
     this.renderTab   = this.renderTab.bind(this);
   }
   // getDefaultProps() {

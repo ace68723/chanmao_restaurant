@@ -24,7 +24,7 @@ export default class OrderDetail extends Component {
       comment:' ',
       user:'',
       tel:'',
-      estimateTime:'20',
+      estimateTime:'',
       itemList:[],
       waiting:false,
       printTitles:["No.","Dish","Amount","Price"],
@@ -456,7 +456,6 @@ export default class OrderDetail extends Component {
   }
   _renderDetails() {
     console.log(this.state.itemList.length);
-    console.log(this.props.type)
     if (this.state.itemList.length === 0) return;
     if (this.props.status === '0'){
       return(
@@ -525,7 +524,7 @@ export default class OrderDetail extends Component {
         if (soldOutArr.length>0){
           return (
             <View style={styles.confirmButtonView} >
-                <TouchableOpacity onPress={this._handleOrder(1)} style={styles.confirmButtonStyle} activeOpacity={0.4}>
+                <TouchableOpacity   onPress={() => this._handleOrder(1)}  style={styles.confirmButtonStyle} activeOpacity={0.4}>
                   <Text style={{fontFamily:'Noto Sans CJK SC',fontSize:24,color:'white'}}>Sold Out</Text>
                 </TouchableOpacity>
             </View>

@@ -81,6 +81,14 @@ export default class Home extends Component {
             })
           } else {
             NativeModules.SystemSound.playSound();
+            Alert.alert(
+              "Message",
+              '您有新订单',
+              [
+                {text: 'Ok'},
+              ],
+              { cancelable: false }
+            )
             let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
             this.setState({
               newOrder:data.ea_new,
