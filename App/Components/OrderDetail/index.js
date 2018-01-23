@@ -85,7 +85,9 @@ export default class OrderDetail extends Component {
         this.refs.loading.startLoading();
       }, 100);//add loading if request more than 200ms
 
-      const itemList = this.state.itemList;
+      let itemList;
+      if (task=='0') itemList=this.state.itemList;
+      if (task=='1') itemList=this.state.itemList.filter(item => item.sold == true);
       const data = await OrderDetailModule.handleOrder({oid,task,itemList});
 
       clearTimeout(loadingTimeout);
@@ -482,6 +484,7 @@ export default class OrderDetail extends Component {
     if (this.state.itemList.length==0) return;
     if(this.props.status == '0'){
       let soldOutArr = this.state.itemList.filter(item => item.sold == true);
+      console.log(soldOutArr);
       let confirmText = soldOutArr.length > 0 ? 'Sold Out' : 'Accept';
       return(
         <View style={[styles.confirmContainer,{height:60}]} >
