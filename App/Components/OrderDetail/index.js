@@ -444,9 +444,9 @@ export default class OrderDetail extends Component {
                       this.setState(
                         {estimateTime:timeStr},() => {this._handleOrder(0,this.state.estimateTime)}
                         )
-              
-                      
-                      // 
+
+
+                      //
                     }}>
                 <Text style={{fontSize:16, color: this.state.estimateTime==timeStr ? 'white':'#798BA5'}}>{timeStr}</Text>
 
@@ -458,28 +458,29 @@ export default class OrderDetail extends Component {
 
   }
   _renderDetails() {
-    if (this.state.itemList.length === 0) return;
-    if (this.props.status === '0'){
-      return(
-        <View style={[styles.detailContainer,{height:100}]}>
-          <View style={{flex:0.4}}>
-            <Text style={styles.detailInfoFont}>Total After Tax: {this.state.totalPrice}</Text>
-            <Text style={styles.detailInfoFont}>Comment: {this.state.comment}</Text>
-
-          </View>
-
-        </View>
-      )
-    }else{
-      return(
-        <View style={[styles.detailContainer,{height:70}]}>
-          <View style={{flex:0.5}}>
-            <Text style={styles.detailInfoFont}>Total After Tax: {this.state.totalPrice}</Text>
-            <Text style={styles.detailInfoFont}>Comment: {this.state.comment}</Text>
-          </View>
-        </View>
-      )
+    console.log(this.state.comment.length)
+    let detailFieldHeight;
+    //当字数超过范围，限制View高度
+    if(this.state.comment.length/19 > 5){
+      detailFieldHeight = 130;
+    }else if(this.state.comment.length/19 < 5 && this.state.comment.length/19 > 0){
+      detailFieldHeight = Math.ceil(this.state.comment.length/19) * 25 + 30;
+    }else if(this.state.comment.length == 0){
+      //默认View高度
+      detailFieldHeight = 60;
     }
+
+    if (this.state.itemList.length === 0) return;
+      return(
+        <View style={[styles.detailContainer,{height:detailFieldHeight}]}>
+          <View style={{height:20}}>
+            <Text style={styles.detailInfoFont}>Total After Tax: {this.state.totalPrice}</Text>
+          </View>
+          <ScrollView style={{height:detailFieldHeight - 25,marginTop:5}} scrollEnabled={this.state.comment.length > 0}>
+            <Text style={styles.detailInfoFont}>Comment: {this.state.comment}</Text>
+          </ScrollView>
+        </View>
+      )
   }
   _renderConfirm(){
     if (this.state.itemList.length==0) return;
@@ -608,7 +609,7 @@ export default class OrderDetail extends Component {
   },
   detailContainer:{
     paddingTop:10,
-    marginLeft:30,
+    marginHorizontal:30,
   },
   timeContainer:{
     flexDirection:'row',
@@ -633,6 +634,7 @@ export default class OrderDetail extends Component {
   confirmContainer:{
     borderColor:'#D1D3D4',
     borderTopWidth:1,
+    marginTop:15,
   },
   confirmInfoView:{
     paddingTop:10,
