@@ -168,7 +168,7 @@ export default class OrderDetail extends Component {
             <Text style={styles.titleFont}>Dish Name</Text>
           </View>
           <View style={{width:60,marginLeft:20}}>
-            <Text style={styles.titleFont}>Amount</Text>
+            <Text style={styles.titleFont}>Price</Text>
           </View>
           <View style={{width:70, marginLeft:10}}>
             <Text style={styles.titleFont}>Sold Out</Text>
@@ -186,7 +186,7 @@ export default class OrderDetail extends Component {
               <Text style={styles.titleFont}>Dish Name</Text>
             </View>
             <View style={{width:60,marginLeft:20}}>
-              <Text style={styles.titleFont}>Amount</Text>
+              <Text style={styles.titleFont}>Price</Text>
             </View>
 
           </View>
@@ -206,7 +206,7 @@ export default class OrderDetail extends Component {
                   <Text>{item.ds_name}</Text>
                 </View>
                 <View style={{flex:0.2}}>
-                  <Text>{item.amount}</Text>
+                  <Text>{item.amount}*{item.price}</Text>
                 </View>
                 <View style={{flex:0.2}}>
                   <View style={[styles.checkBox,{ backgroundColor:this.state.itemList[index].sold ?'#F15A29' : 'white' }]}>
@@ -228,7 +228,7 @@ export default class OrderDetail extends Component {
                 <Text>{item.ds_name}</Text>
               </View>
               <View style={{flex:0.2}}>
-                <Text>{item.amount}</Text>
+                <Text>{item.amount}*{item.price}</Text>
               </View>
             </View>
           )
