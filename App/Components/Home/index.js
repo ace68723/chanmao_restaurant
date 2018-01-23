@@ -57,7 +57,7 @@ export default class Home extends Component {
   async updateOrders() {
     let { interval } = GetUserInfo();
     interval = parseInt(interval*1000,10);
-    this.timer = setTimeout(() => {
+    this.timer = setInterval(() => {
       this._fetchOrder();
     }, interval);
 
@@ -68,10 +68,9 @@ export default class Home extends Component {
       this.refs.loading.startLoading();
       const data = await HomeModule.fetchOrder();
       if (data.ev_result === 0) {
-        if(data.ea_new) {
+        if(data.ea_new.length !== 0) {
           const i = data.ea_new.length-1;
           if(data.ea_new[i].oid === this.state.checkOid) {
-            console.log('no sound');
             let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
             this.setState({
               newOrder:data.ea_new,
@@ -81,7 +80,6 @@ export default class Home extends Component {
               refreshing: false
             })
           } else {
-            console.log('sound');
             NativeModules.SystemSound.playSound();
             let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
             this.setState({
@@ -92,8 +90,7 @@ export default class Home extends Component {
               refreshing: false
             })
           }
-        } else {
-          console.log('3')
+        } else if(data.ea_new.length === 0){
           let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
             this.setState({
               newOrder:data.ea_new,
