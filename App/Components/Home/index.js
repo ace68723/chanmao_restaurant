@@ -70,16 +70,15 @@ export default class Home extends Component {
       clearTimeout(loadingTimeout);
       this.refs.loading.endLoading();
       data.ea_done.sort(function(a,b){
-        return parseInt(a.oid)  - parseInt(b.oid);
+        return parseInt(b.oid)  - parseInt(a.oid);
       })
       data.ea_new.sort(function(a,b){
-          return parseInt(a.oid)  - parseInt(b.oid);
+          return parseInt(b.oid)  - parseInt(a.oid);
       })
       console.log(data)
       if (data.ev_result === 0) {
         if(data.ea_new.length !== 0) {
-          const i = data.ea_new.length-1;
-          if(data.ea_new[i].oid === this.state.checkOid) {
+          if(data.ea_new[0].oid === this.state.checkOid) {
             let Orders = [{title:'NEW ORDER',color:'#ea7B21'},...data.ea_new,{title:'RECENT ORDER',color:'#798BA5'}, ...data.ea_done];
             this.setState({
               newOrder:data.ea_new,
@@ -95,7 +94,7 @@ export default class Home extends Component {
            
             Alert.alert(
               "Message",
-              '您有新订单',
+              'You Have New Order',
               [
                 {text: 'Ok',onPress:()=>clearInterval(soundInterval)},
               ],
@@ -106,7 +105,7 @@ export default class Home extends Component {
               newOrder:data.ea_new,
               recentOrder: data.ea_done,
               Orders: Orders,
-              checkOid: data.ea_new[i].oid,
+              checkOid: data.ea_new[0].oid,
               refreshing: false
             })
           }

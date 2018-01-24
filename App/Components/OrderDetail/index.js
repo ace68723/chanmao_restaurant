@@ -51,6 +51,8 @@ export default class OrderDetail extends Component {
     try{
        const oid = this.props.oid;
        const data = await OrderDetailModule.getOrderDetail(oid);
+       clearTimeout(loadingTimeout);
+       this.refs.loading.endLoading(); 
        console.log(data)
        this.setState({
          itemList: data.items,
@@ -67,9 +69,7 @@ export default class OrderDetail extends Component {
          tax:data.tax,
        })
       this._renderDetails();
-      clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
-
+    
     }catch(error){
       console.log(error);
       clearTimeout(loadingTimeout);
@@ -167,10 +167,10 @@ export default class OrderDetail extends Component {
           <View style={{width:100}}>
             <Text style={styles.titleFont}>Dish Name</Text>
           </View>
-          <View style={{width:60,marginLeft:35}}>
+          <View style={{width:60,marginLeft:20}}>
             <Text style={styles.titleFont}>Price</Text>
           </View>
-          <View style={{width:70, marginLeft:20}}>
+          <View style={{width:70, marginLeft:10}}>
             <Text style={styles.titleFont}>Sold Out</Text>
           </View>
         </View>
@@ -182,10 +182,10 @@ export default class OrderDetail extends Component {
             <View style={{width:70}}>
               <Text style={styles.titleFont}>Dish No.</Text>
             </View>
-            <View style={{width:180}}>
+            <View style={{width:160}}>
               <Text style={styles.titleFont}>Dish Name</Text>
             </View>
-            <View style={{width:60,marginLeft:50}}>
+            <View style={{width:60,marginLeft:30}}>
               <Text style={styles.titleFont}>Price</Text>
             </View>
 
@@ -200,15 +200,15 @@ export default class OrderDetail extends Component {
             <TouchableOpacity  key={index} onPress={()=>this._changeSoldState(index)} >
               <View key={index} style={[styles.itemContainer,{height:30 * parseFloat(item.ds_name.length / 16)+30}]}>
                 <View style={{flex:0.15}}>
-                  <Text>{item.ds_id}</Text>
+                  <Text  style={styles.itemFont}>{item.ds_id}</Text>
                 </View>
-                <View style={{flex:0.35}}>
-                  <Text>{item.ds_name}</Text>
+                <View style={{flex:0.4}}>
+                  <Text  style={styles.itemFont}>{item.ds_name}</Text>
                 </View>
                 <View style={{flex:0.23,alignContent:'flex-start'}}>
-                  <Text>{item.amount}*{item.price}</Text>
+                  <Text  style={styles.itemFont}>{item.amount} x  {item.price}</Text>
                 </View>
-                <View style={{flex:0.27,alignContent: 'flex-start'}}>
+                <View style={{flex:0.22,alignContent: 'flex-start'}}>
                   <View style={[styles.checkBox,{ backgroundColor:this.state.itemList[index].sold ?'#F15A29' : 'white' }]}>
                   </View>
                 </View>
@@ -222,13 +222,13 @@ export default class OrderDetail extends Component {
           return(
             <View key={index} style={styles.itemContainer}>
               <View style={{flex:0.15}}>
-                <Text>{item.ds_id}</Text>
+                <Text  style={styles.itemFont}>{item.ds_id}</Text>
               </View>
-              <View style={{flex:0.62}}>
-                <Text>{item.ds_name}</Text>
+              <View style={{flex:0.6}}>
+                <Text  style={styles.itemFont}>{item.ds_name}</Text>
               </View>
-              <View style={{flex:0.23}}>
-                <Text>{item.amount}*{item.price}</Text>
+              <View style={{flex:0.25}}>
+                <Text  style={styles.itemFont}>{item.amount}x  {item.price}</Text>
               </View>
             </View>
           )
@@ -444,11 +444,9 @@ export default class OrderDetail extends Component {
                       this.setState(
                         {estimateTime:timeStr},() => {this._handleOrder(0,this.state.estimateTime)}
                         )
-
-
                       //
                     }}>
-                <Text style={{fontSize:16, color: this.state.estimateTime==timeStr ? 'white':'#798BA5'}}>{timeStr}</Text>
+                <Text style={{fontSize:14, color: this.state.estimateTime==timeStr ? 'white':'#798BA5'}}>{timeStr} mins</Text>
 
               </TouchableOpacity>
             </View>
@@ -592,15 +590,18 @@ export default class OrderDetail extends Component {
     fontWeight:'bold',
     fontSize:16,
   },
-
+  itemFont:{
+    fontFamily:'Noto Sans CJK SC',
+    fontSize:15,
+  },
   itemContainer:{
     flexDirection:'row',
     alignContent:'center',
     marginLeft:30,
   },
   checkBox:{
-    height:15,
-    width:15,
+    height:20,
+    width:20,
     borderColor:'grey',
     borderWidth:2,
     marginLeft:10

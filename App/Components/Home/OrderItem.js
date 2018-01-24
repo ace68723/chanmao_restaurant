@@ -128,7 +128,103 @@ export default class OrderItem extends Component {
 
   render() {
     const {dltype,oid,time,total,status,pptime} = this.props;
-    return(
+    if(status == '5' || status == '90' || status == '0') {
+      return(
+        <View style={{  borderBottomColor:'#d1d3d4',
+          borderBottomWidth:1,}}>
+          <TouchableOpacity
+            disabled={status=='5'||status=='90'}
+            onPress={()=>{
+            this.props.navigator.showModal({
+              screen: "OrderDetail",
+              title: oid,
+              passProps: {
+                onfetchOrder: () => this._fetchOrder(),
+                oid:oid,
+                status:status,
+                time:time,
+              },
+              navigatorStyle: {},
+              animationType: 'slide-up'
+            });
+                            }}>
+          <View style={{
+          width:Settings.getX(540),
+            height:Settings.getY(118),
+            backgroundColor:'white',
+          }}>
+
+            <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+              <View style={{flex:1,flexDirection:'row',}}>
+                <Text style={{
+                  color:'black',
+                  marginLeft:Settings.getX(26),
+                  // marginTop:Settings.getY(20),
+                  fontSize:16,
+                  fontWeight:'bold',
+                }}>
+                  No:
+                </Text>
+                <Text style={{fontSize:16,
+                          fontWeight:'normal',
+                          color:'#ea7b21'
+                        }}>
+                  {oid}
+                </Text>
+              </View>
+              <View style={{flex:1,flexDirection:'row',}}>
+                <Text style={{
+                  color:'black',
+                  marginLeft:Settings.getX(26),
+                  // marginTop:Settings.getY(20),
+                  fontSize:16,
+                  fontWeight:'bold',
+                  }}>
+                  Place Time:
+
+                </Text>
+                <Text style={{fontSize:16,
+                          fontWeight:'normal',
+                          color:'black',
+                        }}>
+                  {time}
+                </Text>
+              </View>
+            </View>
+
+            <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+              <View style={{flex:1,flexDirection:'row',}}>
+                <Text style={{
+                  color:'black',
+                  marginLeft:Settings.getX(26),
+                  // marginTop:Settings.getY(9),
+                  fontSize:16,
+                  fontWeight:'bold',
+                }}>
+                  Price:$
+                </Text>
+                <Text style={{fontSize:16,
+                          fontWeight:'normal',
+                          color:'black'
+                        }}>
+                  {total}
+                </Text>
+              </View>
+              <View style={{flex:1,flexDirection:'row',}}>
+                {this._renderDeliverType(dltype)}
+                {this._renderDeliveryButton({status})}
+              </View>
+            </View>
+
+          </View>
+          </TouchableOpacity>
+          {this._renderOrderDetail({oid,status,time,dltype})}
+        </View>
+
+    )
+    } else {
+      return(
+      
         <View style={{  borderBottomColor:'#d1d3d4',
           borderBottomWidth:1,}}>
           <TouchableOpacity
@@ -221,6 +317,8 @@ export default class OrderItem extends Component {
         </View>
 
     )
+    }
+
   }
 }
 
