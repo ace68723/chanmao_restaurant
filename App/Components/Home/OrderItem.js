@@ -127,7 +127,7 @@ export default class OrderItem extends Component {
   }
 
   render() {
-    const {dltype,oid,time,total,status} = this.props;
+    const {dltype,oid,time,total,status,pptime} = this.props;
     return(
         <View style={{  borderBottomColor:'#d1d3d4',
           borderBottomWidth:1,}}>
@@ -168,7 +168,7 @@ export default class OrderItem extends Component {
                           fontWeight:'normal',
                           color:'#ea7b21'
                         }}>
-                  {oid}
+                  {oid} ({pptime} mins)
                 </Text>
               </View>
               <View style={{flex:1,flexDirection:'row',}}>

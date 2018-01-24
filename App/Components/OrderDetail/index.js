@@ -142,16 +142,16 @@ export default class OrderDetail extends Component {
     this.setState({itemList:temp},()=>console.log(this.state.itemList[index]));
   }
 
-
-
+  // style= {{height:this.state.itemList.length * 30 + 40, borderBottomWidth:1,
+  //   borderColor:'#D1D3D4'}}
+  // style = {{height: this.state.itemList.length * 30}}
   _renderList(){
 
     if (this.state.itemList.length==0) return;
     return(
-          <View style= {{height:this.state.itemList.length * 30 + 40, borderBottomWidth:1,
-            borderColor:'#D1D3D4'}}>
+          <View style = {{ borderBottomWidth:1,borderColor:'#D1D3D4'}}>
         {this._renderListTitle()}
-        <View style = {{height: this.state.itemList.length * 30}}>
+        <View >
           {this._renderItems(this.state.itemList)}
         </View>
       </View>
@@ -167,10 +167,10 @@ export default class OrderDetail extends Component {
           <View style={{width:100}}>
             <Text style={styles.titleFont}>Dish Name</Text>
           </View>
-          <View style={{width:60,marginLeft:20}}>
+          <View style={{width:60,marginLeft:35}}>
             <Text style={styles.titleFont}>Price</Text>
           </View>
-          <View style={{width:70, marginLeft:10}}>
+          <View style={{width:70, marginLeft:20}}>
             <Text style={styles.titleFont}>Sold Out</Text>
           </View>
         </View>
@@ -182,10 +182,10 @@ export default class OrderDetail extends Component {
             <View style={{width:70}}>
               <Text style={styles.titleFont}>Dish No.</Text>
             </View>
-            <View style={{width:160}}>
+            <View style={{width:180}}>
               <Text style={styles.titleFont}>Dish Name</Text>
             </View>
-            <View style={{width:60,marginLeft:20}}>
+            <View style={{width:60,marginLeft:50}}>
               <Text style={styles.titleFont}>Price</Text>
             </View>
 
@@ -198,17 +198,17 @@ export default class OrderDetail extends Component {
       return items.map((item,index)=>{
           return(
             <TouchableOpacity  key={index} onPress={()=>this._changeSoldState(index)} >
-              <View key={index} style={styles.itemContainer}>
-                <View style={{flex:0.2}}>
+              <View key={index} style={[styles.itemContainer,{height:30 * parseFloat(item.ds_name.length / 16)+30}]}>
+                <View style={{flex:0.15}}>
                   <Text>{item.ds_id}</Text>
                 </View>
-                <View style={{flex:0.4}}>
+                <View style={{flex:0.35}}>
                   <Text>{item.ds_name}</Text>
                 </View>
-                <View style={{flex:0.2}}>
+                <View style={{flex:0.23,alignContent:'flex-start'}}>
                   <Text>{item.amount}*{item.price}</Text>
                 </View>
-                <View style={{flex:0.2}}>
+                <View style={{flex:0.27,alignContent: 'flex-start'}}>
                   <View style={[styles.checkBox,{ backgroundColor:this.state.itemList[index].sold ?'#F15A29' : 'white' }]}>
                   </View>
                 </View>
@@ -221,13 +221,13 @@ export default class OrderDetail extends Component {
       return items.map((item,index)=>{
           return(
             <View key={index} style={styles.itemContainer}>
-              <View style={{flex:0.2}}>
+              <View style={{flex:0.15}}>
                 <Text>{item.ds_id}</Text>
               </View>
-              <View style={{flex:0.6}}>
+              <View style={{flex:0.62}}>
                 <Text>{item.ds_name}</Text>
               </View>
-              <View style={{flex:0.2}}>
+              <View style={{flex:0.23}}>
                 <Text>{item.amount}*{item.price}</Text>
               </View>
             </View>
@@ -585,7 +585,7 @@ export default class OrderDetail extends Component {
     height:30,
     flexDirection: 'row',
     alignItems:'center',
-    marginLeft:30,
+    marginLeft:20,
   },
   titleFont:{
     fontFamily:'Noto Sans CJK SC',
@@ -594,11 +594,9 @@ export default class OrderDetail extends Component {
   },
 
   itemContainer:{
-    height:30,
     flexDirection:'row',
-    alignItems:'center',
+    alignContent:'center',
     marginLeft:30,
-
   },
   checkBox:{
     height:15,
