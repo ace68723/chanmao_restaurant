@@ -51,7 +51,7 @@ export default class OrderHistory extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.list !== this.props.list) {
-      this.setState({ 
+      this.setState({
         list: nextProps.list,
         startDate: nextProps.startDate,
         endDate: nextProps.endDate
@@ -67,17 +67,17 @@ export default class OrderHistory extends Component {
      }, 300);//add loading if request more than 200ms
     try{
       this.setState({waiting:true});
-      setTimeout(()=>this.setState({waiting:false}),500);       
+      setTimeout(()=>this.setState({waiting:false}),500);
       const bill_start = this.state.startDate;
        const bill_end = this.state.endDate;
-      
+
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
        this.setState({
          list: data
        })
        clearTimeout(loadingTimeout);
        this.refs.loading.endLoading();
-       
+
     }catch(error){
       console.log(error)
       clearTimeout(loadingTimeout);
@@ -108,7 +108,7 @@ export default class OrderHistory extends Component {
         this.refs.loading.endLoading();
         return
       }
-      
+
     }
   }
   _printHistory(){
@@ -123,7 +123,7 @@ export default class OrderHistory extends Component {
     orderArray:this.state.list,
 
   }
-  this._disableDoubleClick();
+  //this._disableDoubleClick();
   PrintModule.printContent(data);
 }
   render(){
@@ -169,7 +169,7 @@ export default class OrderHistory extends Component {
   renderSelectDate(){
     return(
       <View style={styles.timeView} >
-   
+
         <TouchableOpacity style={{
            flex:0.5,
            justifyContent:'center'}}
@@ -190,7 +190,7 @@ export default class OrderHistory extends Component {
                   paddingLeft:Settings.getX(20)
               }}>{this.state.startDate}</Text>
            </View>
-            
+
         </TouchableOpacity>
         <TouchableOpacity style={{
           flex:0.5,
@@ -213,7 +213,7 @@ export default class OrderHistory extends Component {
               paddingLeft:Settings.getX(20)
           }}>{this.state.endDate}</Text>
         </View>
-           
+
         </TouchableOpacity>
 
       </View>
@@ -258,7 +258,7 @@ export default class OrderHistory extends Component {
             Order Amount：{this.state.list.length}
           </Text>
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
             style={styles.searchButtonStyle}
             onPress={() => this.getSummary()}
             disabled={this.state.waiting}
