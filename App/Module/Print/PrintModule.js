@@ -58,7 +58,7 @@ export default  {
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].ds_name);
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].amount);
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].price);
-                await NativeModules.customAndroid.printLine(data.orderArray[i].ds_id,data.orderArray[i].ds_name,data.orderArray[i].price+'*'+data.orderArray[i].amount,1,2,2,0,1,2);
+                await NativeModules.customAndroid.printLine(data.orderArray[i].ds_id,data.orderArray[i].ds_name,data.orderArray[i].amount+' x '+data.orderArray[i].price,1,2,2,0,1,2);
              }
              if( data.comment) {
                await NativeModules.customAndroid.printOriginalText("_______________________________");
