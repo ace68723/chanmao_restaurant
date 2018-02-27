@@ -38,7 +38,7 @@ export default class Home extends Component {
     this._fetchOrder = this._fetchOrder.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
     this.updateOrders = this.updateOrders.bind(this);
-    // this._logOut = this._logOut.bind(this);
+    this._logOut = this._logOut.bind(this);
   }
   componentWillMount() {
     DeviceEventEmitter.addListener('Message',(Message)=>{
@@ -49,9 +49,10 @@ export default class Home extends Component {
     this._fetchOrder();
     this.updateOrders();
   }
-  // _logOut(){
-  //   this.props.onPressLogout()
-  //   }
+  _logOut(){
+    clearInterval(this.timer);
+    this.props.onPressLogout(); 
+  }
   async updateOrders() {
     let { interval } = GetUserInfo();
     interval = parseInt(interval*1000,10);
@@ -63,12 +64,16 @@ export default class Home extends Component {
 
   async _fetchOrder() {
     const loadingTimeout = setTimeout(() => {
-      this.refs.loading.startLoading();
+      if(this.refs.loading){ 
+        this.refs.loading.startLoading()
+      }
     }, 300);//add loading if request more than 200ms
     try{
       const data = await HomeModule.fetchOrder();
       clearTimeout(loadingTimeout);
-      this.refs.loading.endLoading();
+      if(this.refs.loading) {
+        this.refs.loading.endLoading()
+      }
       data.ea_done.sort(function(a,b){
         return parseInt(b.oid)  - parseInt(a.oid);
       })
@@ -133,9 +138,10 @@ export default class Home extends Component {
           { cancelable: false }
         )
       } else {
+        this._logOut();
         Alert.alert(
           "ERROR",
-          'Tokem',
+          '有其他设备正在使用此账号，请重新登录',
           [
             {text: 'Ok'},
           ],
