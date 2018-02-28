@@ -131,6 +131,7 @@ export default class Login extends Component {
               onChangeText={(username) => this._setUsername(username)}
               value={this.state.username}
               placeholder={this.state.usPlaceholder}
+              autoCapitalize={'none'}
               underlineColorAndroid={'transparent'}>
           </TextInput>
           <TextInput style={styles.textInputStyle}
@@ -138,6 +139,7 @@ export default class Login extends Component {
               placeholder={this.state.pwPlaceholder}
               secureTextEntry={true}
               value={this.state.password}
+              autoCapitalize={'none'}
               underlineColorAndroid={'transparent'}>
           </TextInput>
         </View>

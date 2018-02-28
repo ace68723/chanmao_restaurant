@@ -84,7 +84,7 @@ export default class AboutUs extends Component {
         </View>
         <View style={styles.copyrightView}>
           <Text style={styles.copyrightFont}>Chanmao Inc. 版权所有</Text>
-          <Text style={styles.copyrightFont}>版本号 V1.0.0</Text>
+          <Text style={styles.copyrightFont}>版本号 V1.1.1</Text>
         </View>
       </View>
     );
