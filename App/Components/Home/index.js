@@ -64,7 +64,7 @@ export default class Home extends Component {
   async _fetchOrder() {
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
-    }, 300);//add loading if request more than 200ms
+    }, 100);//add loading if request more than 200ms
     try{
       const data = await HomeModule.fetchOrder();
       clearTimeout(loadingTimeout);

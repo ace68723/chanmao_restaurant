@@ -47,7 +47,7 @@ export default class OrderDetail extends Component {
   async _getOrderDetail(){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
-    }, 300);//add loading if request more than 200ms
+    }, 100);//add loading if request more than 200ms
     try{
        const oid = this.props.oid;
        const data = await OrderDetailModule.getOrderDetail(oid);
@@ -79,7 +79,7 @@ export default class OrderDetail extends Component {
   async _handleOrder(task,estimateTime){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
-    }, 300);//add loading if request more than 200ms
+    }, 100);//add loading if request more than 200ms
     try {
       const pptime = estimateTime;
       this.setState({waiting:true})

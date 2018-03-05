@@ -79,11 +79,10 @@ export default class Login extends Component {
   async login(username, password){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
-    }, 300);//add loading if request more than 200ms
+    }, 100);//add loading if request more than 200ms
     try{
        const data = await LoginModule.login(username, password);
-       clearTimeout(loadingTimeout);
-       this.refs.loading.endLoading();
+       console.log(data)
        this.props.navigator.resetTo({
            screen: 'Tab',
            navigatorStyle: {
@@ -92,6 +91,8 @@ export default class Login extends Component {
            passProps: {},
            animationType: 'slide-down'
          });
+         clearTimeout(loadingTimeout);
+         this.refs.loading.endLoading();
       }catch(error){
         clearTimeout(loadingTimeout);
         this.refs.loading.endLoading();
