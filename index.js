@@ -18,5 +18,5 @@ Navigation.startSingleScreenApp({
     navigatorButtons: {}
   },
   passProps: {},
-  animationType: 'slide-down'
+  animationType: 'fade'
 });
