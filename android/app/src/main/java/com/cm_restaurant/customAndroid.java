@@ -1,4 +1,4 @@
-package com.cm_restaurant;
+package com.xm_restaurant;
 
 import android.content.ComponentName;
 import android.content.Context;

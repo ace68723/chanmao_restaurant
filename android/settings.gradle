@@ -1,4 +1,4 @@
-rootProject.name = 'cm_restaurant'
+rootProject.name = 'xm_restaurant'
 include ':realm'
 project(':realm').projectDir = new File(rootProject.projectDir, '../node_modules/realm/android')
 include ':react-native-device-info'

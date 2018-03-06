@@ -1,4 +1,4 @@
-package com.cm_restaurant;
+package com.xm_restaurant;
 
 import com.reactnativenavigation.controllers.SplashActivity;
 
@@ -9,6 +9,6 @@ public class MainActivity extends SplashActivity {
      * This is used to schedule rendering of the component.
      */
     protected String getMainComponentName() {
-        return "cm_restaurant";
+        return "xm_restaurant";
     }
 }

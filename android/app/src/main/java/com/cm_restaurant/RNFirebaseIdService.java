@@ -1,4 +1,4 @@
-package com.cm_restaurant;
+package com.xm_restaurant;
 
 import android.util.Log;
 

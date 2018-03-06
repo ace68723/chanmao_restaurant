@@ -1,4 +1,4 @@
-package com.cm_restaurant;
+package com.xm_restaurant;
 
 /**
  * Created by aiden on 2018-01-23.

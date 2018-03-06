@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cm_restaurant"
+    package="com.xm_restaurant"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -13,7 +13,7 @@
     <application
       android:name=".MainApplication"
       android:allowBackup="true"
-      android:label="Chanmao"
+      android:label="Xiaoming"
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/AppTheme">
       <activity

@@ -1,4 +1,4 @@
-package com.cm_restaurant;
+package com.xm_restaurant;
 import io.realm.react.RealmReactPackage; // add this import
 
 import com.facebook.react.ReactPackage;
