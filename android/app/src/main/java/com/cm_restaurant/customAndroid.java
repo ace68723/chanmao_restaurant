@@ -231,6 +231,17 @@ public class customAndroid extends ReactContextBaseJavaModule {
         item.setWidth(width);
         printTable(item);
     }
+    public void printTps(String item0, String item2, int width0,int width2,int align0, int align2)
+    {
+        TableItem item = new TableItem();
+        String[] itemTitle={item0,item2};
+        item.setText(itemTitle);
+        int[] align={align0,align2};
+        item.setAlign(align);
+        int[] width={width0,width2};
+        item.setWidth(width);
+        printTable(item);
+    }
 
     public void printTable(TableItem tableItem) {
 

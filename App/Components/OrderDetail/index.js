@@ -35,6 +35,7 @@ export default class OrderDetail extends Component {
     this._changeSoldState = this._changeSoldState.bind(this);
     this._renderOrderType=this._renderOrderType.bind(this);
     this._renderOrderInfo=this._renderOrderInfo.bind(this);
+    this._renderToppingGroup=this._renderToppingGroup.bind(this);
     this._renderDeliveryButton=this._renderDeliveryButton.bind(this);
     this._renderDeliverType=this._renderDeliverType.bind(this);
     this._renderTouchable=this._renderTouchable.bind(this);
@@ -193,6 +194,25 @@ export default class OrderDetail extends Component {
         )
     }
   }
+  _renderToppingGroup(items) {
+    if(items.length === 0) {
+      return
+    } else {
+      return items.map((item,index)=>{
+          return(
+            <View key={index} style={styles.itemContainer}>
+              <View style={{flex:0.75,marginLeft:50}}>
+                <Text  style={styles.tpFont}>{item.tp_name}</Text>
+              </View>
+              <View style={{flex:0.25,alignContent: 'flex-start'}}>
+                <Text  style={styles.tpFont}>{item.amount}x  {item.price}</Text>
+              </View>
+            </View>
+          )
+        }
+      )
+    }
+  }
   _renderItems(items){
     if(this.props.status==="0"){
       return items.map((item,index)=>{
@@ -213,6 +233,9 @@ export default class OrderDetail extends Component {
                   </View>
                 </View>
               </View>
+              <View style = {{marginTop:-15,marginBottom:10}}>
+                    {this._renderToppingGroup(item.tps)}
+             </View>
             </TouchableOpacity>
           )
         }
@@ -220,7 +243,9 @@ export default class OrderDetail extends Component {
     }else{
       return items.map((item,index)=>{
           return(
-            <View key={index} style={styles.itemContainer}>
+            <View key={index}>
+
+            <View  style={styles.itemContainer}>
               <View style={{flex:0.15}}>
                 <Text  style={styles.itemFont}>{item.ds_id}</Text>
               </View>
@@ -231,6 +256,11 @@ export default class OrderDetail extends Component {
                 <Text  style={styles.itemFont}>{item.amount}x  {item.price}</Text>
               </View>
             </View>
+            <View style = {{marginTop:-15,marginBottom:10}}>
+                            {this._renderToppingGroup(item.tps)}
+            </View>
+            </View>
+
           )
         }
       )
@@ -593,6 +623,11 @@ export default class OrderDetail extends Component {
   itemFont:{
     fontFamily:'Noto Sans CJK SC',
     fontSize:15,
+  },
+  tpFont:{
+    fontFamily:'Noto Sans CJK SC',
+    fontSize:13,
+    color:'grey'
   },
   itemContainer:{
     flexDirection:'row',
