@@ -112,6 +112,7 @@ export function DatabaseInit() {
   }
   NativeModules.DeviceToken.gettoken();
   DeviceEventEmitter.addListener('token',(deviceToken)=>{
+    if(!deviceToken) return
     realm.write(() => {
       realm.create('cmr_system',{type: 'deviceToken', value: deviceToken}, true);
     })

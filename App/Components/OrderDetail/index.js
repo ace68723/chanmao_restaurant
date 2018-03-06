@@ -53,7 +53,7 @@ export default class OrderDetail extends Component {
        const oid = this.props.oid;
        const data = await OrderDetailModule.getOrderDetail(oid);
        clearTimeout(loadingTimeout);
-       this.refs.loading.endLoading(); 
+       this.refs.loading.endLoading();
        console.log(data)
        this.setState({
          itemList: data.items,
@@ -70,7 +70,7 @@ export default class OrderDetail extends Component {
          tax:data.tax,
        })
       this._renderDetails();
-    
+
     }catch(error){
       console.log(error);
       clearTimeout(loadingTimeout);
@@ -256,7 +256,7 @@ export default class OrderDetail extends Component {
                 <Text  style={styles.itemFont}>{item.amount}x  {item.price}</Text>
               </View>
             </View>
-            <View style = {{marginTop:-15,marginBottom:10}}>
+            <View style = {{marginTop:0,marginBottom:10}}>
                             {this._renderToppingGroup(item.tps)}
             </View>
             </View>
