@@ -125,7 +125,7 @@ export default class Login extends Component {
       <View style={styles.container}>
         <Loading ref="loading" size={60}/>
         <View style={styles.iconView}>
-          <Image source={require('./src/cmbottom.png')} style={styles.iconStyle}/>
+          <Image source={require('./src/xiaominglogo.png')} style={styles.iconStyle}/>
         </View>
         <View style={styles.infoView}>
           <TextInput style={[styles.textInputStyle,{borderBottomColor:'#EA7B21', borderBottomWidth:2}]}
