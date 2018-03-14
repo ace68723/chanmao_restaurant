@@ -311,7 +311,10 @@ export default class OrderHistory extends Component {
     )
   }
   renderRecords(){
-    return this.state.list.map((record, index)=>{
+    console.log(this.state.list)
+    let orders;
+    if (this.state.list.orders) {orders=this.state.list.orders;} else {orders=this.state.list}
+    return orders.map((record, index)=>{
       return(
         <View style={styles.recordView}
                 key={index}>
