@@ -52,7 +52,7 @@ export default class OrderDetail extends Component {
        const oid = this.props.oid;
        const data = await OrderDetailModule.getOrderDetail(oid);
        clearTimeout(loadingTimeout);
-       this.refs.loading.endLoading(); 
+       this.refs.loading.endLoading();
        console.log(data)
        this.setState({
          itemList: data.items,
@@ -69,7 +69,7 @@ export default class OrderDetail extends Component {
          tax:data.tax,
        })
       this._renderDetails();
-    
+
     }catch(error){
       console.log(error);
       clearTimeout(loadingTimeout);
@@ -532,6 +532,18 @@ export default class OrderDetail extends Component {
         else {
           return(
             <View style={styles.confirmButtonView} >
+            <Text style={{fontSize:12,color:'red'}}>
+              注：
+              <Text style={{fontSize:12,color:'black'}}>
+                一旦接单后不可再更改价格。如有变动请自行与客人联系协商。
+              </Text>
+            </Text>
+            <Text style={{fontSize:12,color:'red'}}>
+              Note:
+              <Text style={{fontSize:12,color:'black'}}>
+                The price cannot be changed once the order is accepted. If a change needs to be made, please contact the customer directly.
+              </Text>
+            </Text>
             <Text style={styles.detailInfoFont}>Estimate Time: </Text>
             <View style={styles.timeContainer}>
               {this._renderTimesOptions()}
@@ -644,7 +656,7 @@ export default class OrderDetail extends Component {
   },
   confirmButtonView:{
     alignItems:'center',
-    flex:0.3,
+    flex:0.6,
     justifyContent:'center',
   },
   confirmButtonStyle:{
