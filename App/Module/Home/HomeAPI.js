@@ -64,11 +64,11 @@ export default  {
             }
         }
 
-        setTimeout(()=> {
+        // setTimeout(()=> {
 
           fetch_cancel.abort(1);
-          console.log('abort');
-        }, 30000);
+        //   console.log('abort');
+        // }, 30000);
 
         return fetch_cancel(url,options,1)
          .then((response) => response.json())
