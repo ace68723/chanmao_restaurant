@@ -116,15 +116,17 @@ export default class OrderHistory extends Component {
     }
   }
   _printHistory(){
+    let order;
+    if (this.state.list.orders) {order=this.state.list.orders} else {order=this.state.list}
   let data = {
     type:'history',
     restaurantName:this.state.restaurantName,
     restaurantAddress:this.state.restaurantAddress,
     restaurantPhoneNumber: this.state.restaurantPhoneNumber,
     timeTerm: this.state.startDate + " ~ " + this.state.endDate,
-    orderAmount:this.state.list.length.toString(),
+    orderAmount:order.length.toString(),
     total:this.state.totalAmount.toString(),
-    orderArray:this.state.list,
+    orderArray:order,
 
   }
   //this._disableDoubleClick();
