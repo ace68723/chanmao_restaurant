@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Settings from '../../Config/Setting';
 import Setting from '../../Config/Setting.js'
+import CategoryModule from '../../Module/Category/CategoryModule';
 
 import Loading from '../Loading';
 const {height, width} = Dimensions.get('window');
@@ -29,7 +30,7 @@ export default class Dish extends Component {
     this.state={
       category:props.category,
       waiting: false,
-      keyword: '',
+      keyword: props.category.name,
       token: '',
       restaurantList:[]
     }
@@ -37,7 +38,7 @@ export default class Dish extends Component {
   }
 
   componentDidMount() {
-    console.log('123')
+
   }
   getMerchantByKeyword() {
     this.dishLists.forEach((item, index) => {
@@ -46,7 +47,47 @@ export default class Dish extends Component {
       }
     });
   }
-
+  async saveCategoryName() {
+    const loadingTimeout = setTimeout(() => {
+        this.refs.loading.startLoading();
+       }, 300);//add loading if request more than 200ms
+    try{
+         const data = await CategoryModule.saveCategoryName(this.state.category.dt_id, this.state.keyword);
+         console.log(data)
+         if(data.ev_error === 0) {
+            Alert.alert(
+                "Success",
+                '添加成功',
+                [
+                  {text: 'Ok'},
+                ],
+                { cancelable: false }
+              )
+         }
+         clearTimeout(loadingTimeout);
+         this.refs.loading.endLoading();
+    }catch(error){
+        console.log(error)
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+        if (error == '用户超时，请退出重新登陆') {
+          Alert.alert(
+            "ERROR",
+            '用户超时，请退出重新登陆',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
+  
+        } else {
+          clearTimeout(loadingTimeout);
+          this.refs.loading.endLoading();
+          return
+        }
+  
+    } 
+  }
   render(){
     return(
       <View style={styles.container}>
@@ -100,15 +141,15 @@ export default class Dish extends Component {
       <View style={styles.listFunctionView}>
        <View style={{flex:0.4,    height: Settings.getY(150)}}>
             <TextInput
-            value={this.state.category.name}
+            value={this.state.keyword}
             underlineColorAndroid={"rgba(0,0,0,0)"}
             style={ styles.input }
-            onChangeText={(text) => this.props.onChangeText({text})}
+            onChangeText={(text) => this.setState({keyword:text})}
             />
         </View>
         <TouchableOpacity
             style={styles.searchButtonStyle}
-            onPress={() => this.getSummary()}
+            onPress={() => this.saveCategoryName()}
             disabled={this.state.waiting}
         >
             <Text style={styles.searchButtonFont}>

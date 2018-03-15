@@ -29,13 +29,7 @@ export default class Category extends Component {
     super(props);
     this.state={
       dishLists:[],
-      categoryLists:[{
-          id:3928,
-          name:'cioo'
-      },{
-        id:3928,
-        name:'cioo'
-    }],
+      categoryLists:[],
       waiting: false,
       keyword: '',
       token: '',
@@ -47,7 +41,7 @@ export default class Category extends Component {
 
   componentDidMount() {
     console.log('123')
-    this.getDishes();
+    this.getCategoryLists();
   }
   editCategory(item) {
     this.props.navigator.showModal({
@@ -67,14 +61,57 @@ export default class Category extends Component {
       }
     });
   }
-  async getDishes() {
+  async addCategory(keyword) {
     const loadingTimeout = setTimeout(() => {
         this.refs.loading.startLoading();
        }, 300);//add loading if request more than 200ms
     try{
-         const data = await CategoryModule.getDishes();
+         const data = await CategoryModule.addCategory(this.state.keyword);
+         console.log(data)
+         if(data.ev_error === 0) {
+            Alert.alert(
+                "Success",
+                '添加成功',
+                [
+                  {text: 'Ok'},
+                ],
+                { cancelable: false }
+              )
+         }
+         clearTimeout(loadingTimeout);
+         this.refs.loading.endLoading();
+         this.getCategoryLists();
+    }catch(error){
+        console.log(error)
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+        if (error == '用户超时，请退出重新登陆') {
+          Alert.alert(
+            "ERROR",
+            '用户超时，请退出重新登陆',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
+  
+        } else {
+          clearTimeout(loadingTimeout);
+          this.refs.loading.endLoading();
+          return
+        }
+  
+    } 
+  }
+  async getCategoryLists() {
+    const loadingTimeout = setTimeout(() => {
+        this.refs.loading.startLoading();
+       }, 300);//add loading if request more than 200ms
+    try{
+         const data = await CategoryModule.getCategoryLists();
+         console.log(data)
          this.setState({
-            dishLists: data.ea_dishes,
+            categoryLists: data.ea_data,
          })
          clearTimeout(loadingTimeout);
          this.refs.loading.endLoading();
@@ -88,7 +125,8 @@ export default class Category extends Component {
             "ERROR",
             '用户超时，请退出重新登陆',
             [
-              {text: 'Ok', onPress:()=>this._logOut()},
+            {text: 'Ok'},
+            //   {text: 'Ok', onPress:()=>this._logOut()},
             ],
             { cancelable: false }
           )
@@ -141,14 +179,15 @@ export default class Category extends Component {
       <View style={styles.listFunctionView}>
         <View style={{flex:0.7,height: Settings.getY(150)}}>
             <TextInput
+            value={this.state.keyword}
             underlineColorAndroid={"rgba(0,0,0,0)"}
             style={ styles.input }
-            onChangeText={(text) => this.onChangeText({text})}
+            onChangeText={(text) => this.setState({keyword:text})}
             />
         </View>
         <TouchableOpacity
             style={styles.searchButtonStyle}
-            // onPress={() => this.getSummary()}
+            onPress={() => this.addCategory()}
             disabled={this.state.waiting}
         >
             <Text style={styles.searchButtonFont}>
@@ -198,7 +237,7 @@ export default class Category extends Component {
                 key={index}
                 onPress={() => this.editCategory(category)}>
           <View style={{flex:0.3, marginLeft:15,alignItems:'center',justifyContent:'center',}}>
-            <Text style={styles.recordTitleFont}>{category.id}</Text>
+            <Text style={styles.recordTitleFont}>{category.dt_id}</Text>
           </View>
           <View style={{flex:0.7, marginRight:25,alignItems:'center',justifyContent:'center',}}>
             <Text style={styles.recordTitleFont}>{category.name}</Text>
