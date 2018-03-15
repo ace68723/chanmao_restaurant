@@ -4,6 +4,10 @@ import AboutUs from '../Components/AboutUs';
 import CreateOrder from '../Components/CreateOrder';
 import CreateOrderDetail from '../Components/CreateOrderDetail';
 import Login from '../Components/Login';
+import Submenu from '../Components/Submenu';
+import Category from '../Components/Category';
+import Dish from '../Components/Dish';
+import Management from '../Components/Management';
 import OrderDetail from '../Components/OrderDetail';
 import OrderHistory from '../Components/OrderHistory';
 import PaymentHistory from '../Components/PaymentHistory';
@@ -13,6 +17,10 @@ import Tab from '../Components/Tab';
 // register all screens of the app (including internal ones)
 export function registerScreens() {
   Navigation.registerComponent('AboutUs', () => AboutUs);
+  Navigation.registerComponent('Dish', () => Dish);
+  Navigation.registerComponent('Submenu', () => Submenu);
+  Navigation.registerComponent('Category', () => Category);
+  Navigation.registerComponent('Management', () => Management);
   Navigation.registerComponent('HistoryPage', () => HistoryPage);
   Navigation.registerComponent('CreateOrder', () => CreateOrder);
   Navigation.registerComponent('CreateOrderDetail', () => CreateOrderDetail);

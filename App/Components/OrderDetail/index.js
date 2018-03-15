@@ -27,6 +27,7 @@ export default class OrderDetail extends Component {
       estimateTime:'',
       itemList:[],
       waiting:false,
+      refreshing: false,
       printTitles:["No.","Dish","Amount","Price"],
     }
     this._handleOrder = this._handleOrder.bind(this);
@@ -68,6 +69,7 @@ export default class OrderDetail extends Component {
          orderTime:data.order_time,
          subTotal:data.subtotal,
          tax:data.tax,
+         refreshing: false
        })
       this._renderDetails();
 
@@ -107,6 +109,14 @@ export default class OrderDetail extends Component {
       clearTimeout(loadingTimeout);
       this.refs.loading.endLoading();
     }
+  }
+  handleRefresh = () => {
+    this.setState({
+      refreshing:true,
+    },
+    () => {
+      this._getOrderDetail();
+    })
   }
   async _printOrder(){
     if(this._printerWatting) return;
@@ -583,23 +593,30 @@ export default class OrderDetail extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView 
+          refreshing = {this.state.refreshing}
+          onRefresh = {this.handleRefresh}
+          style={styles.container}>
         <Loading ref="loading" size={60}/>
         {this._renderOrderType()}
         {this._renderOrderInfo()}
-        <ScrollView   style={{flex:1,
-          backgroundColor:'white',
-          borderTopWidth:1,
-          borderTopColor:'grey',
-          borderBottomWidth:1,
-          borderBottomColor:'grey',
-        }} showsVerticalScrollIndicator={true}>
+        <ScrollView   
+          style={{flex:1,
+            backgroundColor:'white',
+            borderTopWidth:1,
+            borderTopColor:'grey',
+            borderBottomWidth:1,
+            borderBottomColor:'grey',
+          }} 
+          showsVerticalScrollIndicator={true}
+          
+        >
         {this._renderList()}
         {this._renderDetails()}
         {this._renderConfirm()}
         </ScrollView>
         {this._renderTouchable()}
-      </View>
+      </ScrollView>
     );
   }
 }

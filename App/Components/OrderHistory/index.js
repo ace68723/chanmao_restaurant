@@ -36,8 +36,8 @@ export default class OrderHistory extends Component {
       endDate:props.endDate,
       list: props.list,
       waiting: false,
-      "page_num" :1,
-      "page_size":50,
+      page_num :1,
+      page_size:50,
       token: '',
     }
     this.setDate = this.setDate.bind(this);
