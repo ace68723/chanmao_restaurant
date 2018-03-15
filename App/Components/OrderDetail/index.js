@@ -565,13 +565,13 @@ export default class OrderDetail extends Component {
             <Text style={{fontSize:12,color:'red'}}>
               注：
               <Text style={{fontSize:12,color:'black'}}>
-                一旦接单后不可再更改价格。如有变动请在接单前与客人以及馋猫客服联系更新价格。
+                一旦接单后不可再更改价格。如有变动请自行与客人联系协商。
               </Text>
             </Text>
             <Text style={{fontSize:12,color:'red'}}>
               Note:
               <Text style={{fontSize:12,color:'black'}}>
-                The price cannot be changed once the order is accepted. If a change needs to be made, please contact the customer and Chanmao's customer service to update the price before accepting the order.
+                The price cannot be changed once the order is accepted. If a change needs to be made, please contact the customer directly.
               </Text>
             </Text>
             <Text style={styles.detailInfoFont}>Estimate Time: </Text>
@@ -691,7 +691,7 @@ export default class OrderDetail extends Component {
   },
   confirmButtonView:{
     alignItems:'center',
-    flex:0.75,
+    flex:0.6,
     justifyContent:'center',
   },
   confirmButtonStyle:{
