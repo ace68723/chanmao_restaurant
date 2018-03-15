@@ -72,8 +72,12 @@ export default class OrderHistory extends Component {
        const bill_end = this.state.endDate;
 
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
+       console.log(data);
        this.setState({
-         list: data
+         list: data.orders,
+         restaurantName:data.restaurant_name,
+         restaurantAddress:data.restaurant_address,
+         restaurantPhoneNumber:data.restaurant_cel,
        })
        clearTimeout(loadingTimeout);
        this.refs.loading.endLoading();
@@ -114,9 +118,9 @@ export default class OrderHistory extends Component {
   _printHistory(){
   let data = {
     type:'history',
-    restaurantName:'西北楼',
-    restaurantAddress:'3212 Yonge Street',
-    restaurantPhoneNumber: '647-684-6483',
+    restaurantName:this.state.restaurantName,
+    restaurantAddress:this.state.restaurantAddress,
+    restaurantPhoneNumber: this.state.restaurantPhoneNumber,
     timeTerm: this.state.startDate + " ~ " + this.state.endDate,
     orderAmount:this.state.list.length.toString(),
     total:this.state.totalAmount.toString(),
@@ -306,7 +310,9 @@ export default class OrderHistory extends Component {
     )
   }
   renderRecords(){
-    return this.state.list.map((record, index)=>{
+    let orders;
+    if (this.state.list.orders) {orders=this.state.list.orders;} else {orders=this.state.list}
+    return orders.map((record, index)=>{
       return(
         <View style={styles.recordView}
                 key={index}>

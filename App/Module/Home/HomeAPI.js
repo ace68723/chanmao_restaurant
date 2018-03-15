@@ -1,4 +1,5 @@
 import { API_ORDERHANDLE,API_FETCHORDER } from '../../Config/API';
+import fetch_cancel from './react-native-cancelable-fetch';
 export default  {
     orderHandle(token,rid,task,items,oid){
       const url = API_ORDERHANDLE;
@@ -40,11 +41,17 @@ export default  {
             }
         }
 
-      return fetch(url,options)
-           .then((response) => response.json())
-           .catch((error) => {
-               console.log(error);
-               throw error
-          })
+        // setTimeout(()=> {
+
+          fetch_cancel.abort(1);
+        //   console.log('abort');
+        // }, 30000);
+
+        return fetch_cancel(url,options,1)
+         .then((response) => response.json())
+         .catch((error) => {
+             console.log(error);
+             throw error
+        })
      }
   }

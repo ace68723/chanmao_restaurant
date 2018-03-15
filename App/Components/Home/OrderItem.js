@@ -127,6 +127,7 @@ export default class OrderItem extends Component {
   }
 
   render() {
+
     const {dltype,oid,time,total,status,pptime} = this.props;
     if(status == '5' || status == '90' || status == '0') {
       return(
@@ -138,12 +139,17 @@ export default class OrderItem extends Component {
             this.props.navigator.showModal({
               screen: "OrderDetail",
               title: oid,
+              headerRight:<View style={{backgroundColor:'black',height:50,width:100}}>
+                刷新
+              </View>,
+
               passProps: {
                 onfetchOrder: () => this._fetchOrder(),
                 oid:oid,
                 status:status,
                 time:time,
               },
+
               navigatorStyle: {},
               animationType: 'slide-up'
             });
@@ -224,7 +230,7 @@ export default class OrderItem extends Component {
     )
     } else {
       return(
-      
+
         <View style={{  borderBottomColor:'#d1d3d4',
           borderBottomWidth:1,}}>
           <TouchableOpacity
@@ -233,6 +239,7 @@ export default class OrderItem extends Component {
             this.props.navigator.showModal({
               screen: "OrderDetail",
               title: oid,
+
               passProps: {
                 onfetchOrder: () => this._fetchOrder(),
                 oid:oid,

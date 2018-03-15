@@ -21,14 +21,14 @@ export default class HistoryPage extends Component {
     super(props);
     this.state = {
       list: [],
-      startDate:(today.getDate()) + "/" + (today.getMonth()+1) + "/" + today.getFullYear(),
-      endDate:(today.getDate()+1) + "/" + (today.getMonth()+1) + "/" + today.getFullYear(),
+      startDate:(today.getFullYear()) + "/" + (today.getMonth()+1) + "/" + today.getDate(),
+      endDate:(today.getFullYear()) + "/" + (today.getMonth()+1) + "/" + today.getDate(),
     }
     this._goGetSummary = this._goGetSummary.bind(this);
     this.getSummary = this.getSummary.bind(this);
     this._logOut = this._logOut.bind(this);
   }
-  
+
 
   componentDidMount() {
     console.log(this.state)
@@ -54,19 +54,21 @@ export default class HistoryPage extends Component {
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
     }, 300);//add loading if request more than 200ms
-    try{ 
+    try{
        const bill_start = record.bill_range_start;
        const bill_end = record.bill_range_end;
+
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
+
        this.setState({
         list: data,
         startDate:bill_start,
         endDate:bill_end,
       })
-       clearTimeout(loadingTimeout);  
-       this.refs.loading.endLoading();    
+       clearTimeout(loadingTimeout);
+       this.refs.loading.endLoading();
        this.refs.Tabs.goToPage(0);
-       
+
     }catch(error){
       if (error == '用户超时，请退出重新登陆') {
         Alert.alert(
@@ -90,15 +92,15 @@ export default class HistoryPage extends Component {
               renderTabBar={() => <TabBar />}
               tabBarTextStyle = {{fontSize: 20, fontWeight: 'bold'}}
               tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}>
-              <OrderHistory 
-                    onPressLogout = {() => this._logOut()} 
-                    list = {this.state.list} 
-                    startDate = {this.state.startDate} 
-                    endDate = {this.state.endDate} 
+              <OrderHistory
+                    onPressLogout = {() => this._logOut()}
+                    list = {this.state.list}
+                    startDate = {this.state.startDate}
+                    endDate = {this.state.endDate}
                     tabLabel='Order History'/>
-              <PaymentHistory 
-                    onPress={(record) => this._goGetSummary(record)} 
-                    onPressLogout = {() => this._logOut()}  
+              <PaymentHistory
+                    onPress={(record) => this._goGetSummary(record)}
+                    onPressLogout = {() => this._logOut()}
                     tabLabel='Payment History'/>
             </ScrollableTabView>
           </View>
