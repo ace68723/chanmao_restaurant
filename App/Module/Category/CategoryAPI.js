@@ -49,7 +49,6 @@ export default  {
         options.body = JSON.stringify({
             'name':keyword
         })
-        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {
@@ -71,7 +70,6 @@ export default  {
             "dt_id": dt_id,
             'name':keyword
         })
-        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {
@@ -79,5 +77,24 @@ export default  {
                throw error
           })
        },
-     
+       deleteCategory(dt_id, token){
+        const url = 'http://norgta.com/api/mis/v2/delete_dish_type';
+        let options = {
+            method: 'POST',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': token
+            }
+        }
+        options.body = JSON.stringify({
+            "dt_id": dt_id
+        })
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
   }

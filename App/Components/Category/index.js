@@ -10,6 +10,7 @@ import {
   DatePickerAndroid,
   Alert,
   TextInput,
+  PanResponder,
   AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting';
@@ -35,13 +36,88 @@ export default class Category extends Component {
       token: '',
       restaurantList:[]
     }
+    this.items = [];
+    this.order = [];
     this.onChangeText = this.onChangeText.bind(this);
     this.editCategory =this.editCategory.bind(this);
   }
+  componentWillMount(){
+    this._panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: (evt, gestureState) => true,
+        onMoveShouldSetPanResponder: (evt, gestureState) => true,
+        onPanResponderGrant: (evt, gestureState) => {
+            const {pageY, locationY} = evt.nativeEvent;
+            this.index = this._getIdByPosition(pageY);
+            this.preY = pageY - locationY;
+            //get the taped item and highlight it
+            let item = this.items[this.index];
+            item.setNativeProps({
+                style: {
+                    shadowColor: "#000",
+                    shadowOpacity: 0.3,
+                    shadowRadius: 5,
+                    shadowOffset: {height: 0, width: 2},
+                    elevation: 5
+                }
+            });
+        },
+        onPanResponderMove: (evt, gestureState) => {
+            let top = this.preY + gestureState.dy;
+            let item = this.items[this.index];
+            item.setNativeProps({
+                style: {top: top}
+            });
 
+            let collideIndex = this._getIdByPosition(evt.nativeEvent.pageY);
+            if(collideIndex !== this.index && collideIndex !== -1) {
+                let collideItem = this.items[collideIndex];
+                collideItem.setNativeProps({
+                    style: {top: this._getTopValueYById(this.index)}
+                });
+                //swap two values
+                [this.items[this.index], this.items[collideIndex]] = [this.items[collideIndex], this.items[this.index]];
+                [this.order[this.index], this.order[collideIndex]] = [this.order[collideIndex], this.order[this.index]];
+                this.index = collideIndex;
+            }
+        },
+        onPanResponderTerminationRequest: (evt, gestureState) => true,
+        onPanResponderRelease: (evt, gestureState) => {
+            const shadowStyle = {
+                shadowColor: "#000",
+                shadowOpacity: 0,
+                shadowRadius: 0,
+                shadowOffset: {height: 0, width: 0,},
+                elevation: 0
+            };
+            let item = this.items[this.index];
+            //go back the correct position
+            item.setNativeProps({
+                style: {...shadowStyle, top: this._getTopValueYById(this.index)}
+            });
+            console.log(this.order);
+        },
+        onPanResponderTerminate: (evt, gestureState) => {
+            // Another component has become the responder, so this gesture
+            // should be cancelled
+        }
+    });
+  }
   componentDidMount() {
-    console.log('123')
     this.getCategoryLists();
+  }
+  _getIdByPosition(pageY){
+    let id = -1;
+    const height = 49;
+    for (let i = 0; i < this.state.categoryLists.length; i++) {
+      if(pageY >= height*(i+1) && pageY < height*(i+2)){
+        return i
+      }
+    }
+  }
+
+  _getTopValueYById(id){
+    const height = 49;
+    return (id + 1) * height;
   }
   editCategory(item) {
     this.props.navigator.showModal({
@@ -50,7 +126,10 @@ export default class Category extends Component {
         navigatorStyle: {
           navBarHidden: false,
         },
-        passProps: {category:item},
+        passProps: {
+            category:item,
+            getCategoryLists: () => this.getCategoryLists(),
+        },
         animationType: 'screen'
       });
   }
@@ -229,24 +308,29 @@ export default class Category extends Component {
     )
   }
   renderRecords(){
-    let orders;
-    orders=this.state.categoryLists;
-    return orders.map((category, index)=>{
-      return(
-        <TouchableOpacity style={styles.recordView}
-                key={index}
-                onPress={() => this.editCategory(category)}>
-          <View style={{flex:0.3, marginLeft:15,alignItems:'center',justifyContent:'center',}}>
-            <Text style={styles.recordTitleFont}>{category.dt_id}</Text>
-          </View>
-          <View style={{flex:0.7, marginRight:25,alignItems:'center',justifyContent:'center',}}>
-            <Text style={styles.recordTitleFont}>{category.name}</Text>
-          </View>
-        </TouchableOpacity>
-      )
-    })
-  }
+       return this.state.categoryLists.map((item, i)=>{
+            this.order.push(item);
+            console.log(item)
+            return (
+                <View
+                    {...this._panResponder.panHandlers}
+                    ref={(ref) => this.items[i] = ref}
+                    key={i}
+                    style={[styles.recordView]}>
+                    <TouchableOpacity style={{flex:0.3, marginLeft:15,alignItems:'center',justifyContent:'center',}}
+                    onPress={() => this.editCategory(item)}>
+                      <Text style={styles.recordTitleFont}>{item.dt_id}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{flex:0.7, marginRight:25,alignItems:'center',justifyContent:'center',}}
+                    onPress={() => this.editCategory(item)}>
+                      <Text style={styles.recordTitleFont}>{item.name}</Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        })
 
+
+   }
 }
 
 const styles = StyleSheet.create({
@@ -275,7 +359,15 @@ const styles = StyleSheet.create({
     marginHorizontal:Settings.getX(20),
     flex:0.1,
   },
-
+  item: {
+    flexDirection: 'row',
+    height: 49,
+    width:width,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingLeft: 20,
+    position: 'absolute',
+},
   listDetailView:{
     flex:0.8,
   },

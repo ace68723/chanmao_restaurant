@@ -40,6 +40,13 @@ export default class Dish extends Component {
   componentDidMount() {
 
   }
+  goBack() {
+    console.log('dismiss')
+    this.props.getCategoryLists();
+    this.props.navigator.dismissAllModals({
+      animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    });
+  }
   getMerchantByKeyword() {
     this.dishLists.forEach((item, index) => {
       if (item.name.includes(this.state.keyword)) {
@@ -60,6 +67,47 @@ export default class Dish extends Component {
                 '添加成功',
                 [
                   {text: 'Ok'},
+          ],
+                { cancelable: false }
+              )
+         }
+         clearTimeout(loadingTimeout);
+         this.refs.loading.endLoading();
+    }catch(error){
+        console.log(error)
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+        if (error == '用户超时，请退出重新登陆') {
+          Alert.alert(
+            "ERROR",
+            '用户超时，请退出重新登陆',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
+  
+        } else {
+          clearTimeout(loadingTimeout);
+          this.refs.loading.endLoading();
+          return
+        }
+  
+    } 
+  }
+  async deleteCategory() {
+    const loadingTimeout = setTimeout(() => {
+        this.refs.loading.startLoading();
+       }, 300);//add loading if request more than 200ms
+    try{
+         const data = await CategoryModule.deleteCategory(this.state.category.dt_id);
+         console.log(data)
+         if(data.ev_error === 0) {
+            Alert.alert(
+                "Success",
+                '删除成功',
+                [
+                  {text: 'Ok', onPress:()=>this.goBack()},
                 ],
                 { cancelable: false }
               )
@@ -159,7 +207,7 @@ export default class Dish extends Component {
         
         <TouchableOpacity
             style={styles.searchButtonStyle2}
-            // onPress={() => this.getSummary()}
+            onPress={() => this.deleteCategory()}
             disabled={this.state.waiting}
         >
             <Text style={styles.searchButtonFont2}>
