@@ -45,26 +45,32 @@ export default class AddDish extends Component {
     }
     this.items = [];
     this.order = [];
+    this._onChange = this._onChange.bind(this);
+
   }
 
   componentDidMount() {
     CmrCategoryStore.addChangeListener(this._onChange);
     CmrCategoryAction.getToppongGroup();
     CmrCategoryAction.getCategoryLists();
+    let dish = {...this.state.dish};
+    this.setState({
+      dishCopy: dish
+    })
   }
   componentWillUnmount() {
     CmrCategoryStore.removeChangeListener(this._onChange);
   }
   _onChange() {
     const newState = CmrCategoryStore.getState();
-   this.setState({
+    this.setState({
      toppingGroupList: newState.toppingGroupList,
      category:newState.categoryOptions
    })
+   console.log(this.state)
  }
   goBack() {
-    CmrCategoryAction.getCategoryLists();
-    CmrCategoryAction.updateSelecedCategory(this.state.dish);
+    CmrCategoryAction.updateSelecedCategory(this.state.dishCopy);
     this.props.navigator.pop({
       animated: true, // does the pop have transition animation or does it happen immediately (optional)
       animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
@@ -87,6 +93,7 @@ export default class AddDish extends Component {
      }, 300);//add loading if request more than 200ms
     try{
         const data = await CategoryModule.deleteDish(this.state.dish);
+        CmrCategoryAction.getDishes();
         console.log(data)
         if(data.ev_error === 0) {
             Alert.alert(
@@ -134,6 +141,7 @@ export default class AddDish extends Component {
          });
          if(this.state.dish.ds_id) {
           const data = await CategoryModule.setDish(this.state.dish);
+          CmrCategoryAction.getDishes();
           if(data.ev_error === 0) {
            Alert.alert(
              "Success",
@@ -148,12 +156,13 @@ export default class AddDish extends Component {
           this.refs.loading.endLoading();
          } else {
           const data = await CategoryModule.addDish(this.state.dish);
+          CmrCategoryAction.getDishes();
           if(data.ev_error === 0) {
            Alert.alert(
              "Success",
              '保存成功',
              [
-               {text: 'Ok'},
+               {text: 'Ok',onPress:()=>this.goBack()},
              ],
              { cancelable: false }
            )
@@ -176,6 +185,14 @@ export default class AddDish extends Component {
           )
   
         } else {
+          Alert.alert(
+            "Fail",
+            '保存失败, 表单必填, 请填写完成',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
           clearTimeout(loadingTimeout);
           this.refs.loading.endLoading();
           return
@@ -339,6 +356,7 @@ export default class AddDish extends Component {
     )
   }
   renderSaveButton(){
+    if(this.state.dish.ds_id) {
     return(
       <View style={{paddingHorizontal:Settings.getX(20),
       marginTop:Settings.getX(20),
@@ -361,6 +379,30 @@ export default class AddDish extends Component {
        
       </View>
     )
+  } else {
+    return(
+      <View style={{paddingHorizontal:Settings.getX(20),
+      marginTop:Settings.getX(20),
+      flex:0.1, 
+      flexDirection:'row', alignContent:'center',
+      justifyContent:'center',
+      borderTopWidth:1,
+      borderColor:'#D1D3D4',
+      padding:10}}>
+      <TouchableOpacity 
+            style = {[styles.toppingGroupButton,{flex:0.4,backgroundColor:'grey',borderColor:'grey'}]}
+            onPress = {() => this.goBack()}>
+            <Text style = {styles.saveButtonFont}>Cancel</Text>
+       </TouchableOpacity>
+       <TouchableOpacity 
+            style = {[styles.toppingGroupButton,{flex:0.4}]}
+            onPress = {() => this.setDish()}>
+            <Text style = {styles.saveButtonFont}>Save</Text>
+       </TouchableOpacity>
+       
+      </View>
+    )
+  }
   }
   renderToppingGroup() {
       return  this.state.toppingGroupList.map((tpg,i) =>{
@@ -385,7 +427,7 @@ export default class AddDish extends Component {
             <View style={[styles.toppingGroupView]}
                       key = {i}>
                           <Text style={styles.toppingGroupButtonFont}>
-                          {tpg.tpg_name}
+                          {tpg.tpg_name}  ({tpg.tpg_note})
                           </Text>    
                           <TouchableOpacity onPress = {() => this.removeFromToppingGroup(tpg)}>
                               <Image

@@ -34,7 +34,6 @@ export default class Dish extends Component {
   }
   constructor(props){
     super(props);
-    console.log(props)
     this.state={
       category:{},
       waiting: false,
@@ -48,21 +47,9 @@ export default class Dish extends Component {
     this.onChangeText = this.onChangeText.bind(this);
     this._handleOpen = this._handleOpen.bind(this);
     this._onChange = this._onChange.bind(this);
+
   }
-  componentDidMount() {
-    CmrCategoryStore.addChangeListener(this._onChange);
-  }
-  componentWillUnmount() {
-    CmrCategoryStore.removeChangeListener(this._onChange);
-  }
-  _onChange() {
-    const newState = CmrCategoryStore.getState();
-    this.setState({
-      dishLists: newState.selectedCateDishes,
-      keyword: newState.keyword,
-      category:newState.selectedCategory
-    })
-  }
+
 // drag and drop
   componentWillMount(){
     this._panResponder = PanResponder.create({
@@ -140,10 +127,24 @@ export default class Dish extends Component {
     return (id + 1) * height;
   }
   componentDidMount() {
+    CmrCategoryStore.addChangeListener(this._onChange);
+    this._onChange()
+  }
+  componentWillUnmount() {
+    CmrCategoryStore.removeChangeListener(this._onChange);
+  }
+  _onChange() {
+    const newState = CmrCategoryStore.getState();
+    this.setState({
+      dishLists: newState.selectedCateDishes,
+      keyword: newState.keyword,
+      category:newState.selectedCategory,
+    })
   }
 // drag and drop end
 // go to
   goToAddDish(item) {
+    console.log(this.state)
     if(!item) {
       let dish = {
         ds_name: '',
@@ -185,7 +186,8 @@ export default class Dish extends Component {
     
   }
   goBack() {
-    this.props.getCategoryLists();
+    CmrCategoryAction.getDishes();
+    CmrCategoryAction.getCategoryLists();    
     this.props.navigator.pop({
       animated: true, // does the pop have transition animation or does it happen immediately (optional)
       animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
@@ -221,6 +223,7 @@ export default class Dish extends Component {
        }, 300);//add loading if request more than 200ms
     try{
          const data = await CategoryModule.deleteCategory(this.state.category.dt_id);
+         
          if(data.ev_error === 0) {
             Alert.alert(
                 "Success",

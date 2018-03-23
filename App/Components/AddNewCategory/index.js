@@ -34,7 +34,6 @@ export default class AddNewCategory extends Component {
       searchText:'',
       token: '',
       categoryOptions:[]
-
       }
     this._closeSboHomeAlert = this._closeSboHomeAlert.bind(this);
   }
@@ -49,14 +48,7 @@ export default class AddNewCategory extends Component {
          const data = await CategoryModule.addCategory(this.state.keyword);
          console.log(data)
          if(data.ev_error === 0) {
-            Alert.alert(
-                "Success",
-                '添加成功',
-                [
-                  {text: 'Ok',onPress:()=>this._closeSboHomeAlert()},
-                ],
-                { cancelable: false }
-              )
+            this._closeSboHomeAlert()
          }
          clearTimeout(loadingTimeout);
          this.refs.loading.endLoading();
@@ -71,13 +63,12 @@ export default class AddNewCategory extends Component {
         if (error == '用户超时，请退出重新登陆') {
           Alert.alert(
             "ERROR",
-            '用户超时，请退出重新登陆',
+            '添加失败',
             [
-              {text: 'Ok'},
+              {text: 'Ok', onPress:()=>this._closeSboHomeAlert()},
             ],
             { cancelable: false }
           )
-  
         } else {
           clearTimeout(loadingTimeout);
           this.refs.loading.endLoading();

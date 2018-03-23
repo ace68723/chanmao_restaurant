@@ -19,8 +19,10 @@ export default {
             categoryLists: data.ea_data,
             categoryOptions: typeOptions,
           }
+          console.log(io_data)
+
           dispatch({
-              actionType: SboxConstants.GET_CATEGORY_LIST, io_data
+              actionType: CmrConstants.GET_CATEGORY_LIST, io_data
           })
         }catch(error){
           console.log(error);
@@ -40,7 +42,7 @@ export default {
             dishLists:data.ea_dishes,
           }
           dispatch({
-              actionType: SboxConstants.GET_DISHES, io_data
+              actionType: CmrConstants.GET_DISHES, io_data
           })
         }catch(error){
           console.log(error);
@@ -54,7 +56,7 @@ export default {
             toppingGroupList:data.ea_tpgs,
           }
           dispatch({
-              actionType: SboxConstants.GET_SUBMENU, io_data
+              actionType: CmrConstants.GET_SUBMENU, io_data
           })
         }catch(error){
           console.log(error);
@@ -62,9 +64,16 @@ export default {
       },
       updateSelecedCategory(item){
         // const selectedAddress = Object.assign({}, io_address);
-        const data = item
+        const io_data = item
         dispatch({
-            actionType: SboxConstants.UPDATE_SELECTED_ADDRESS, data
+            actionType: CmrConstants.UPDATE_SELECTED_CATEGORY, io_data
+        })
+      },
+      getSelectedCategory(){
+          console.log('here')
+        // const selectedAddress = Object.assign({}, io_address);
+        dispatch({
+            actionType: CmrConstants.GET_SELECTED_CATEGORY
         })
       },
 }

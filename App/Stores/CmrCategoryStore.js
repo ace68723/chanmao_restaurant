@@ -26,6 +26,7 @@ const CmrCategoryStore = Object.assign({},EventEmitter.prototype,{
 	   this.removeListener(CHANGE_EVENT, callback)
 	},
     updateCategoryLists(data) {
+        console.log(data)
       this.state.categoryLists = data.categoryLists;
       this.state.categoryOptions = data.categoryOptions;
     },
@@ -44,6 +45,20 @@ const CmrCategoryStore = Object.assign({},EventEmitter.prototype,{
           });
         this.state.keyword = data.name;
         this.state.selectedCategory =data;
+        console.log(this.state)
+    },
+    getDishData() {
+        console.log('store')
+        return oa_data = {
+            selectedCateDishes:this.state.selectedCateDishes,
+            keyword: this.state.keyword,
+            category:this.state.selectedCategory
+        }
+    },
+    getDishDataByCategory(category) {
+        return this.state.dishLists.filter((dish)=>{
+              dish.dt_id === category.dt_id
+        })
     },
     getState(){
     return this.state;
@@ -51,22 +66,29 @@ const CmrCategoryStore = Object.assign({},EventEmitter.prototype,{
     dispatcherIndex: register(function(action) {
         switch(action.actionType){
             case CmrConstants.GET_CATEGORY_LIST:
-                CmrCategoryStore.updateCategoryLists(action.data);
+            console.log(action.io_data)
+                CmrCategoryStore.updateCategoryLists(action.io_data);
                 CmrCategoryStore.emitChange();
                 break
             case CmrConstants.GET_DISHES:
-                CmrCategoryStore.updateDishLists(action.data);
+            console.log(action.io_data)
+                CmrCategoryStore.updateDishLists(action.io_data);
                 CmrCategoryStore.emitChange();
                 break;
             case CmrConstants.GET_SUBMENU:
-                CmrCategoryStore.getToppongGroup(action.data);
+            console.log(action.io_data)
+                CmrCategoryStore.getToppongGroup(action.io_data);
                 CmrCategoryStore.emitChange();
                 break;
             case CmrConstants.UPDATE_SELECTED_CATEGORY:
-                CmrCategoryStore.updateSelectedCategory(action.data);
+            console.log(action.io_data)
+                CmrCategoryStore.updateSelectedCategory(action.io_data);
                 CmrCategoryStore.emitChange();
                 break
-
+            case CmrConstants.GET_SELECTED_CATEGORY:
+                // CmrCategoryStore.getDishData();
+                CmrCategoryStore.emitChange();
+                break;
             default:
             // do nothing
             }

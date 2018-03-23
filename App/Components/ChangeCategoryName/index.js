@@ -20,6 +20,7 @@ import Settings from '../../Config/Setting';
 import Setting from '../../Config/Setting.js'
 import Loading from '../Loading';
 import CategoryModule from '../../Module/Category/CategoryModule';
+import CmrCategoryAction from '../../Actions/CmrCategoryAction';
 export default class ChangeCategoryName extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +31,8 @@ export default class ChangeCategoryName extends Component {
     this._closeSboHomeAlert = this._closeSboHomeAlert.bind(this);
   }
   _closeSboHomeAlert() {
+    CmrCategoryAction.getCategoryLists();
+    CmrCategoryAction.updateSelecedCategory(this.state.category);
     this.props.navigator.dismissLightBox();
   }
   async saveCategoryName() {
@@ -39,7 +42,6 @@ export default class ChangeCategoryName extends Component {
     try{
          const data = await CategoryModule.saveCategoryName(this.state.category.dt_id, this.state.keyword);
          if(data.ev_error === 0) {
-          this.props.getCategoryLists();
             Alert.alert(
                 "Success",
                 '修改成功',

@@ -34,6 +34,8 @@ export default class Submenu extends Component {
         toppingGroupList:[],
         waiting: false,
     }
+    this._onChange = this._onChange.bind(this);
+
   }
   // async getToppongGroup() {
   //   const loadingTimeout = setTimeout(() => {
@@ -76,7 +78,7 @@ export default class Submenu extends Component {
     CmrCategoryStore.removeChangeListener(this._onChange);
   }
   _onChange() {
-     const newState = CmrCategoryStore.getState();
+      const newState = CmrCategoryStore.getState();
     this.setState({
       toppingGroupList: newState.toppingGroupList,
     })

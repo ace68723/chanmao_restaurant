@@ -18,11 +18,14 @@ import Tab from '../Components/Tab';
 import AddNewCategory from '../Components/AddNewCategory';
 import SearchPage from '../Components/SearchPage';
 import ChangeCategoryName from '../Components/ChangeCategoryName';
+import CmRestaurantAlert from '../Components/CmRestaurantAlert';
+
 
 
 // import TabBar from '../Components/TabBar';
 // register all screens of the app (including internal ones)
 export function registerScreens() {
+  Navigation.registerComponent('CmRestaurantAlert', () => CmRestaurantAlert);
   Navigation.registerComponent('ChangeCategoryName', () => ChangeCategoryName);
   Navigation.registerComponent('AboutUs', () => AboutUs);
   Navigation.registerComponent('AddDish', () => AddDish);

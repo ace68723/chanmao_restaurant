@@ -137,13 +137,12 @@ export default class AddSubmenu extends Component {
                 "Success",
                 '添加成功',
                 [
-                  {text: 'Ok'},
+                  {text: 'Ok', onPress:()=>this.goBack()},
                 ],
                 { cancelable: false }
               )
         }
         clearTimeout(loadingTimeout);
-        this.props.getToppongGroup();
         this.refs.loading.endLoading();
     }catch(error){
         console.log(error)

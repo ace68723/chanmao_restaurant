@@ -38,6 +38,7 @@ export default class Category extends Component {
     this.goToSubmenu =this.goToSubmenu.bind(this);
     this.goToAddCategory =this.goToAddCategory.bind(this);
     this.goToSearchPage =this.goToSearchPage.bind(this);
+    this._onChange = this._onChange.bind(this);
   }
 // drag and drop
   componentWillMount(){
@@ -174,13 +175,7 @@ export default class Category extends Component {
         navigatorStyle: {
           navBarHidden: false,
         },
-        passProps: {
-            category:item,
-            categoryOptions:this.state.categoryOptions,
-            dishLists:this.state.selectedCateDishes,
-            toppingGroupList:this.state.toppingGroupList,
-            getCategoryLists: () => this.getCategoryLists(),
-        },
+
         animationType: 'screen'
       });
   }
