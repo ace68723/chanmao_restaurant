@@ -8,14 +8,21 @@ import {
   Dimensions,
   ScrollView,
   DatePickerAndroid,
+  KeyboardAvoidingView,
   Alert,
+  PanResponder,
   TextInput,
-  AsyncStorage
+  AsyncStorage,
+  Switch
 } from 'react-native';
+import {
+  findIndex,
+} from 'lodash';
 import Settings from '../../Config/Setting';
 import Setting from '../../Config/Setting.js'
 import CategoryModule from '../../Module/Category/CategoryModule';
-
+import CmrCategoryAction from '../../Actions/CmrCategoryAction';
+import CmrCategoryStore from '../../Stores/CmrCategoryStore';
 import Loading from '../Loading';
 const {height, width} = Dimensions.get('window');
 
@@ -27,73 +34,186 @@ export default class Dish extends Component {
   }
   constructor(props){
     super(props);
+    console.log(props)
     this.state={
-      category:props.category,
+      category:{},
       waiting: false,
-      keyword: props.category.name,
-      token: '',
-      restaurantList:[]
+      keyword:'',
+      dishLists:[],
+      searchedDishes:[],
+      searchText:'',
     }
-    this.getMerchantByKeyword = this.getMerchantByKeyword.bind(this);
+    this.items = [];
+    this.order = [];
+    this.onChangeText = this.onChangeText.bind(this);
+    this._handleOpen = this._handleOpen.bind(this);
+    this._onChange = this._onChange.bind(this);
+  }
+  componentDidMount() {
+    CmrCategoryStore.addChangeListener(this._onChange);
+  }
+  componentWillUnmount() {
+    CmrCategoryStore.removeChangeListener(this._onChange);
+  }
+  _onChange() {
+    const newState = CmrCategoryStore.getState();
+    this.setState({
+      dishLists: newState.selectedCateDishes,
+      keyword: newState.keyword,
+      category:newState.selectedCategory
+    })
+  }
+// drag and drop
+  componentWillMount(){
+    this._panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: (evt, gestureState) => true,
+        onMoveShouldSetPanResponder: (evt, gestureState) => true,
+        onPanResponderGrant: (evt, gestureState) => {
+            const {pageY, locationY} = evt.nativeEvent;
+            this.index = this._getIdByPosition(pageY);
+            this.preY = pageY - locationY;
+            //get the taped item and highlight it
+            let item = this.items[this.index];
+            item.setNativeProps({
+                style: {
+                    shadowColor: "#000",
+                    shadowOpacity: 0.3,
+                    shadowRadius: 5,
+                    shadowOffset: {height: 0, width: 2},
+                    elevation: 5
+                }
+            });
+        },
+        onPanResponderMove: (evt, gestureState) => {
+            let top = this.preY + gestureState.dy;
+            let item = this.items[this.index];
+            item.setNativeProps({
+                style: {top: top}
+            });
+
+            let collideIndex = this._getIdByPosition(evt.nativeEvent.pageY);
+            if(collideIndex !== this.index && collideIndex !== -1) {
+                let collideItem = this.items[collideIndex];
+                collideItem.setNativeProps({
+                    style: {top: this._getTopValueYById(this.index)}
+                });
+                //swap two values
+                [this.items[this.index], this.items[collideIndex]] = [this.items[collideIndex], this.items[this.index]];
+                [this.order[this.index], this.order[collideIndex]] = [this.order[collideIndex], this.order[this.index]];
+                this.index = collideIndex;
+            }
+        },
+        onPanResponderTerminationRequest: (evt, gestureState) => true,
+        onPanResponderRelease: (evt, gestureState) => {
+            const shadowStyle = {
+                shadowColor: "#000",
+                shadowOpacity: 0,
+                shadowRadius: 0,
+                shadowOffset: {height: 0, width: 0,},
+                elevation: 0
+            };
+            let item = this.items[this.index];
+            //go back the correct position
+            item.setNativeProps({
+                style: {...shadowStyle, top: this._getTopValueYById(this.index)}
+            });
+        },
+        onPanResponderTerminate: (evt, gestureState) => {
+            // Another component has become the responder, so this gesture
+            // should be cancelled
+        }
+    });
   }
 
-  componentDidMount() {
+  _getIdByPosition(pageY){
+    let id = -1;
+    const height = 49;
+    for (let i = 0; i < this.state.dishLists.length; i++) {
+      if(pageY >= height*(i+1) && pageY < height*(i+2)){
+        return i
+      }
+    }
+  }
 
+  _getTopValueYById(id){
+    const height = 49;
+    return (id + 1) * height;
+  }
+  componentDidMount() {
+  }
+// drag and drop end
+// go to
+  goToAddDish(item) {
+    if(!item) {
+      let dish = {
+        ds_name: '',
+        ds_price: '',
+        int_no: '',
+        dt_id: 0,
+        tpgs:[],
+      }
+      this.props.navigator.push({
+        screen: 'AddDish',
+        title: 'Dish',
+        navigatorStyle: {
+          navBarHidden: false,
+        },
+        passProps: {
+            dish:dish,
+            categoryOptions: this.state.categoryOptions,
+            toppingGroupList:this.state.toppingGroupList,
+            getCategoryLists: () => this.props.getCategoryLists(),
+        },
+        animationType: 'screen'
+      });
+    } else {
+      this.props.navigator.push({
+        screen: 'AddDish',
+        title: 'Dish',
+        navigatorStyle: {
+          navBarHidden: false,
+        },
+        passProps: {
+            dish:item,
+            categoryOptions: this.state.categoryOptions,
+            toppingGroupList:this.state.toppingGroupList,
+            getCategoryLists: () => this.props.getCategoryLists(),
+        },
+        animationType: 'screen'
+      });
+    }
+    
   }
   goBack() {
-    console.log('dismiss')
     this.props.getCategoryLists();
-    this.props.navigator.dismissAllModals({
-      animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    this.props.navigator.pop({
+      animated: true, // does the pop have transition animation or does it happen immediately (optional)
+      animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
     });
   }
-  getMerchantByKeyword() {
-    this.dishLists.forEach((item, index) => {
-      if (item.name.includes(this.state.keyword)) {
-        this.state.restaurantList.push(item);
-      }
-    });
+  goToSaveCName() {
+    this.props.navigator.showLightBox({
+      screen: "ChangeCategoryName",
+      passProps: {
+        category:this.state.category,
+        keyword:this.state.keyword,
+        getCategoryLists: () => this.props.getCategoryLists(),
+      }, // simple serializable object that will pass as props to the lightbox (optional)
+      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+     });
   }
-  async saveCategoryName() {
-    const loadingTimeout = setTimeout(() => {
-        this.refs.loading.startLoading();
-       }, 300);//add loading if request more than 200ms
-    try{
-         const data = await CategoryModule.saveCategoryName(this.state.category.dt_id, this.state.keyword);
-         console.log(data)
-         if(data.ev_error === 0) {
-            Alert.alert(
-                "Success",
-                '添加成功',
-                [
-                  {text: 'Ok'},
-          ],
-                { cancelable: false }
-              )
-         }
-         clearTimeout(loadingTimeout);
-         this.refs.loading.endLoading();
-    }catch(error){
-        console.log(error)
-        clearTimeout(loadingTimeout);
-        this.refs.loading.endLoading();
-        if (error == '用户超时，请退出重新登陆') {
-          Alert.alert(
-            "ERROR",
-            '用户超时，请退出重新登陆',
-            [
-              {text: 'Ok'},
-            ],
-            { cancelable: false }
-          )
-  
-        } else {
-          clearTimeout(loadingTimeout);
-          this.refs.loading.endLoading();
-          return
-        }
-  
-    } 
+
+// go to end
+  confirmDelete() {
+    Alert.alert(
+      "Alert",
+      'Confirm Delete?',
+      [
+        {text: 'Cancel'},
+        {text: 'Ok', onPress:()=>this.deleteCategory()},
+      ],
+      { cancelable: false }
+    )
   }
   async deleteCategory() {
     const loadingTimeout = setTimeout(() => {
@@ -101,7 +221,6 @@ export default class Dish extends Component {
        }, 300);//add loading if request more than 200ms
     try{
          const data = await CategoryModule.deleteCategory(this.state.category.dt_id);
-         console.log(data)
          if(data.ev_error === 0) {
             Alert.alert(
                 "Success",
@@ -111,11 +230,11 @@ export default class Dish extends Component {
                 ],
                 { cancelable: false }
               )
+              
          }
          clearTimeout(loadingTimeout);
          this.refs.loading.endLoading();
     }catch(error){
-        console.log(error)
         clearTimeout(loadingTimeout);
         this.refs.loading.endLoading();
         if (error == '用户超时，请退出重新登陆') {
@@ -136,43 +255,138 @@ export default class Dish extends Component {
   
     } 
   }
-  render(){
-    return(
-      <View style={styles.container}>
-        <Loading ref="loading" size={60}/>
-        <View style={styles.body}>
-          {/* {this.renderSelectDate()} */}
-          {this.renderCatFunction()}
-          {this.renderListFunction()}
-          {/* {this.renderDetialList()} */}
-        </View>
-      </View>
-    )
+  onChangeText(text) {
+    this.setState({
+        searchText:text,
+        searchedDishes:[]
+    })
+    let dishesList = [];
+    this.state.dishLists.forEach((item, index) => {
+      if (item.ds_name.includes(text)) {
+        dishesList.push(item);
+      }
+    });
+    this.setState({
+        searchedDishes:dishesList
+    })
   }
+  async _handleOpen(item,value) {
+    var dishLists = this.state.dishLists.slice()
+    const selectIndex = findIndex(this.state.dishLists,{ds_id: item.ds_id});
+    dishLists[selectIndex] = {...dishLists[selectIndex], status: value};
+    this.setState({dishLists});
+    const loadingTimeout = setTimeout(() => {
+      this.refs.loading.startLoading();
+     }, 300);//add loading if request more than 200ms
+    try{
+        const data = await CategoryModule.setDishStatus(item,value);
+        console.log(data)
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+    }catch(error){
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+        if (error == '用户超时，请退出重新登陆') {
+          Alert.alert(
+            "ERROR",
+            '用户超时，请退出重新登陆',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
 
+        } else {
+          Alert.alert(
+            "ERROR",
+            '修改失败, 请联系客服',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
 
+          clearTimeout(loadingTimeout);
+          this.refs.loading.endLoading();
+          return
+        }
+
+    } 
+  }
+// render 
+  renderButtonArea() {
+    return(
+    <View style ={{flex:0.08,flexDirection:'row'}}>
+    <TouchableOpacity
+        onPress={() => this.confirmDelete()}
+        style = {{flex:1,
+          backgroundColor:'#f4f4f4',
+          justifyContent:'center',
+          alignContent:'center',
+          borderColor:'#6D6E71',
+          borderTopWidth:0.5,
+          borderRightWidth:0.5}}>
+         <Text 
+            style={{textAlign:'center',
+            color:'#6D6E71',
+            fontSize:17,
+            fontWeight:'bold'}}>
+          Delete
+          </Text>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => this.goToSaveCName()}
+        style = {{flex:1,
+          backgroundColor:'#f4f4f4',
+          justifyContent:'center',
+          alignContent:'center',
+          borderColor:'#6D6E71',
+          borderTopWidth:0.5,
+          borderRightWidth:0.5}}>
+         <Text 
+            style={{
+            textAlign:'center',
+            color:'#6D6E71',
+            fontSize:17,
+            fontWeight:'bold'}} >
+          Change Name
+         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => this.goToAddDish()}
+        style = {{flex:1,
+          backgroundColor:'white',
+          justifyContent:'center',
+          alignContent:'center',
+          borderColor:'#6D6E71',
+          borderTopWidth:0.5,
+          borderRightWidth:0.5}}>
+         <Text 
+            style={{
+            textAlign:'center',
+            color:'#6D6E71',
+            fontSize:17,
+            fontWeight:'bold'}} >
+          Add Dish
+         </Text>
+      </TouchableOpacity>
+    </View>
+    )
+    
+  }
   renderListFunction(){
     return(
-      <View style={styles.listFunctionView}>
-        <TouchableOpacity
-            style={styles.searchButtonStyle}
-            onPress={() => this.getSummary()}
-            disabled={this.state.waiting}
-        >
-            <Text style={styles.searchButtonFont}>
-              Add Dish
-            </Text>
-        </TouchableOpacity>
-        <View style={{flex:0.4,    height: Settings.getY(150)}}>
+      <KeyboardAvoidingView style={styles.listFunctionView}>
+        <View style={{flex:0.7,    height: Settings.getY(150)}}>
             <TextInput
+            value = {this.state.searchText}
             underlineColorAndroid={"rgba(0,0,0,0)"}
             style={ styles.input }
-            onChangeText={(text) => this.props.onChangeText({text})}
+            onChangeText={this.onChangeText}
             />
         </View>
         <TouchableOpacity
             style={styles.searchButtonStyle2}
-            // onPress={() => this.getSummary()}
             disabled={this.state.waiting}
         >
             <Image source={require('./Image/search.png')} style={{
@@ -180,102 +394,156 @@ export default class Dish extends Component {
             <Text style={styles.searchButtonFont2}>
               Search
             </Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-  renderCatFunction(){
-    return(
-      <View style={styles.listFunctionView}>
-       <View style={{flex:0.4,    height: Settings.getY(150)}}>
-            <TextInput
-            value={this.state.keyword}
-            underlineColorAndroid={"rgba(0,0,0,0)"}
-            style={ styles.input }
-            onChangeText={(text) => this.setState({keyword:text})}
-            />
-        </View>
-        <TouchableOpacity
-            style={styles.searchButtonStyle}
-            onPress={() => this.saveCategoryName()}
-            disabled={this.state.waiting}
-        >
-            <Text style={styles.searchButtonFont}>
-              Save 
-            </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-            style={styles.searchButtonStyle2}
-            onPress={() => this.deleteCategory()}
-            disabled={this.state.waiting}
-        >
-            <Text style={styles.searchButtonFont2}>
-              Delete 
-            </Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
+      </KeyboardAvoidingView>
     )
   }
   renderListTitle(){
     return(
       <View style={styles.listTitles}>
-        <View style={{flex:0.15,paddingLeft:Settings.getX(2)}}>
+        <View style={{flex:0.15,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>ID</Text>
         </View>
-        <View style={{flex:0.3,paddingLeft:Settings.getX(2)}}>
+        <View style={{flex:0.45,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>Name</Text>
         </View>
-        <View style={{flex:0.4,paddingLeft:Settings.getX(35)}}>
-          <Text style={styles.listTitleFont}>Category</Text>
-        </View>
-        <View style={{flex:0.15,paddingLeft:Settings.getX(50)}}>
+        
+        <View style={{flex:0.2,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>Price</Text>
+        </View>
+        <View style={{flex:0.2,alignItems:'flex-start'}}>
+          <Text style={styles.listTitleFont}>Open</Text>
         </View>
       </View>
     )
   }
-//   renderDetialList(){
-//     return(
-//       <View style={styles.listDetailView}>
-//         {this.renderListTitle()}
-//         <View style={{flex:0.9}}>
-//           <ScrollView style={{
-//                     flex:0.9,
-//                     height:400,
-//                     width: width,
-//                     paddingHorizontal:Settings.getX(12)
-//                     }}>
-//             {this.renderRecords()}
-//           </ScrollView>
+  renderDetialList(){
+    return(
+      <View style={styles.listDetailView}>
+        {this.renderListTitle()}
+        <View style={{flex:0.9}}>
+          <ScrollView style={{
+                    flex:1,
+                    height:400,
+                    width: width,
+                    }}>
+            {this.renderRecords()}
+          </ScrollView>
 
-//         </View>
-//       </View>
-//     )
-//   }
-//   renderRecords(){
-//     console.log(this.state.list)
-//     let orders;
-//     if (this.state.list.orders) {orders=this.state.list.orders;} else {orders=this.state.list}
-//     return orders.map((record, index)=>{
-//       return(
-//         <View style={styles.recordView}
-//                 key={index}>
-//           <View style={{flex:0.3, marginLeft:15}}>
-//             <Text style={styles.recordTitleFont}>{record.oid}</Text>
-//           </View>
-//           <View style={{flex:0.5,}}>
-//             <Text style={styles.recordTitleFont}>{record.date} {record.time}</Text>
-//           </View>
-//           <View style={{flex:0.2, marginRight:15}}>
-//             <Text style={styles.recordTitleFont}>{record.total}</Text>
-//           </View>
-//         </View>
-//       )
-//     })
-//   }
+        </View>
+      </View>
+    )
+  }
+  renderRecords(){ 
+    if(this.state.searchText.length === 0) {
+      return this.state.dishLists.map((item, i)=>{
+        this.order.push(item);
+        return (
+          <TouchableOpacity
+          onPress ={()=>this.goToAddDish(item)}
+          {...this._panResponder.panHandlers}
+                ref={(ref) => this.items[i] = ref}
+                key={i}>
+            <View  style={[styles.recordView]}>
+                     <View style={{flex:0.15,alignItems:'flex-start'}}>
+                      <Text style={styles.listTitleFont}>{item.int_no}</Text>
+                    </View>
+                    <View style={{flex:0.45,alignItems:'flex-start'}}>
+                      <Text style={styles.listTitleFont}>{item.ds_name}</Text>
+                    </View>
+                   
+                    <View style={{flex:0.2,alignItems:'flex-start'}}>
+                      <Text style={styles.listTitleFont}>{item.ds_price}</Text>
+                    </View>
+                    <View style={{flex:0.2,alignItems:'flex-start'}}>
+                      <Switch 
+                        value = {item.status}
+                        onValueChange = {(value) => this._handleOpen(item,value)}
+                      />
+                    </View>
+            </View>
+            <View>
+              {this.renderToppingGroup(item)}
+            </View>
+          </TouchableOpacity>
+            
+        );
+      })
+    } else {
+      return this.state.searchedDishes.map((item, i)=>{
+        this.order.push(item);
+        return (
+          <TouchableOpacity
+          {...this._panResponder.panHandlers}
+                ref={(ref) => this.items[i] = ref}
+                key={i}
+                onPress= {()=>this.goToAddDish(item)}>
+            <View  style={[styles.recordView]}>
+                     <View style={{flex:0.15,paddingLeft:Settings.getX(2)}}>
+                      <Text style={styles.listTitleFont}>{item.ds_id}</Text>
+                    </View>
+                    <View style={{flex:0.3,paddingLeft:Settings.getX(2)}}>
+                      <Text style={styles.listTitleFont}>{item.ds_name}</Text>
+                    </View>
+                    <View style={{flex:0.4,paddingLeft:Settings.getX(35)}}>
+                      <Text style={styles.listTitleFont}>{item.dt_name}</Text>
+                    </View>
+                    <View style={{flex:0.15,paddingLeft:Settings.getX(50)}}>
+                      <Text style={styles.listTitleFont}>{item.ds_price}</Text>
+                    </View>
+            </View>
+            <View>
+              {this.renderToppingGroup(item)}
+            </View>
+          </TouchableOpacity>
+            
+        );
+    })
+    }
+
+  }
+  renderToppingGroup(item) {
+    if(item.tpgs.length === 0) {
+      return;
+    } else {
+      return (
+        <View style={{flexDirection:'row',flexWrap: 'wrap',marginBottom:5}}>
+            {item.tpgs.map((tpg,i) =>{
+                return  this.renderTPS(tpg,i)
+            })}
+        </View>
+      )
+    }
+  }
+  renderTPS(tp,i) {
+   return(
+      <TouchableOpacity
+          style={styles.toppingGroupButton}
+          disabled={true}
+          key = {i}
+      >
+          <Text style={styles.toppingGroupButtonFont}>
+          {tp.tpg_name}
+          </Text>
+      </TouchableOpacity>
+   ) 
+  }
+  render(){
+    return(
+      <KeyboardAvoidingView style={styles.container}>
+        <Loading ref="loading" size={60}/>
+        <View style={styles.body}>
+          {this.renderListFunction()}
+          {this.renderDetialList()}
+          {this.renderButtonArea()}
+        </View>
+      </KeyboardAvoidingView>
+    )
+  }
+// render end
 
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -305,13 +573,14 @@ const styles = StyleSheet.create({
   },
 
   listDetailView:{
-    flex:0.8,
+    flex:0.83,
   },
   listTitles:{
     flexDirection:'row',
-    flex:0.1,
-    marginHorizontal: Settings.getX(33),
-    paddingTop:Settings.getY(30),
+    flex:0.07,
+    marginHorizontal: Settings.getX(5),
+    paddingHorizontal:Settings.getX(20),
+    paddingTop:Settings.getY(10),
     justifyContent:'center',
   },
   listTitleFont:{
@@ -322,11 +591,21 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
   recordView:{
+    height:'auto',
+    width:width-10,
+    flexDirection:'row',
+    borderColor:'#D1D3D4',
+    borderTopWidth:1,
+    paddingHorizontal:Settings.getX(20),
+    marginHorizontal:Settings.getX(5),    
+    paddingTop:Settings.getY(20),
+    paddingBottom:Settings.getY(20),
+  },
+  toppingGroupView:{
     height:50,
     width:width-10,
     flexDirection:'row',
     borderColor:'#D1D3D4',
-    borderBottomWidth:1,
     marginHorizontal:5,
     paddingTop:Settings.getY(20),
     paddingBottom:Settings.getY(18)
@@ -394,6 +673,24 @@ const styles = StyleSheet.create({
     borderWidth:1,
     height: Settings.getY(50),
     borderColor:'grey'
+  },
+  toppingGroupButton:{
+    backgroundColor:'#EA7B21',
+    marginLeft:Settings.getY(5),
+    marginRight: Settings.getY(5),
+    padding:Settings.getY(5),
+    height: 'auto',
+    width:'auto',
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection:'row',
+    borderWidth:1,
+    borderColor:'#EA7B21'
+  },
+  toppingGroupButtonFont:{
+    fontSize:12,
+    fontFamily: 'Noto Sans CJK SC',
+    color: 'white'
   },
   searchButtonFont:{
     fontSize:15,

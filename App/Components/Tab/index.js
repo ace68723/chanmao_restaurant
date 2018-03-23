@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 import Home from '../Home';
-import Management from '../Management';
+import Category from '../Category';
 import HistoryPage from '../History';
 import AboutUs from '../AboutUs';
 import TabBar from './TabBar';
@@ -55,7 +55,7 @@ export default class Tab extends Component {
                     activeIconImage={require("./Image/historyorange.png")}
                     inactiveIconImage={require("./Image/historygrey.png")}
                     navigator={this.props.navigator}/>
-              <Management tabLabel="Management"
+              <Category tabLabel="Management"
                     onPressLogout = {() => this._logOut()}  
                     activeIconImage={require("./Image/neworange.png")}
                     inactiveIconImage={require("./Image/newgrey.png")}

@@ -28,7 +28,6 @@ export default  {
                 'Authortoken': token
             }
         }
-        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {
@@ -90,6 +89,178 @@ export default  {
         options.body = JSON.stringify({
             "dt_id": dt_id
         })
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
+       getToppongGroup(token){
+        const url = 'http://norgta.com/api/mis/v2/find_tpgs';
+        let options = {
+            method: 'POST',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': token
+            }
+        }
+
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
+       setDish(dish,token){
+        const url = 'http://norgta.com/api/mis/v2/set_dish';
+        let options = {
+            method: 'POST',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': token
+            }
+        }
+        options.body = JSON.stringify({
+            'ds_id': dish.ds_id,
+            'int_no': dish.int_no,
+            'dt_id': parseInt(dish.dt_id, 10),
+            'ds_name': dish.ds_name,
+            'ds_price': dish.ds_price,
+            'tpgs': dish.tpgs
+        })
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
+       addDish(dish,token){
+        const url = 'http://norgta.com/api/mis/v2/set_dish';
+        let options = {
+            method: 'POST',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': token
+            }
+        }
+        console.log(options)
+        options.body = JSON.stringify({
+            'int_no': dish.int_no,
+            'dt_id': parseInt(dish.dt_id, 10),
+            'ds_name': dish.ds_name,
+            'ds_price': dish.ds_price,
+            'tpgs': dish.tpgs
+        })
+        console.log(options)
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
+       async setToppingGroup(data,token){
+        const url = 'http://norgta.com/api/mis/v2/set_tpg';
+        let options = {
+            method: 'POST',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': token
+            }
+        }
+        if(data.tpg_id) {
+            options.body = JSON.stringify({
+                "tpg_id":data.tpg_id,
+                "tpg_name":data.tpg_name,
+                "tpg_note":data.tpg_note,
+                "tpg_max_limit":data.tpg_max_limit,
+                "tpg_min_limit":data.tpg_min_limit,
+                "tps":data.tps
+            })
+        } else {
+            options.body = JSON.stringify({
+                "tpg_name":data.tpg_name,
+                "tpg_note":data.tpg_note,
+                "tpg_max_limit":parseFloat(parseFloat(data.tpg_max_limit)),
+                "tpg_min_limit":parseFloat(parseFloat(data.tpg_min_limit)),
+                "tps":data.tps
+            })
+        }
+        
+        console.log(options.body)
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
+       deleteToppingGroup(submenu,token){
+        const url = 'http://norgta.com/api/mis/v2/delete_tpg';
+        let options = {
+            method: 'POST',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': token
+            }
+        }
+        options.body = JSON.stringify({
+            "tpg_id":submenu.tpg_id,
+
+        })
+        console.log(options)
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
+       deleteDish(dish,token){
+        const url = 'http://norgta.com/api/mis/v2/delete_dish';
+        let options = {
+            method: 'POST',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': token
+            }
+        }
+        options.body = JSON.stringify({
+            "ds_id":dish.ds_id,
+
+        })
+        console.log(options)
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
+       setDishStatus(item,value,token){
+        const url = 'http://norgta.com/api/mis/v2/set_dish_status';
+        let options = {
+            method: 'POST',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': token
+            }
+        }
+        options.body = JSON.stringify({
+            "ds_id":item.ds_id,
+            "status":value
+        })
+        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {

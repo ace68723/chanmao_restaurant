@@ -18,6 +18,8 @@ import Setting from '../../Config/Setting.js'
 
 import Loading from '../Loading';
 import CategoryModule from '../../Module/Category/CategoryModule';
+import CmrCategoryAction from '../../Actions/CmrCategoryAction';
+import CmrCategoryStore from '../../Stores/CmrCategoryStore';
 const {height, width} = Dimensions.get('window');
 
 export default class Category extends Component {
@@ -28,19 +30,16 @@ export default class Category extends Component {
   }
   constructor(props){
     super(props);
-    this.state={
-      dishLists:[],
-      categoryLists:[],
-      waiting: false,
-      keyword: '',
-      token: '',
-      restaurantList:[]
-    }
+    this.state = CmrCategoryStore.getState();
     this.items = [];
     this.order = [];
-    this.onChangeText = this.onChangeText.bind(this);
-    this.editCategory =this.editCategory.bind(this);
+    this.goToCategoryDetail =this.goToCategoryDetail.bind(this);
+    this.goToAddDish =this.goToAddDish.bind(this);
+    this.goToSubmenu =this.goToSubmenu.bind(this);
+    this.goToAddCategory =this.goToAddCategory.bind(this);
+    this.goToSearchPage =this.goToSearchPage.bind(this);
   }
+// drag and drop
   componentWillMount(){
     this._panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -103,7 +102,15 @@ export default class Category extends Component {
     });
   }
   componentDidMount() {
-    this.getCategoryLists();
+    CmrCategoryStore.addChangeListener(this._onChange);
+    CmrCategoryAction.getDishes();
+    CmrCategoryAction.getCategoryLists();
+  }
+  componentWillUnmount() {
+    CmrCategoryStore.removeChangeListener(this._onChange);
+  }
+  _onChange() {
+    this.setState(CmrCategoryStore.getState());
   }
   _getIdByPosition(pageY){
     let id = -1;
@@ -119,8 +126,49 @@ export default class Category extends Component {
     const height = 49;
     return (id + 1) * height;
   }
-  editCategory(item) {
-    this.props.navigator.showModal({
+// drag and drop end
+// goTo
+  goToAddDish() {
+    let dish = {
+      ds_name: '',
+      ds_price: '',
+      int_no: '',
+      dt_id: 0,
+      tpgs:[]
+    }
+    this.props.navigator.push({
+      screen: 'AddDish',
+      title: 'Dish',
+      navigatorStyle: {
+        navBarHidden: false,
+      },
+      passProps: {
+          dish:dish,
+          categoryOptions: this.state.categoryOptions,
+          toppingGroupList:this.state.toppingGroupList,
+          getCategoryLists: () => this.getCategoryLists(),
+      },
+      animationType: 'screen'
+    });
+
+
+  }
+  goToSubmenu() {
+    this.props.navigator.push({
+      screen: 'Submenu',
+      title: 'Submenu',
+      navigatorStyle: {
+        navBarHidden: false,
+      },
+      passProps: {
+        getCategoryLists: () => this.getCategoryLists(),
+    },
+      animationType: 'screen'
+    });
+  }
+  goToCategoryDetail(item) {
+    CmrCategoryAction.updateSelecedCategory(item);
+    this.props.navigator.push({
         screen: 'Dish',
         title: item.name,
         navigatorStyle: {
@@ -128,38 +176,90 @@ export default class Category extends Component {
         },
         passProps: {
             category:item,
+            categoryOptions:this.state.categoryOptions,
+            dishLists:this.state.selectedCateDishes,
+            toppingGroupList:this.state.toppingGroupList,
             getCategoryLists: () => this.getCategoryLists(),
         },
         animationType: 'screen'
       });
   }
-  onChangeText() {
-    this.dishLists.forEach((item, index) => {
-      if (item.name.includes(this.state.keyword)) {
-        this.state.restaurantList.push(item);
-      }
-    });
+  goToAddCategory() {
+    this.props.navigator.showLightBox({
+      screen: "AddNewCategory",
+      passProps: {
+        getCategoryLists: () => this.getCategoryLists(),
+      }, // simple serializable object that will pass as props to the lightbox (optional)
+      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+     });
   }
-  async addCategory(keyword) {
+  goToSearchPage() {
+    this.props.navigator.push({
+      screen: "SearchPage",
+      title: 'Search Dishes',
+        navigatorStyle: {
+          navBarHidden: false,
+        },
+      passProps: {
+        categoryOptions:this.state.categoryOptions,
+      }, // simple serializable object that will pass as props to the lightbox (optional)
+      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+     });
+  }
+// goTo end
+  async getToppongGroup() {
+    const loadingTimeout = setTimeout(() => {
+        this.refs.loading.startLoading();
+      }, 300);//add loading if request more than 200ms
+    try{
+        const data = await CategoryModule.getToppongGroup();
+        this.setState({
+            toppingGroupList:data.ea_tpgs,
+        })
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+    }catch(error){
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+        if (error == '用户超时，请退出重新登陆') {
+          Alert.alert(
+            "ERROR",
+            '用户超时，请退出重新登陆',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
+
+        } else {
+          clearTimeout(loadingTimeout);
+          this.refs.loading.endLoading();
+          return
+        }
+
+    } 
+  }
+  async getDishes() {
     const loadingTimeout = setTimeout(() => {
         this.refs.loading.startLoading();
        }, 300);//add loading if request more than 200ms
     try{
-         const data = await CategoryModule.addCategory(this.state.keyword);
-         console.log(data)
-         if(data.ev_error === 0) {
-            Alert.alert(
-                "Success",
-                '添加成功',
-                [
-                  {text: 'Ok'},
-                ],
-                { cancelable: false }
-              )
+         const data = await CategoryModule.getDishes();
+         data.ea_dishes.forEach(item => {
+           if(item.status === 0) {
+             item.status = true;
+           } else {
+             item.status = false;
+           }
+         });
+         this.setState({
+            dishLists:data.ea_dishes,
+        })
+        console.log(this.state.dishLists)         
+        if(data.ev_error === 0) {
          }
          clearTimeout(loadingTimeout);
          this.refs.loading.endLoading();
-         this.getCategoryLists();
     }catch(error){
         console.log(error)
         clearTimeout(loadingTimeout);
@@ -183,18 +283,28 @@ export default class Category extends Component {
     } 
   }
   async getCategoryLists() {
+    let typeOptions = [{dt_id:0, name:'Please Select Category'}];
     const loadingTimeout = setTimeout(() => {
         this.refs.loading.startLoading();
        }, 300);//add loading if request more than 200ms
     try{
          const data = await CategoryModule.getCategoryLists();
          console.log(data)
+         data.ea_data.forEach(item => {
+          const data = {
+            dt_id: 0,
+            name: ''
+          };
+          data.dt_id = item.dt_id;
+          data.name = item.name;
+          typeOptions.push(data);
+      });
          this.setState({
             categoryLists: data.ea_data,
+            categoryOptions:typeOptions
          })
          clearTimeout(loadingTimeout);
          this.refs.loading.endLoading();
-  
     }catch(error){
         console.log(error)
         clearTimeout(loadingTimeout);
@@ -218,64 +328,7 @@ export default class Category extends Component {
   
     }
   }
-  render(){
-    return(
-      <View style={styles.container}>
-        <Loading ref="loading" size={60}/>
-        <View style={styles.body}>
-          {/* {this.renderSelectDate()} */}
-          {this.renderSearchFunction()}
-          {this.renderListFunction()}
-          {this.renderDetialList()}
-        </View>
-      </View>
-    )
-  }
-  renderSearchFunction(){
-    return(
-      <View style={styles.listFunctionView}>
-        <View style={{flex:0.7,height: Settings.getY(150)}}>
-            <TextInput
-            underlineColorAndroid={"rgba(0,0,0,0)"}
-            style={ styles.input2 }
-            onChangeText={(text) => this.onChangeText({text})}
-            />
-        </View>
-        <TouchableOpacity
-            style={styles.searchButtonStyle2}
-            // onPress={() => this.getSummary()}
-            disabled={this.state.waiting}
-        >
-            <Text style={styles.searchButtonFont}>
-              Search
-            </Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-  renderListFunction(){
-    return(
-      <View style={styles.listFunctionView}>
-        <View style={{flex:0.7,height: Settings.getY(150)}}>
-            <TextInput
-            value={this.state.keyword}
-            underlineColorAndroid={"rgba(0,0,0,0)"}
-            style={ styles.input }
-            onChangeText={(text) => this.setState({keyword:text})}
-            />
-        </View>
-        <TouchableOpacity
-            style={styles.searchButtonStyle}
-            onPress={() => this.addCategory()}
-            disabled={this.state.waiting}
-        >
-            <Text style={styles.searchButtonFont}>
-              Add Category
-            </Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+// render
   renderListTitle(){
     return(
       <View style={styles.listTitles}>
@@ -288,6 +341,66 @@ export default class Category extends Component {
 
       </View>
     )
+  }
+  renderButtonArea() {
+    return(
+    <View style ={{flex:0.08,flexDirection:'row'}}>
+      <TouchableOpacity 
+        onPress={() => this.goToAddCategory()}
+        style = {{flex:1,
+          backgroundColor:'#f4f4f4',
+          justifyContent:'center',
+          alignContent:'center',
+          borderColor:'#6D6E71',
+          borderTopWidth:0.5,
+          borderRightWidth:0.5}}>
+         <Text 
+            style={{
+            textAlign:'center',
+            color:'#6D6E71',
+            fontSize:17,
+            fontWeight:'bold'}} >
+          Add Category
+         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => this.goToSubmenu()}
+        style = {{flex:1,
+          backgroundColor:'#f4f4f4',
+          justifyContent:'center',
+          alignContent:'center',
+          borderColor:'#6D6E71',
+          borderTopWidth:0.5,
+          borderRightWidth:0.5}}>
+         <Text 
+            style={{
+            textAlign:'center',
+            color:'#6D6E71',
+            fontSize:17,
+            fontWeight:'bold'}} >
+          Submenu
+         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => this.goToAddDish()}
+        style = {{flex:1,
+          backgroundColor:'white',
+          justifyContent:'center',
+          alignContent:'center',
+          borderColor:'#6D6E71',
+          borderTopWidth:0.5,
+          borderRightWidth:0.5}}>
+         <Text 
+            style={{textAlign:'center',
+            color:'#6D6E71',
+            fontSize:17,
+            fontWeight:'bold'}}>
+          Add Dish
+          </Text>
+      </TouchableOpacity>
+    </View>
+    )
+    
   }
   renderDetialList(){
     return(
@@ -302,7 +415,6 @@ export default class Category extends Component {
                     }}>
             {this.renderRecords()}
           </ScrollView>
-
         </View>
       </View>
     )
@@ -310,7 +422,6 @@ export default class Category extends Component {
   renderRecords(){
        return this.state.categoryLists.map((item, i)=>{
             this.order.push(item);
-            console.log(item)
             return (
                 <View
                     {...this._panResponder.panHandlers}
@@ -318,19 +429,85 @@ export default class Category extends Component {
                     key={i}
                     style={[styles.recordView]}>
                     <TouchableOpacity style={{flex:0.3, marginLeft:15,alignItems:'center',justifyContent:'center',}}
-                    onPress={() => this.editCategory(item)}>
+                    onPress={() => this.goToCategoryDetail(item)}>
                       <Text style={styles.recordTitleFont}>{item.dt_id}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{flex:0.7, marginRight:25,alignItems:'center',justifyContent:'center',}}
-                    onPress={() => this.editCategory(item)}>
+                    onPress={() => this.goToCategoryDetail(item)}>
                       <Text style={styles.recordTitleFont}>{item.name}</Text>
                     </TouchableOpacity>
                 </View>
             );
         })
-
-
    }
+   renderToppingGroup(item) {
+    if(item.tpgs.length === 0) {
+      return;
+    } else {
+      return  item.tpgs.map((tpg,i) =>{
+        return(
+          <View style={[styles.toppingGroupView]}
+                key = {i}>
+                <TouchableOpacity
+                    style={styles.toppingGroupButton}
+                    disabled={true}
+                >
+                    <Text style={styles.toppingGroupButtonFont}>
+                    {tpg.tpg_name}
+                    </Text>
+                </TouchableOpacity>
+          </View>
+        );
+      })
+
+    }
+  }
+  render(){
+    return(
+      <View style={styles.container}>
+        <Loading ref="loading" size={60}/>
+        <View style={styles.body}>
+        <View style={{
+          backgroundColor:'white',
+          flex:0.08,
+          alignItems: 'center',
+          flexDirection: 'row',
+          borderBottomColor:'#6D6E71',
+          borderBottomWidth:0.5,
+          borderRadius: 2,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1}}>
+            <Text style={{
+                  fontSize:20,
+                  color:'#EA7B21',
+                  position:'absolute',
+                  left:0.29*width}}>
+              Dish Management
+            </Text>
+            <TouchableOpacity onPress={()=> this.goToSearchPage()}
+            style={{
+              position:'absolute',
+              alignItems:'center',
+              justifyContent: 'center',
+              height: '100%',
+              right:0.05*width}}>
+                  <Image style = {{height:Settings.getY(34),
+                     width:Settings.getY(34)}}
+                      source={require('./Image/search.png')}
+                    />
+            </TouchableOpacity>
+        </View>
+        {this.renderDetialList()}
+        {this.renderButtonArea()}
+        </View>
+      </View>
+    )
+  }
+// render end
+
 }
 
 const styles = StyleSheet.create({
@@ -354,6 +531,16 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center'
   },
+  toppingGroupView:{
+    height:50,
+    width:width-10,
+    flexDirection:'row',
+    borderColor:'#D1D3D4',
+    marginHorizontal:5,
+    borderBottomWidth:1,
+    paddingTop:Settings.getY(20),
+    paddingBottom:Settings.getY(18)
+  },
   listFunctionView:{
     flexDirection:'row',
     marginHorizontal:Settings.getX(20),
@@ -369,7 +556,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
 },
   listDetailView:{
-    flex:0.8,
+    flex:0.92,
   },
   listTitles:{
     flexDirection:'row',
@@ -389,7 +576,7 @@ const styles = StyleSheet.create({
     width:width-10,
     flexDirection:'row',
     borderColor:'#D1D3D4',
-    borderBottomWidth:1,
+    borderTopWidth:1,
     marginHorizontal:5,
     alignItems:'center',
     justifyContent:'center',
@@ -481,5 +668,26 @@ const styles = StyleSheet.create({
     paddingLeft: Settings.getX(20),
     fontFamily: 'Noto Sans CJK SC',
     color: 'white'
-  }
+  },
+  toppingGroupButton:{
+    backgroundColor:'#EA7B21',
+    marginLeft:Settings.getY(10),
+    marginRight: Settings.getY(10),
+    paddingTop:Settings.getY(10),
+    paddingBottom:Settings.getY(10),
+    paddingLeft:Settings.getY(10),
+    paddingRight:Settings.getY(10),
+    height: 'auto',
+    width:'auto',
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection:'row',
+    borderWidth:1,
+    borderColor:'#EA7B21'
+  },
+  toppingGroupButtonFont:{
+    fontSize:13,
+    fontFamily: 'Noto Sans CJK SC',
+    color: 'white'
+  },
 });
