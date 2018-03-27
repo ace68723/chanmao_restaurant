@@ -356,7 +356,7 @@ export default class Category extends Component {
       )
     } else {
       return(
-        <TouchableOpacity style={{flex:0.1,alignItems:'center',justifyContent:'center',}} onPress = {() => this.startLeveling()}>
+        <TouchableOpacity style={{flex:0.05,alignItems:'center',justifyContent:'center',}} onPress = {() => this.startLeveling()}>
         <Image
             style={styles.button}
             source={require('./Image/icon-checked.png')}
