@@ -35,6 +35,7 @@ export default class Dish extends Component {
   constructor(props){
     super(props);
     this.state={
+      editLevel:false,
       category:{},
       waiting: false,
       keyword:'',
@@ -139,6 +140,12 @@ export default class Dish extends Component {
       dishLists: newState.selectedCateDishes,
       keyword: newState.keyword,
       category:newState.selectedCategory,
+    })
+  }
+  startLeveling() {
+    newLevel = !this.state.editLevel
+    this.setState({
+      editLevel: newLevel
     })
   }
 // drag and drop end
@@ -407,7 +414,7 @@ export default class Dish extends Component {
         <View style={{flex:0.15,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>ID</Text>
         </View>
-        <View style={{flex:0.45,alignItems:'flex-start'}}>
+        <View style={{flex:0.4,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>Name</Text>
         </View>
         
@@ -417,8 +424,32 @@ export default class Dish extends Component {
         <View style={{flex:0.2,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>Open</Text>
         </View>
+        {this.renderLeveling()}
+
       </View>
     )
+  }
+  renderLeveling() {
+    if(!this.state.editLevel) {
+      return(
+        <TouchableOpacity style={{flex:0.05,alignItems:'center',justifyContent:'center',}} onPress = {() => this.startLeveling()}>
+        <Image
+            style={styles.button}
+            source={require('./Image/levels.png')}
+        />
+        </TouchableOpacity>
+      )
+    } else {
+      return(
+        <TouchableOpacity style={{flex:0.05,alignItems:'center',justifyContent:'center',}} onPress = {() => this.startLeveling()}>
+        <Image
+            style={styles.button}
+            source={require('./Image/icon-checked.png')}
+        />
+        </TouchableOpacity>
+      )
+    }
+    
   }
   renderDetialList(){
     return(
@@ -451,7 +482,7 @@ export default class Dish extends Component {
                      <View style={{flex:0.15,alignItems:'flex-start'}}>
                       <Text style={styles.listTitleFont}>{item.int_no}</Text>
                     </View>
-                    <View style={{flex:0.45,alignItems:'flex-start'}}>
+                    <View style={{flex:0.4,alignItems:'flex-start'}}>
                       <Text style={styles.listTitleFont}>{item.ds_name}</Text>
                     </View>
                    
@@ -464,6 +495,7 @@ export default class Dish extends Component {
                         onValueChange = {(value) => this._handleOpen(item,value)}
                       />
                     </View>
+                    <View style={{flex:0.05,alignItems:'flex-start'}}></View>
             </View>
             <View>
               {this.renderToppingGroup(item)}

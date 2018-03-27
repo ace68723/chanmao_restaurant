@@ -323,6 +323,12 @@ export default class Category extends Component {
   
     }
   }
+  startLeveling() {
+    newLevel = !this.state.editLevel
+    this.setState({
+      editLevel: newLevel
+    })
+  }
 // render
   renderListTitle(){
     return(
@@ -330,12 +336,35 @@ export default class Category extends Component {
         <View style={{flex:0.3,paddingLeft:Settings.getX(2),alignItems:'center',justifyContent:'center',}}>
           <Text style={styles.listTitleFont}>ID</Text>
         </View>
-        <View style={{flex:0.7,paddingLeft:Settings.getX(2),alignItems:'center',justifyContent:'center',}}>
+        <View style={{flex:0.65,paddingLeft:Settings.getX(2),alignItems:'center',justifyContent:'center',}}>
           <Text style={styles.listTitleFont}>Name</Text>
         </View>
-
+        {this.renderLeveling()}
+      
       </View>
     )
+  }
+  renderLeveling() {
+    if(!this.state.editLevel) {
+      return(
+        <TouchableOpacity style={{flex:0.05,alignItems:'center',justifyContent:'center',}} onPress = {() => this.startLeveling()}>
+        <Image
+            style={styles.button}
+            source={require('./Image/levels.png')}
+        />
+        </TouchableOpacity>
+      )
+    } else {
+      return(
+        <TouchableOpacity style={{flex:0.1,alignItems:'center',justifyContent:'center',}} onPress = {() => this.startLeveling()}>
+        <Image
+            style={styles.button}
+            source={require('./Image/icon-checked.png')}
+        />
+        </TouchableOpacity>
+      )
+    }
+    
   }
   renderButtonArea() {
     return(
@@ -427,10 +456,11 @@ export default class Category extends Component {
                     onPress={() => this.goToCategoryDetail(item)}>
                       <Text style={styles.recordTitleFont}>{item.dt_id}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex:0.7, marginRight:25,alignItems:'center',justifyContent:'center',}}
+                    <TouchableOpacity style={{flex:0.65, marginRight:25,alignItems:'center',justifyContent:'center',}}
                     onPress={() => this.goToCategoryDetail(item)}>
                       <Text style={styles.recordTitleFont}>{item.name}</Text>
                     </TouchableOpacity>
+                    <View style={{flex:0.05,alignItems:'flex-start'}}></View>
                 </View>
             );
         })

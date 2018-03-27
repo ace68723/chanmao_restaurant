@@ -12,6 +12,7 @@ const CmrCategoryStore = Object.assign({},EventEmitter.prototype,{
       selectedCateDishes:[],
       searchText:'',
       keyword:'',
+      editLevel: false,
       categoryOptions:[],
       toppingGroupList:[],
       selectedCategory:{},
