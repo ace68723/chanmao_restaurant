@@ -99,9 +99,6 @@ export default class OrderDetail extends Component {
       });
       if (task=='0'){
         await this._printOrder();
-        setTimeout(() =>{
-          this._printOrder();
-        }, 4000);
       }
 
     } catch (e) {
@@ -605,23 +602,23 @@ export default class OrderDetail extends Component {
   }
   render() {
     return (
-      <ScrollView 
+      <ScrollView
           refreshing = {this.state.refreshing}
           onRefresh = {this.handleRefresh}
           style={styles.container}>
         <Loading ref="loading" size={60}/>
         {this._renderOrderType()}
         {this._renderOrderInfo()}
-        <ScrollView   
+        <ScrollView
           style={{flex:1,
             backgroundColor:'white',
             borderTopWidth:1,
             borderTopColor:'grey',
             borderBottomWidth:1,
             borderBottomColor:'grey',
-          }} 
+          }}
           showsVerticalScrollIndicator={true}
-          
+
         >
         {this._renderList()}
         {this._renderDetails()}
