@@ -125,7 +125,7 @@ export default  {
             }
         }
         options.body = JSON.stringify({
-            'ds_id': dish.ds_id,
+            'int_no': dish.int_no,
             'int_no': dish.int_no,
             'dt_id': parseInt(dish.dt_id, 10),
             'ds_name': dish.ds_name,
@@ -193,7 +193,7 @@ export default  {
                 "tps":data.tps
             })
         }
-        
+
         console.log(options.body)
       return fetch(url,options)
            .then((response) => response.json())
@@ -235,7 +235,7 @@ export default  {
             }
         }
         options.body = JSON.stringify({
-            "ds_id":dish.ds_id,
+            "int_no":dish.int_no,
 
         })
         console.log(options)
@@ -257,7 +257,7 @@ export default  {
             }
         }
         options.body = JSON.stringify({
-            "ds_id":item.ds_id,
+            "int_no":item.int_no,
             "status":value
         })
         console.log(options)

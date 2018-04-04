@@ -54,11 +54,11 @@ export default  {
 
              await NativeModules.customAndroid.printLine("No.","Dish","Price",1,2,2,0,1,2);
              for(let i = 0; i < data.orderArray.length; i++){
-                // await NativeModules.customAndroid.printOriginalText(data.orderArray[i].ds_id);
+                // await NativeModules.customAndroid.printOriginalText(data.orderArray[i].int_no);
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].ds_name);
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].amount);
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].price);
-                await NativeModules.customAndroid.printLine(data.orderArray[i].ds_id,data.orderArray[i].ds_name,data.orderArray[i].amount+' x '+data.orderArray[i].price,1,2,2,0,1,2);
+                await NativeModules.customAndroid.printLine(data.orderArray[i].int_no,data.orderArray[i].ds_name,data.orderArray[i].amount+' x '+data.orderArray[i].price,1,2,2,0,1,2);
                 for(let j = 0; j < data.orderArray[i].tps.length; j++){
                   await NativeModules.customAndroid.printLine('',data.orderArray[i].tps[j].tp_name,data.orderArray[i].tps[j].amount+' x '+data.orderArray[i].tps[j].price,1,2,2,0,1,2);
                 }

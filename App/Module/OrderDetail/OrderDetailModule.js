@@ -29,6 +29,7 @@ export default  {
       const response = await OrderDetailAPI.handleOrder(reqData);
       if(response.result === 0 ){
          const result = response.result;
+         console.log(result);
          return result
       }else{
         const errorMessage = response.ev_message;

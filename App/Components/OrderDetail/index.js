@@ -227,7 +227,7 @@ export default class OrderDetail extends Component {
             <TouchableOpacity  key={index} onPress={()=>this._changeSoldState(index)} >
               <View key={index} style={[styles.itemContainer,{height:30 * parseFloat(item.ds_name.length / 16)+30}]}>
                 <View style={{flex:0.15}}>
-                  <Text  style={styles.itemFont}>{item.ds_id}</Text>
+                  <Text  style={styles.itemFont}>{item.int_no}</Text>
                 </View>
                 <View style={{flex:0.4}}>
                   <Text  style={styles.itemFont}>{item.ds_name}</Text>
@@ -254,7 +254,7 @@ export default class OrderDetail extends Component {
 
             <View  style={styles.itemContainer}>
               <View style={{flex:0.15}}>
-                <Text  style={styles.itemFont}>{item.ds_id}</Text>
+                <Text  style={styles.itemFont}>{item.int_no}</Text>
               </View>
               <View style={{flex:0.6}}>
                 <Text  style={styles.itemFont}>{item.ds_name}</Text>

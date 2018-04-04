@@ -300,7 +300,7 @@ export default class SearchPage extends Component {
                     onPress= {()=>this.goToAddDish(item)}>
                 <View  style={[styles.recordView]}>
                          <View style={{flex:0.15,paddingLeft:Settings.getX(2)}}>
-                          <Text style={styles.listTitleFont}>{item.ds_id}</Text>
+                          <Text style={styles.listTitleFont}>{item.int_no}</Text>
                         </View>
                         <View style={{flex:0.3,paddingLeft:Settings.getX(2)}}>
                           <Text style={styles.listTitleFont}>{item.ds_name}</Text>

@@ -282,7 +282,7 @@ export default class Dish extends Component {
   }
   async _handleOpen(item,value) {
     var dishLists = this.state.dishLists.slice()
-    const selectIndex = findIndex(this.state.dishLists,{ds_id: item.ds_id});
+    const selectIndex = findIndex(this.state.dishLists,{int_no: item.int_no});
     dishLists[selectIndex] = {...dishLists[selectIndex], status: value};
     this.setState({dishLists});
     const loadingTimeout = setTimeout(() => {
@@ -515,7 +515,7 @@ export default class Dish extends Component {
                 onPress= {()=>this.goToAddDish(item)}>
             <View  style={[styles.recordView]}>
                      <View style={{flex:0.15,paddingLeft:Settings.getX(2)}}>
-                      <Text style={styles.listTitleFont}>{item.ds_id}</Text>
+                      <Text style={styles.listTitleFont}>{item.int_no}</Text>
                     </View>
                     <View style={{flex:0.3,paddingLeft:Settings.getX(2)}}>
                       <Text style={styles.listTitleFont}>{item.ds_name}</Text>
