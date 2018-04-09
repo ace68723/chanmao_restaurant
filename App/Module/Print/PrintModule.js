@@ -83,7 +83,7 @@ export default  {
              await NativeModules.customAndroid.printOriginalText("Tax: $"+data.tax);
              await NativeModules.customAndroid.lineWrap(2);
 
-             await NativeModules.customAndroid.printOriginalText("Total: $"+data.total);
+             await NativeModules.customAndroid.printTextWithFont("Total: $"+data.total,'gh',30);
              await NativeModules.customAndroid.lineWrap(2);
              await NativeModules.customAndroid.printOriginalText("_______________________________");
              await NativeModules.customAndroid.lineWrap(2);
