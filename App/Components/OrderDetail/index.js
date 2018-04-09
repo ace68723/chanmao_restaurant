@@ -648,11 +648,11 @@ export default class OrderDetail extends Component {
   },
   itemFont:{
     fontFamily:'Noto Sans CJK SC',
-    fontSize:15,
+    fontSize:18,
   },
   tpFont:{
     fontFamily:'Noto Sans CJK SC',
-    fontSize:13,
+    fontSize:17,
     color:'grey'
   },
   itemContainer:{
