@@ -100,6 +100,122 @@ public class customAndroid extends ReactContextBaseJavaModule {
     public String getName() {
         return "customAndroid";
     }
+
+    @ReactMethod
+    public void setFontSize(float fontsize, final Promise p) {
+        final IWoyouService ss = woyouService;
+        final float fs = fontsize;
+        ThreadPoolManager.getInstance().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ss.setFontSize(fs, new ICallback.Stub() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) {
+                            if (isSuccess) {
+                                p.resolve(null);
+                            } else {
+                                p.reject("0", isSuccess + "");
+                            }
+                        }
+
+                        @Override
+                        public void onReturnString(String result) {
+                            p.resolve(result);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) {
+                            p.reject("" + code, msg);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i(TAG, "ERROR: " + e.getMessage());
+                    p.reject("" + 0, e.getMessage());
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void printerInit(final Promise p) {
+        final IWoyouService printerService = woyouService;
+        ThreadPoolManager.getInstance().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    printerService.printerInit(new ICallback.Stub() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) {
+                            if (isSuccess) {
+                                p.resolve(null);
+                            } else {
+                                p.reject("0", isSuccess + "");
+                            }
+                        }
+
+                        @Override
+                        public void onReturnString(String result) {
+                            p.resolve(result);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) {
+                            p.reject("" + code, msg);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i(TAG, "ERROR: " + e.getMessage());
+                    p.reject("" + 0, e.getMessage());
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void printTextWithFont(String text, String typeface, float fontsize, final Promise p) {
+        final IWoyouService ss = woyouService;
+        final String txt = text;
+        final String tf = typeface;
+        final float fs = fontsize;
+        ThreadPoolManager.getInstance().executeTask(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ss.printTextWithFont(txt, tf, fs, new ICallback.Stub() {
+                        @Override
+                        public void onRunResult(boolean isSuccess) {
+                            if (isSuccess) {
+                                p.resolve(null);
+                            } else {
+                                p.reject("0", isSuccess + "");
+                            }
+                        }
+
+                        @Override
+                        public void onReturnString(String result) {
+                            p.resolve(result);
+                        }
+
+                        @Override
+                        public void onRaiseException(int code, String msg) {
+                            p.reject("" + code, msg);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.i(TAG, "ERROR: " + e.getMessage());
+                    p.reject("" + 0, e.getMessage());
+                }
+            }
+        });
+    }
+
+
+
+
     @ReactMethod                                                            //rn方法 简单打印text
     public void printOriginalText(String text,final Promise p){
         final IWoyouService ss = woyouService;

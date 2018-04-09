@@ -25,7 +25,7 @@ export default  {
 
              await NativeModules.customAndroid.lineWrap(2);
 
-             await NativeModules.customAndroid.printOriginalText(data.dltypeMessage + "  #" + data.orderNumber);
+             await NativeModules.customAndroid.printTextWithFont(data.dltypeMessage + "  #" + data.orderNumber,'gh',40);
 
              await NativeModules.customAndroid.lineWrap(1);
 
@@ -52,6 +52,7 @@ export default  {
              await NativeModules.customAndroid.printOriginalText("________________________________");
              await NativeModules.customAndroid.lineWrap(2);
 
+             await NativeModules.customAndroid.setFontSize(30);
              await NativeModules.customAndroid.printLine("No.","Dish","Price",1,2,2,0,1,2);
              for(let i = 0; i < data.orderArray.length; i++){
                 // await NativeModules.customAndroid.printOriginalText(data.orderArray[i].int_no);
@@ -64,6 +65,7 @@ export default  {
                 }
 
              }
+             await NativeModules.customAndroid.printerInit();
              if( data.comment) {
                await NativeModules.customAndroid.printOriginalText("_______________________________");
                await NativeModules.customAndroid.lineWrap(2);
