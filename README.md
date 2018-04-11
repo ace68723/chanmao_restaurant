@@ -118,7 +118,7 @@
   items    	array 	菜品列表      	          
 
   items  	类型及其范围	说明        	默认值 
-  ds_id  	string	菜品ID      	    
+  int_no  	string	菜品ID      	    
   int_no 	string	菜品编号      	AXX 
   otid   	string	菜品在全部订单中编号	    
   ds_name	string	菜品名称      	    

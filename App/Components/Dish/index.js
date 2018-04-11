@@ -190,11 +190,11 @@ export default class Dish extends Component {
         animationType: 'screen'
       });
     }
-    
+
   }
   goBack() {
     CmrCategoryAction.getDishes();
-    CmrCategoryAction.getCategoryLists();    
+    CmrCategoryAction.getCategoryLists();
     this.props.navigator.pop({
       animated: true, // does the pop have transition animation or does it happen immediately (optional)
       animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
@@ -230,7 +230,7 @@ export default class Dish extends Component {
        }, 300);//add loading if request more than 200ms
     try{
          const data = await CategoryModule.deleteCategory(this.state.category.dt_id);
-         
+
          if(data.ev_error === 0) {
             Alert.alert(
                 "Success",
@@ -240,7 +240,7 @@ export default class Dish extends Component {
                 ],
                 { cancelable: false }
               )
-              
+
          }
          clearTimeout(loadingTimeout);
          this.refs.loading.endLoading();
@@ -256,14 +256,14 @@ export default class Dish extends Component {
             ],
             { cancelable: false }
           )
-  
+
         } else {
           clearTimeout(loadingTimeout);
           this.refs.loading.endLoading();
           return
         }
-  
-    } 
+
+    }
   }
   onChangeText(text) {
     this.setState({
@@ -282,7 +282,7 @@ export default class Dish extends Component {
   }
   async _handleOpen(item,value) {
     var dishLists = this.state.dishLists.slice()
-    const selectIndex = findIndex(this.state.dishLists,{ds_id: item.ds_id});
+    const selectIndex = findIndex(this.state.dishLists,{int_no: item.int_no});
     dishLists[selectIndex] = {...dishLists[selectIndex], status: value};
     this.setState({dishLists});
     const loadingTimeout = setTimeout(() => {
@@ -321,9 +321,9 @@ export default class Dish extends Component {
           return
         }
 
-    } 
+    }
   }
-// render 
+// render
   renderButtonArea() {
     return(
     <View style ={{flex:0.08,flexDirection:'row'}}>
@@ -336,7 +336,7 @@ export default class Dish extends Component {
           borderColor:'#6D6E71',
           borderTopWidth:0.5,
           borderRightWidth:0.5}}>
-         <Text 
+         <Text
             style={{textAlign:'center',
             color:'#6D6E71',
             fontSize:17,
@@ -344,7 +344,7 @@ export default class Dish extends Component {
           Delete
           </Text>
       </TouchableOpacity>
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => this.goToSaveCName()}
         style = {{flex:1,
           backgroundColor:'#f4f4f4',
@@ -353,7 +353,7 @@ export default class Dish extends Component {
           borderColor:'#6D6E71',
           borderTopWidth:0.5,
           borderRightWidth:0.5}}>
-         <Text 
+         <Text
             style={{
             textAlign:'center',
             color:'#6D6E71',
@@ -362,7 +362,7 @@ export default class Dish extends Component {
           Change Name
          </Text>
       </TouchableOpacity>
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => this.goToAddDish()}
         style = {{flex:1,
           flexDirection:'row',
@@ -389,7 +389,7 @@ export default class Dish extends Component {
       </TouchableOpacity>
     </View>
     )
-    
+
   }
   renderListFunction(){
     return(
@@ -424,7 +424,7 @@ export default class Dish extends Component {
         <View style={{flex:0.4,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>Name</Text>
         </View>
-        
+
         <View style={{flex:0.2,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>Price</Text>
         </View>
@@ -456,7 +456,7 @@ export default class Dish extends Component {
         </TouchableOpacity>
       )
     }
-    
+
   }
   renderDetialList(){
     return(
@@ -475,7 +475,7 @@ export default class Dish extends Component {
       </View>
     )
   }
-  renderRecords(){ 
+  renderRecords(){
     if(this.state.searchText.length === 0) {
       return this.state.dishLists.map((item, i)=>{
         this.order.push(item);
@@ -492,12 +492,12 @@ export default class Dish extends Component {
                     <View style={{flex:0.4,alignItems:'flex-start'}}>
                       <Text style={styles.listTitleFont}>{item.ds_name}</Text>
                     </View>
-                   
+
                     <View style={{flex:0.2,alignItems:'flex-start'}}>
                       <Text style={styles.listTitleFont}>{item.ds_price}</Text>
                     </View>
                     <View style={{flex:0.2,alignItems:'flex-start'}}>
-                      <Switch 
+                      <Switch
                         value = {item.status}
                         onValueChange = {(value) => this._handleOpen(item,value)}
                       />
@@ -508,7 +508,7 @@ export default class Dish extends Component {
               {this.renderToppingGroup(item)}
             </View>
           </TouchableOpacity>
-            
+
         );
       })
     } else {
@@ -522,7 +522,7 @@ export default class Dish extends Component {
                 onPress= {()=>this.goToAddDish(item)}>
             <View  style={[styles.recordView]}>
                      <View style={{flex:0.15,paddingLeft:Settings.getX(2)}}>
-                      <Text style={styles.listTitleFont}>{item.ds_id}</Text>
+                      <Text style={styles.listTitleFont}>{item.int_no}</Text>
                     </View>
                     <View style={{flex:0.3,paddingLeft:Settings.getX(2)}}>
                       <Text style={styles.listTitleFont}>{item.ds_name}</Text>
@@ -538,7 +538,7 @@ export default class Dish extends Component {
               {this.renderToppingGroup(item)}
             </View>
           </TouchableOpacity>
-            
+
         );
     })
     }
@@ -568,7 +568,7 @@ export default class Dish extends Component {
           {tp.tpg_name}
           </Text>
       </TouchableOpacity>
-   ) 
+   )
   }
   render(){
     return(
@@ -639,7 +639,7 @@ const styles = StyleSheet.create({
     borderColor:'#D1D3D4',
     borderTopWidth:1,
     paddingHorizontal:Settings.getX(20),
-    marginHorizontal:Settings.getX(5),    
+    marginHorizontal:Settings.getX(5),
     paddingTop:Settings.getY(20),
     paddingBottom:Settings.getY(20),
   },

@@ -25,7 +25,7 @@ export default  {
 
              await NativeModules.customAndroid.lineWrap(2);
 
-             await NativeModules.customAndroid.printOriginalText(data.dltypeMessage + "  #" + data.orderNumber);
+             await NativeModules.customAndroid.printTextWithFont(data.dltypeMessage + "  #" + data.orderNumber,'gh',40);
 
              await NativeModules.customAndroid.lineWrap(1);
 
@@ -52,18 +52,20 @@ export default  {
              await NativeModules.customAndroid.printOriginalText("________________________________");
              await NativeModules.customAndroid.lineWrap(2);
 
+             await NativeModules.customAndroid.setFontSize(30);
              await NativeModules.customAndroid.printLine("No.","Dish","Price",1,2,2,0,1,2);
              for(let i = 0; i < data.orderArray.length; i++){
-                // await NativeModules.customAndroid.printOriginalText(data.orderArray[i].ds_id);
+                // await NativeModules.customAndroid.printOriginalText(data.orderArray[i].int_no);
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].ds_name);
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].amount);
                 // await NativeModules.customAndroid.printOriginalText("    "+data.orderArray[i].price);
-                await NativeModules.customAndroid.printLine(data.orderArray[i].ds_id,data.orderArray[i].ds_name,data.orderArray[i].amount+' x '+data.orderArray[i].price,1,2,2,0,1,2);
+                await NativeModules.customAndroid.printLine(data.orderArray[i].int_no,data.orderArray[i].ds_name,data.orderArray[i].amount+' x '+data.orderArray[i].price,1,2,2,0,0,2);
                 for(let j = 0; j < data.orderArray[i].tps.length; j++){
-                  await NativeModules.customAndroid.printLine('',data.orderArray[i].tps[j].tp_name,data.orderArray[i].tps[j].amount+' x '+data.orderArray[i].tps[j].price,1,2,2,0,1,2);
+                  await NativeModules.customAndroid.printLine('',data.orderArray[i].tps[j].tp_name,data.orderArray[i].tps[j].amount+' x '+data.orderArray[i].tps[j].price,1,2,2,0,0,2);
                 }
 
              }
+             await NativeModules.customAndroid.printerInit();
              if( data.comment) {
                await NativeModules.customAndroid.printOriginalText("_______________________________");
                await NativeModules.customAndroid.lineWrap(2);
@@ -81,7 +83,7 @@ export default  {
              await NativeModules.customAndroid.printOriginalText("Tax: $"+data.tax);
              await NativeModules.customAndroid.lineWrap(2);
 
-             await NativeModules.customAndroid.printOriginalText("Total: $"+data.total);
+             await NativeModules.customAndroid.printTextWithFont("Total: $"+data.total,'gh',30);
              await NativeModules.customAndroid.lineWrap(2);
              await NativeModules.customAndroid.printOriginalText("_______________________________");
              await NativeModules.customAndroid.lineWrap(2);

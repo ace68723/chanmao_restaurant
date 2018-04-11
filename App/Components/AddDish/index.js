@@ -149,7 +149,7 @@ export default class AddDish extends Component {
             delete item.tpg_note;
             delete item.tps;
          });
-         if(this.state.dish.ds_id) {
+         if(this.state.dish.int_no) {
           const data = await CategoryModule.setDish(this.state.dish);
           CmrCategoryAction.getDishes();
           if(data.ev_error === 0) {
@@ -366,7 +366,7 @@ export default class AddDish extends Component {
     )
   }
   renderSaveButton(){
-    if(this.state.dish.ds_id) {
+    if(this.state.dish.int_no) {
     return(
       <View style={{paddingHorizontal:Settings.getX(20),
       marginTop:Settings.getX(20),

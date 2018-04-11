@@ -100,9 +100,6 @@ export default class OrderDetail extends Component {
       });
       if (task=='0'){
         await this._printOrder();
-        setTimeout(() =>{
-          this._printOrder();
-        }, 4000);
       }
 
     } catch (e) {
@@ -231,7 +228,7 @@ export default class OrderDetail extends Component {
             <TouchableOpacity  key={index} onPress={()=>this._changeSoldState(index)} >
               <View key={index} style={[styles.itemContainer,{height:30 * parseFloat(item.ds_name.length / 16)+30}]}>
                 <View style={{flex:0.15}}>
-                  <Text  style={styles.itemFont}>{item.ds_id}</Text>
+                  <Text  style={styles.itemFont}>{item.int_no}</Text>
                 </View>
                 <View style={{flex:0.4}}>
                   <Text  style={styles.itemFont}>{item.ds_name}</Text>
@@ -258,7 +255,7 @@ export default class OrderDetail extends Component {
 
             <View  style={styles.itemContainer}>
               <View style={{flex:0.15}}>
-                <Text  style={styles.itemFont}>{item.ds_id}</Text>
+                <Text  style={styles.itemFont}>{item.int_no}</Text>
               </View>
               <View style={{flex:0.6}}>
                 <Text  style={styles.itemFont}>{item.ds_name}</Text>
@@ -606,23 +603,23 @@ export default class OrderDetail extends Component {
   }
   render() {
     return (
-      <ScrollView 
+      <ScrollView
           refreshing = {this.state.refreshing}
           onRefresh = {this.handleRefresh}
           style={styles.container}>
         <Loading ref="loading" size={60}/>
         {this._renderOrderType()}
         {this._renderOrderInfo()}
-        <ScrollView   
+        <ScrollView
           style={{flex:1,
             backgroundColor:'white',
             borderTopWidth:1,
             borderTopColor:'grey',
             borderBottomWidth:1,
             borderBottomColor:'grey',
-          }} 
+          }}
           showsVerticalScrollIndicator={true}
-          
+
         >
         {this._renderList()}
         {this._renderDetails()}
@@ -652,11 +649,11 @@ export default class OrderDetail extends Component {
   },
   itemFont:{
     fontFamily:'Noto Sans CJK SC',
-    fontSize:15,
+    fontSize:18,
   },
   tpFont:{
     fontFamily:'Noto Sans CJK SC',
-    fontSize:13,
+    fontSize:17,
     color:'grey'
   },
   itemContainer:{
