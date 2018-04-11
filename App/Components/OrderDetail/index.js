@@ -12,6 +12,7 @@ import Setting from '../../Config/Setting';
 import PrintModule from '../../Module/Print/PrintModule';
 import Loading from '../Loading';
 import OrderDetailModule from '../../Module/OrderDetail/OrderDetailModule';
+import CmrHomeAction from '../../Actions/CmrHomeAction';
 
 const timeStr = ['< 10', '20', '30', '> 40'];
 
@@ -92,7 +93,7 @@ export default class OrderDetail extends Component {
       if (task=='0') itemList=this.state.itemList;
       if (task=='1') itemList=this.state.itemList.filter(item => item.sold == true);
       const data = await OrderDetailModule.handleOrder({oid,task,itemList,pptime});
-      await this.props.onfetchOrder();
+      CmrHomeAction.fetchOrder();
       clearTimeout(loadingTimeout);
       this.props.navigator.dismissModal({
         animationType: 'slide-down' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')

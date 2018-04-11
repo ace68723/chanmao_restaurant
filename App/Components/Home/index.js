@@ -19,26 +19,22 @@ import Loading from '../Loading';
 import OrderItem from './OrderItem';
 import HomeModule from '../../Module/Home/HomeModule';
 import TimerMixin from 'react-timer-mixin';
+import CmrHomeAction from '../../Actions/CmrHomeAction';
+import CmrHomeStore from '../../Stores/CmrHomeStore';
 import { GetUserInfo } from '../../Module/Database';
 export default class Home extends Component {
   mixins: [TimerMixin];
   constructor()
   {
     super();
-    this.state={
-      reRender:0,
-      newOrder:[],
-      Orders:[],
-      recentOrder: [],
-      refreshing: false,
-      checkOid: '',
-    }
+    this.state = CmrHomeStore.getState();
     this._renderItem=this._renderItem.bind(this);
     this.scrollToIndexI=this.scrollToIndexI.bind(this);
     this._fetchOrder = this._fetchOrder.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
     this.updateOrders = this.updateOrders.bind(this);
     this._logOut = this._logOut.bind(this);
+    this._onChange = this._onChange.bind(this);
   }
   componentWillMount() {
     DeviceEventEmitter.addListener('Message',(Message)=>{
@@ -46,8 +42,16 @@ export default class Home extends Component {
     });
   }
   componentDidMount(){
-    this._fetchOrder();
+    console.log('123')
+    CmrHomeStore.addChangeListener(this._onChange);
+    CmrHomeAction.fetchOrder()
     this.updateOrders();
+  }
+  componentWillUnmount() {
+    CmrHomeStore.removeChangeListener(this._onChange);
+  }
+  _onChange() {
+    this.setState(CmrHomeStore.getState());
   }
   _logOut(){
     clearInterval(this.timer);
@@ -57,9 +61,8 @@ export default class Home extends Component {
     let { interval } = GetUserInfo();
     interval = parseInt(interval*1000,10);
     this.timer = setInterval(() => {
-      this._fetchOrder();
+      CmrHomeAction.fetchOrder()
     }, interval);
-
   }
 
   async _fetchOrder() {
@@ -155,7 +158,7 @@ export default class Home extends Component {
       refreshing:true,
     },
     () => {
-      this._fetchOrder();
+      CmrHomeAction.fetchOrder()
     })
   }
   scrollToIndexI(index) {

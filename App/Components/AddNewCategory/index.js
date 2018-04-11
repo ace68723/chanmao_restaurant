@@ -13,7 +13,8 @@ import {
   Alert,
   TextInput,
   PanResponder,
-  AsyncStorage
+  AsyncStorage,
+  KeyboardAvoidingView
 } from 'react-native';
 const { width,height } = Dimensions.get('window');
 import Settings from '../../Config/Setting';
@@ -80,7 +81,8 @@ export default class AddNewCategory extends Component {
   
   render() {
       return(
-        <TouchableOpacity style = {styles.container}>
+        <KeyboardAvoidingView style = {styles.container} behavior="padding"
+        >
           <Loading ref="loading" size={60}/>
           <TouchableOpacity style = {{flex:0.35}}
             onPress={() => this._closeSboHomeAlert()}>
@@ -88,6 +90,8 @@ export default class AddNewCategory extends Component {
             </TouchableOpacity>
           <View style={{
             flex:0.3,
+            overflow:'hidden',
+            minHeight:0.2* height,
             backgroundColor:'white',
             justifyContent:'center',
             alignContent:'center'
@@ -129,7 +133,7 @@ export default class AddNewCategory extends Component {
             onPress={() => this._closeSboHomeAlert()}>
 
             </TouchableOpacity>
-        </TouchableOpacity>
+        </KeyboardAvoidingView>
         
       );
   }

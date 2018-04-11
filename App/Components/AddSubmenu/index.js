@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 import Settings from '../../Config/Setting';
 import CmrCategoryAction from '../../Actions/CmrCategoryAction';
-
 import Setting from '../../Config/Setting.js'
 import CategoryModule from '../../Module/Category/CategoryModule';
 import {
@@ -218,7 +217,8 @@ export default class AddSubmenu extends Component {
   }
   render(){
     return(
-      <KeyboardAvoidingView style={styles.container}>
+      <KeyboardAvoidingView style = {styles.container} behavior="padding"
+      >
         <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {this.renderNameFunction()}
@@ -353,13 +353,14 @@ export default class AddSubmenu extends Component {
 }
   renderDetialList(){
     return(
-      <View style={styles.listDetailView}>
+      
+      <KeyboardAvoidingView style={styles.listDetailView} behavior= "padding">
           <ScrollView style={{
                     flex:1,
                     }}>
             {this.renderToppingGroup()}
           </ScrollView>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
   renderSaveButton(){

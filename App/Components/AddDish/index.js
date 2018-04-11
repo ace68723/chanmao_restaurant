@@ -69,8 +69,18 @@ export default class AddDish extends Component {
    })
    console.log(this.state)
  }
+ cancelGoBack() {
+  this.props.navigator.pop({
+    animated: true, // does the pop have transition animation or does it happen immediately (optional)
+    animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
+  });
+ }
   goBack() {
-    CmrCategoryAction.updateSelecedCategory(this.state.dishCopy);
+    if(this.state.dishCopy.dt_id) {
+      CmrCategoryAction.updateSelecedCategory(this.state.dishCopy);
+    } else {
+      CmrCategoryAction.updateSelecedCategory(this.state.dish);
+    }
     this.props.navigator.pop({
       animated: true, // does the pop have transition animation or does it happen immediately (optional)
       animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
@@ -391,7 +401,7 @@ export default class AddDish extends Component {
       padding:10}}>
       <TouchableOpacity 
             style = {[styles.toppingGroupButton,{flex:0.4,backgroundColor:'grey',borderColor:'grey'}]}
-            onPress = {() => this.goBack()}>
+            onPress = {() => this.cancelGoBack()}>
             <Text style = {styles.saveButtonFont}>Cancel</Text>
        </TouchableOpacity>
        <TouchableOpacity 

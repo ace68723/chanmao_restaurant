@@ -1,8 +1,8 @@
 import { Navigation } from 'react-native-navigation';
 import HistoryPage from '../Components/History';
 import AboutUs from '../Components/AboutUs';
-import CreateOrder from '../Components/CreateOrder';
-import CreateOrderDetail from '../Components/CreateOrderDetail';
+// import CreateOrder from '../Components/CreateOrder';
+// import CreateOrderDetail from '../Components/CreateOrderDetail';
 import Login from '../Components/Login';
 import Submenu from '../Components/Submenu';
 import Category from '../Components/Category';
@@ -35,8 +35,8 @@ export function registerScreens() {
   Navigation.registerComponent('Category', () => Category);
   Navigation.registerComponent('Management', () => Management);
   Navigation.registerComponent('HistoryPage', () => HistoryPage);
-  Navigation.registerComponent('CreateOrder', () => CreateOrder);
-  Navigation.registerComponent('CreateOrderDetail', () => CreateOrderDetail);
+  // Navigation.registerComponent('CreateOrder', () => CreateOrder);
+  // Navigation.registerComponent('CreateOrderDetail', () => CreateOrderDetail);
   Navigation.registerComponent('Login', () => Login);
   Navigation.registerComponent('OrderDetail', () => OrderDetail);
   Navigation.registerComponent('OrderHistory', () => OrderHistory);

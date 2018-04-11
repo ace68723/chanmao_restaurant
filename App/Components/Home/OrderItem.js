@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 
 } from 'react-native';
+import CmrHomeAction from '../../Actions/CmrHomeAction';
 import Settings from '../../Config/Setting';
 import OrderDetail from '../OrderDetail/index';
 export default class OrderItem extends Component {
@@ -17,13 +18,10 @@ export default class OrderItem extends Component {
     this.state = {
       isOpen:false
     }
-    this._fetchOrder  = this._fetchOrder.bind(this);
     }
   componentDidMount() {
   }
-  _fetchOrder() {
-    this.props.fetchOrder()
-  }
+
   _renderOrderDetail({oid,status})
   {
     if (!this.state.isOpen) return;
@@ -139,7 +137,6 @@ export default class OrderItem extends Component {
               screen: "OrderDetail",
               title: oid,
               passProps: {
-                onfetchOrder: () => this._fetchOrder(),
                 oid:oid,
                 status:status,
                 time:time,
@@ -234,7 +231,6 @@ export default class OrderItem extends Component {
               screen: "OrderDetail",
               title: oid,
               passProps: {
-                onfetchOrder: () => this._fetchOrder(),
                 oid:oid,
                 status:status,
                 time:time,

@@ -365,12 +365,19 @@ export default class Dish extends Component {
       <TouchableOpacity 
         onPress={() => this.goToAddDish()}
         style = {{flex:1,
+          flexDirection:'row',
+          paddingTop:Settings.getY(15),
           backgroundColor:'white',
           justifyContent:'center',
           alignContent:'center',
           borderColor:'#6D6E71',
           borderTopWidth:0.5,
           borderRightWidth:0.5}}>
+          <Image
+                                 style = {{width:Settings.getX(31),
+                                  height:Settings.getY(33), marginRight:Settings.getX(10)}}
+                                  source={require('./Image/icon-add.png')}
+                              />
          <Text 
             style={{
             textAlign:'center',

@@ -5,8 +5,8 @@ const Server = proructServer;
 const APIConstants ={
 
     //CreateOrder
-    API_AREACHECK: Server + 'areacheck',
-    API_ORDERSUBMIT: Server + 'ordersubmit',
+    // API_AREACHECK: Server + 'areacheck',
+    // API_ORDERSUBMIT: Server + 'ordersubmit',
 
     //Login
     API_LOGIN: Server + 'login',

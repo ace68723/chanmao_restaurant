@@ -31,6 +31,7 @@ export default class SearchPage extends Component {
     this.state={
       dishLists:[],
       waiting: false,
+      autoFocus: true,
       searchedDishes:[],
       keyword: '',
       searchText:'',
@@ -118,6 +119,9 @@ export default class SearchPage extends Component {
   }
   componentDidMount() {
     this.getDishes();
+    this.setState({
+      autoFocus:true,
+    })
   }
   goToAddDish(item) {
       this.props.navigator.push({
@@ -227,6 +231,7 @@ export default class SearchPage extends Component {
       <View style={styles.listFunctionView}>
         <View style={{flex:0.7,height:Settings.getY(150)}}>
             <TextInput
+            autoFocus={this.state.autoFocus}
             value={this.state.searchText}
             underlineColorAndroid={"rgba(0,0,0,0)"}
             style={ styles.input2 }
@@ -274,7 +279,7 @@ export default class SearchPage extends Component {
         return(
         <View style={styles.listDetailView}>
             {this.renderListTitle()}
-            <View style={{flex:0.9}}>
+            <View style={{flex:0.85}}>
             <ScrollView style={{
                         flex:0.9,
                         height:400,
@@ -378,7 +383,7 @@ const styles = StyleSheet.create({
   listFunctionView:{
     flexDirection:'row',
     marginHorizontal:Settings.getX(20),
-    flex:0.1,
+    flex:0.15,
   },
   item: {
     flexDirection: 'row',
