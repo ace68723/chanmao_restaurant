@@ -2,7 +2,7 @@ import { API_AREACHECK, API_ORDERSUBMIT } from '../../Config/API';
 
 export default  {
     getDishes(token){
-      const url = 'http://norgta.com/api/mis/v2/get_dishes';
+      const url = 'https://norgta.com/api/mis/v2/get_dishes';
       let options = {
           method: 'GET',
           mode:'cors',
@@ -11,6 +11,7 @@ export default  {
               'Authortoken': token
           }
       }
+      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {

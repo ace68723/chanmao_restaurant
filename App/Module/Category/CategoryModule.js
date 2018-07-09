@@ -3,8 +3,8 @@ import { GetUserInfo } from '../Database';
 export default  {
   async getDishes(){
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.getDishes(token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.getDishes(authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -19,8 +19,8 @@ export default  {
   },
   async getCategoryLists(){
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.getCategoryLists(token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.getCategoryLists(authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -35,8 +35,8 @@ export default  {
   },
   async addCategory(keyword){
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.addCategory(keyword,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.addCategory(keyword,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -51,8 +51,8 @@ export default  {
   },
   async saveCategoryName(dt_id,keyword){
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.saveCategoryName(dt_id,keyword,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.saveCategoryName(dt_id,keyword,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -67,8 +67,8 @@ export default  {
   },
   async deleteCategory(dt_id){
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.deleteCategory(dt_id,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.deleteCategory(dt_id,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -83,8 +83,8 @@ export default  {
   },
   async getToppongGroup(){
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.getToppongGroup(token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.getToppongGroup(authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -99,8 +99,8 @@ export default  {
   },
   async setDish(dish){
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.setDish(dish,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.setDish(dish,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -115,8 +115,8 @@ export default  {
   },
   async addDish(dish){
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.addDish(dish,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.addDish(dish,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -133,8 +133,8 @@ export default  {
     submenu.tpg_max_limit = parseInt(submenu.tpg_max_limit, 10)
     submenu.tpg_min_limit = parseInt(submenu.tpg_min_limit, 10)
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.setToppingGroup(submenu,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.setToppingGroup(submenu,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -148,8 +148,8 @@ export default  {
   },
   async deleteToppingGroup(submenu) {
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.deleteToppingGroup(submenu,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.deleteToppingGroup(submenu,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -163,8 +163,8 @@ export default  {
   },
   async deleteDish(dish) {
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.deleteDish(dish,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.deleteDish(dish,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
@@ -184,8 +184,8 @@ export default  {
       value = 1;
     }
     try {
-      const  token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs';
-      const data = await CategoryAPI.setDishStatus(item,value,token);
+            const { authortoken} = GetUserInfo();
+      const data = await CategoryAPI.setDishStatus(item,value,authortoken);
       if(data.ev_error === 0 ){
          return data
       }else{
