@@ -258,7 +258,7 @@ export default  {
             }
         }
         options.body = JSON.stringify({
-            "int_no":item.int_no,
+            "ds_id":item.ds_id,
             "status":value
         })
         console.log(options)

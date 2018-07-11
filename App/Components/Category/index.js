@@ -7,15 +7,12 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  DatePickerAndroid,
   Alert,
-  TextInput,
-  PanResponder,
-  AsyncStorage
+  Platform
 } from 'react-native';
 import Settings from '../../Config/Setting';
-import Setting from '../../Config/Setting.js'
-
+import SortableList from 'react-native-sortable-list';
+import Row from './Row';
 import Loading from '../Loading';
 import CategoryModule from '../../Module/Category/CategoryModule';
 import CmrCategoryAction from '../../Actions/CmrCategoryAction';
@@ -39,69 +36,11 @@ export default class Category extends Component {
     this.goToAddCategory =this.goToAddCategory.bind(this);
     this.goToSearchPage =this.goToSearchPage.bind(this);
     this._onChange = this._onChange.bind(this);
+    this.renderTest =  this.renderTest.bind(this);
+    this._renderRow = this._renderRow.bind(this);
   }
 // drag and drop
-  componentWillMount(){
-    this._panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: (evt, gestureState) => true,
-        onMoveShouldSetPanResponder: (evt, gestureState) => true,
-        onPanResponderGrant: (evt, gestureState) => {
-            const {pageY, locationY} = evt.nativeEvent;
-            this.index = this._getIdByPosition(pageY);
-            this.preY = pageY - locationY;
-            //get the taped item and highlight it
-            let item = this.items[this.index];
-            item.setNativeProps({
-                style: {
-                    shadowColor: "#000",
-                    shadowOpacity: 0.3,
-                    shadowRadius: 5,
-                    shadowOffset: {height: 0, width: 2},
-                    elevation: 5
-                }
-            });
-        },
-        onPanResponderMove: (evt, gestureState) => {
-            let top = this.preY + gestureState.dy;
-            let item = this.items[this.index];
-            item.setNativeProps({
-                style: {top: top}
-            });
 
-            let collideIndex = this._getIdByPosition(evt.nativeEvent.pageY);
-            if(collideIndex !== this.index && collideIndex !== -1) {
-                let collideItem = this.items[collideIndex];
-                collideItem.setNativeProps({
-                    style: {top: this._getTopValueYById(this.index)}
-                });
-                //swap two values
-                [this.items[this.index], this.items[collideIndex]] = [this.items[collideIndex], this.items[this.index]];
-                [this.order[this.index], this.order[collideIndex]] = [this.order[collideIndex], this.order[this.index]];
-                this.index = collideIndex;
-            }
-        },
-        onPanResponderTerminationRequest: (evt, gestureState) => true,
-        onPanResponderRelease: (evt, gestureState) => {
-            const shadowStyle = {
-                shadowColor: "#000",
-                shadowOpacity: 0,
-                shadowRadius: 0,
-                shadowOffset: {height: 0, width: 0,},
-                elevation: 0
-            };
-            let item = this.items[this.index];
-            //go back the correct position
-            item.setNativeProps({
-                style: {...shadowStyle, top: this._getTopValueYById(this.index)}
-            });
-            console.log(this.order);
-        },
-        onPanResponderTerminate: (evt, gestureState) => {
-            // Another component has become the responder, so this gesture
-            // should be cancelled
-        }
-    });
-  }
   componentDidMount() {
     CmrCategoryStore.addChangeListener(this._onChange);
     CmrCategoryAction.getDishes();
@@ -112,20 +51,6 @@ export default class Category extends Component {
   }
   _onChange() {
     this.setState(CmrCategoryStore.getState());
-  }
-  _getIdByPosition(pageY){
-    let id = -1;
-    const height = 49;
-    for (let i = 0; i < this.state.categoryLists.length; i++) {
-      if(pageY >= height*(i+1) && pageY < height*(i+2)){
-        return i
-      }
-    }
-  }
-
-  _getTopValueYById(id){
-    const height = 49;
-    return (id + 1) * height;
   }
 // drag and drop end
 // goTo
@@ -340,7 +265,6 @@ export default class Category extends Component {
           <Text style={styles.listTitleFont}>Name</Text>
         </View>
         {this.renderLeveling()}
-      
       </View>
     )
   }
@@ -434,45 +358,69 @@ export default class Category extends Component {
     
   }
   renderDetialList(){
-    return(
-      <View style={styles.listDetailView}>
-        {this.renderListTitle()}
-        <View style={{flex:0.9}}>
-          <ScrollView style={{
-                    flex:0.9,
-                    height:400,
-                    width: width,
-                    paddingHorizontal:Settings.getX(12)
-                    }}>
-            {this.renderRecords()}
-          </ScrollView>
+    if(!this.state.editLevel) {
+      return(
+        <View style={styles.listDetailView}>
+          {this.renderListTitle()}
+          <View style={{flex:0.9}}>
+            <ScrollView style={{
+                      flex:0.9,
+                      height:400,
+                      width: width,
+                      paddingHorizontal:Settings.getX(12)
+                      }}>
+              {this.renderRecords()}
+            </ScrollView>
+          </View>
         </View>
+      )
+    } else {
+      return(
+      <View style={styles.listDetailView}>
+      {this.renderListTitle()}
+      <View style={{flex:0.9}}>
+          {this.renderTest()}
       </View>
-    )
+    </View>
+      )
+    }
+    
   }
   renderRecords(){
        return this.state.categoryLists.map((item, i)=>{
             this.order.push(item);
             return (
-                <View
-                    {...this._panResponder.panHandlers}
-                    ref={(ref) => this.items[i] = ref}
+                <TouchableOpacity
                     key={i}
+                    onPress={() => this.goToCategoryDetail(item)}
                     style={[styles.recordView]}>
-                    <TouchableOpacity style={{flex:0.3, marginLeft:15,alignItems:'center',justifyContent:'center',}}
-                    onPress={() => this.goToCategoryDetail(item)}>
+                    <View style={{flex:0.3, marginLeft:15,alignItems:'center',justifyContent:'center',}}>
                       <Text style={styles.recordTitleFont}>{item.dt_id}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{flex:0.65, marginRight:25,alignItems:'center',justifyContent:'center',}}
-                    onPress={() => this.goToCategoryDetail(item)}>
+                    </View>
+                    <View style={{flex:0.65, marginRight:25,alignItems:'center',justifyContent:'center',}}>
                       <Text style={styles.recordTitleFont}>{item.name}</Text>
-                    </TouchableOpacity>
+                    </View>
                     <View style={{flex:0.05,alignItems:'flex-start'}}></View>
-                </View>
+                </TouchableOpacity>
             );
         })
    }
-   renderToppingGroup(item) {
+
+  _renderRow = ({data, active}) => {
+    return <Row data={data} active={active} />
+  }
+  renderTest() {
+    const sortObject = Object.assign({}, this.state.categoryLists); // {0:"a", 1:"b", 2:"c"}
+    console.log(sortObject);
+    return (
+        <SortableList
+          style={styles.list}
+          contentContainerStyle={styles.contentContainer}
+          data={sortObject}
+          renderRow={this._renderRow} />
+    );
+  }
+  renderToppingGroup(item) {
     if(item.tpgs.length === 0) {
       return;
     } else {
@@ -563,6 +511,20 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center'
   },
+  contentContainer: {
+    width: window.width,
+
+    ...Platform.select({
+      ios: {
+        paddingHorizontal: 30,
+      },
+
+      android: {
+        paddingHorizontal: 0,
+      }
+    })
+  },
+
   toppingGroupView:{
     height:50,
     width:width-10,
@@ -653,6 +615,7 @@ const styles = StyleSheet.create({
     paddingLeft:10,
     fontSize: 15,
   },
+
   input2: {
     marginTop:Settings.getY(25),
     marginRight: Settings.getY(12),

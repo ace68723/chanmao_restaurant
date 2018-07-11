@@ -19,6 +19,7 @@ import AddNewCategory from '../Components/AddNewCategory';
 import SearchPage from '../Components/SearchPage';
 import ChangeCategoryName from '../Components/ChangeCategoryName';
 import CmRestaurantAlert from '../Components/CmRestaurantAlert';
+import ChangeCategoryOrder from '../Components/ChangeCategoryOrder';
 
 
 
@@ -45,4 +46,6 @@ export function registerScreens() {
   Navigation.registerComponent('Tab', () => Tab);
   Navigation.registerComponent('AddNewCategory', () => AddNewCategory);
   Navigation.registerComponent('SearchPage', () => SearchPage);
+  Navigation.registerComponent('ChangeCategoryOrder', () => ChangeCategoryOrder);
+
 }
