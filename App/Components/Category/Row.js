@@ -9,6 +9,7 @@ import {
     Dimensions,
             Platform,
 } from 'react-native';
+const {height, width} = Dimensions.get('window');
 
 export default class RowComponent extends React.Component {
     constructor(props) {
@@ -66,8 +67,10 @@ export default class RowComponent extends React.Component {
             this._style,
           ]}>
         
-                      <Text style={styles.text}>{data.dt_id}</Text>
-                      <Text style={styles.text}>{data.name}</Text>
+                      <Text style={{ fontSize: 15, textAlign:'center', width: width /5,
+      color: '#222222', }}>{data.dt_id}</Text>
+                      <Text style={{fontSize: 15,
+      color: '#222222', marginLeft:width / 4,}}>{data.name}</Text>
                     
           </Animated.View>
         );
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
     },
   
     text: {
-      fontSize: 24,
+      fontSize: 15,
       color: '#222222',
     },
   });

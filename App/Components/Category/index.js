@@ -249,10 +249,17 @@ export default class Category extends Component {
     }
   }
   startLeveling() {
-    newLevel = !this.state.editLevel
-    this.setState({
-      editLevel: newLevel
-    })
+    this.props.navigator.showModal({
+      screen: "ChangeCategoryOrder",
+      title: 'Change Order',
+        navigatorStyle: {
+          navBarHidden: false,
+        },
+      passProps: {
+        category:this.state.categoryLists,
+      }, // simple serializable object that will pass as props to the lightbox (optional)
+      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+     });
   }
 // render
   renderListTitle(){
