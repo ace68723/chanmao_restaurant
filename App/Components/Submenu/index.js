@@ -92,7 +92,7 @@ export default class Submenu extends Component {
         tpg_note:'',
         tps:[]
       } 
-      this.props.navigator.push({
+      this.props.navigator.showModal({
         screen: 'AddSubmenu',
         title: 'Add Submenu',
         navigatorStyle: {
@@ -106,7 +106,7 @@ export default class Submenu extends Component {
         animationType: 'screen'
       });
     } else {
-      this.props.navigator.push({
+      this.props.navigator.showModal({
         screen: 'AddSubmenu',
         title: 'Edit Submenu',
         navigatorStyle: {

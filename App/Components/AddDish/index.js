@@ -70,7 +70,7 @@ export default class AddDish extends Component {
    console.log(this.state)
  }
  cancelGoBack() {
-  this.props.navigator.pop({
+  this.props.navigator.dismissModal({
     animated: true, // does the pop have transition animation or does it happen immediately (optional)
     animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
   });
@@ -81,7 +81,7 @@ export default class AddDish extends Component {
     } else {
       CmrCategoryAction.updateSelecedCategory(this.state.dish);
     }
-    this.props.navigator.pop({
+    this.props.navigator.dismissModal({
       animated: true, // does the pop have transition animation or does it happen immediately (optional)
       animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
     });
@@ -478,7 +478,7 @@ export default class AddDish extends Component {
       tpg_note:'',
       tps:[]
     }
-    this.props.navigator.push({
+    this.props.navigator.showModal({
       screen: 'AddSubmenu',
       title: 'Add Submenu',
       navigatorStyle: {

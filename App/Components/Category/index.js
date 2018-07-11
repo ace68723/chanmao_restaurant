@@ -137,7 +137,7 @@ export default class Category extends Component {
       dt_id: 0,
       tpgs:[]
     }
-    this.props.navigator.push({
+    this.props.navigator.showModal({
       screen: 'AddDish',
       title: 'Dish',
       navigatorStyle: {
@@ -149,13 +149,13 @@ export default class Category extends Component {
           toppingGroupList:this.state.toppingGroupList,
           getCategoryLists: () => this.getCategoryLists(),
       },
-      animationType: 'screen'
+      animationType: 'fade'
     });
 
 
   }
   goToSubmenu() {
-    this.props.navigator.push({
+    this.props.navigator.showModal({
       screen: 'Submenu',
       title: 'Submenu',
       navigatorStyle: {
@@ -164,19 +164,19 @@ export default class Category extends Component {
       passProps: {
         getCategoryLists: () => this.getCategoryLists(),
     },
-      animationType: 'screen'
+      animationType: 'fade'
     });
   }
   goToCategoryDetail(item) {
     CmrCategoryAction.updateSelecedCategory(item);
-    this.props.navigator.push({
+    this.props.navigator.showModal({
         screen: 'Dish',
         title: item.name,
         navigatorStyle: {
           navBarHidden: false,
         },
 
-        animationType: 'screen'
+        animationType: 'fade'
       });
   }
   goToAddCategory() {
@@ -189,7 +189,7 @@ export default class Category extends Component {
      });
   }
   goToSearchPage() {
-    this.props.navigator.push({
+    this.props.navigator.showModal({
       screen: "SearchPage",
       title: 'Search Dishes',
         navigatorStyle: {

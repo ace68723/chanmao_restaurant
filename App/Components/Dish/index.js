@@ -160,7 +160,7 @@ export default class Dish extends Component {
         dt_id: 0,
         tpgs:[],
       }
-      this.props.navigator.push({
+      this.props.navigator.showModal({
         screen: 'AddDish',
         title: 'Dish',
         navigatorStyle: {
@@ -175,7 +175,7 @@ export default class Dish extends Component {
         animationType: 'screen'
       });
     } else {
-      this.props.navigator.push({
+      this.props.navigator.showModal({
         screen: 'AddDish',
         title: 'Dish',
         navigatorStyle: {
@@ -195,7 +195,7 @@ export default class Dish extends Component {
   goBack() {
     CmrCategoryAction.getDishes();
     CmrCategoryAction.getCategoryLists();
-    this.props.navigator.pop({
+    this.props.navigator.dismissModal({
       animated: true, // does the pop have transition animation or does it happen immediately (optional)
       animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
     });

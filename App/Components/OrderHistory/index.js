@@ -116,9 +116,12 @@ export default class OrderHistory extends Component {
     }
   }
   _printHistory(){
-    console.log(this.state);
     let order;
+    let total = 0;
     if (this.state.list.orders) {order=this.state.list.orders} else {order=this.state.list}
+    order.forEach(item => {
+      total = total + item.total;
+   });
   let data = {
     type:'history',
     restaurantName:this.state.restaurantName,
@@ -126,10 +129,10 @@ export default class OrderHistory extends Component {
     restaurantPhoneNumber: this.state.restaurantPhoneNumber,
     timeTerm: this.state.startDate + " ~ " + this.state.endDate,
     orderAmount:order.length.toString(),
-    total:this.state.totalAmount.toString(),
+    total:total.toString(),
     orderArray:order,
-
   }
+  console.log(data);
   //this._disableDoubleClick();
   PrintModule.printContent(data);
 }

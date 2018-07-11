@@ -124,7 +124,7 @@ export default class SearchPage extends Component {
     })
   }
   goToAddDish(item) {
-      this.props.navigator.push({
+      this.props.navigator.showModal({
         screen: 'AddDish',
         title: 'Dish',
         navigatorStyle: {
@@ -148,7 +148,7 @@ export default class SearchPage extends Component {
         }
       });
       console.log(this.state.selectedCateDishes)
-    this.props.navigator.push({
+    this.props.navigator.showModal({
         screen: 'Dish',
         title: item.name,
         navigatorStyle: {
