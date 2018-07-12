@@ -224,9 +224,16 @@ export default class OrderDetail extends Component {
   _renderItems(items){
     if(this.props.status==="0"){
       return items.map((item,index)=>{
+          let nameLines = parseFloat(item.ds_name.length / 16);
+          let nameAdjustedHeight = 30 * nameLines + 30;
+          if(nameLines < 2){
+            if(item.amount >= 10 || item.price >= 10){
+              nameAdjustedHeight = 60;
+            }
+          }
           return(
             <TouchableOpacity  key={index} onPress={()=>this._changeSoldState(index)} >
-              <View key={index} style={[styles.itemContainer,{height:30 * parseFloat(item.ds_name.length / 16)+30}]}>
+              <View key={index} style={[styles.itemContainer,{height:nameAdjustedHeight}]}>
                 <View style={{flex:0.15}}>
                   <Text  style={styles.itemFont}>{item.int_no}</Text>
                 </View>
@@ -675,7 +682,7 @@ export default class OrderDetail extends Component {
   timeContainer:{
     flexDirection:'row',
     flex:0.5,
-    paddingTop:15,
+    paddingVertical:15,
     marginLeft:15,
   },
   timeButtonStyle:{
@@ -708,6 +715,7 @@ export default class OrderDetail extends Component {
     alignItems:'center',
     flex:0.6,
     justifyContent:'center',
+    marginBottom:15
   },
   confirmButtonStyle:{
     height:Setting.getY(75),
