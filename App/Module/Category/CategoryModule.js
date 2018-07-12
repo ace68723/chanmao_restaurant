@@ -99,7 +99,7 @@ export default  {
   },
   async setDish(dish){
     try {
-            const { authortoken} = GetUserInfo();
+      const { authortoken} = GetUserInfo();
       const data = await CategoryAPI.setDish(dish,authortoken);
       if(data.ev_error === 0 ){
          return data
@@ -186,6 +186,21 @@ export default  {
     try {
             const { authortoken} = GetUserInfo();
       const data = await CategoryAPI.setDishStatus(item,value,authortoken);
+      if(data.ev_error === 0 ){
+         return data
+      }else{
+        const errorMessage = data.ev_message;
+        console.log(errorMessage);
+        throw errorMessage
+      }
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  },
+  async editCategoryRank(newlist) {
+    try {
+      const data = await CategoryAPI.editCategoryRank(newlist);
       if(data.ev_error === 0 ){
          return data
       }else{
