@@ -115,7 +115,7 @@ export default  {
   },
   async addDish(dish){
     try {
-            const { authortoken} = GetUserInfo();
+      const { authortoken} = GetUserInfo();
       const data = await CategoryAPI.addDish(dish,authortoken);
       if(data.ev_error === 0 ){
          return data
@@ -186,6 +186,8 @@ export default  {
     try {
             const { authortoken} = GetUserInfo();
       const data = await CategoryAPI.setDishStatus(item,value,authortoken);
+      console.log("setDishStatus")
+      console.log(data)
       if(data.ev_error === 0 ){
          return data
       }else{

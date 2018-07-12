@@ -151,7 +151,6 @@ export default class Dish extends Component {
 // drag and drop end
 // go to
   goToAddDish(item) {
-    console.log(this.state)
     if(!item) {
       let dish = {
         ds_name: '',
@@ -572,14 +571,14 @@ export default class Dish extends Component {
   }
   render(){
     return(
-      <KeyboardAvoidingView style={styles.container}>
+      <View style={styles.container}>
         <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {this.renderListFunction()}
           {this.renderDetialList()}
           {this.renderButtonArea()}
         </View>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
 // render end

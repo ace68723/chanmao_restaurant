@@ -150,7 +150,6 @@ export default  {
                 'Authortoken': token
             }
         }
-        console.log(options)
         options.body = JSON.stringify({
             'int_no': dish.int_no,
             'dt_id': parseInt(dish.dt_id, 10),
@@ -158,7 +157,6 @@ export default  {
             'ds_price': dish.ds_price,
             'tpgs': dish.tpgs
         })
-        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {
