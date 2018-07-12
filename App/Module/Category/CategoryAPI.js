@@ -127,7 +127,7 @@ export default  {
         }
         options.body = JSON.stringify({
             'int_no': dish.int_no,
-            'int_no': dish.int_no,
+            'ds_id': parseInt(dish.ds_id, 10),
             'dt_id': parseInt(dish.dt_id, 10),
             'ds_name': dish.ds_name,
             'ds_price': dish.ds_price,
@@ -267,4 +267,25 @@ export default  {
                throw error
           })
        },
+       editCategoryRank(newlist){
+        const url = 'https://chanmao.us/api/manage/v2/edit_dish_cat_rank';
+        let options = {
+            method: 'PUT',
+            mode:'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authortoken': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxODc4NSIsImV4cGlyZWQiOjE1MDg4NzUyMDAsImxhc3Rsb2dpbiI6MTUwMjgyNDYwN30.jIbVCvagC6B3NFKgOPmLAeYeWIFRdOH8dsIRHhgiQBs',            }
+        }
+        options.body = JSON.stringify({
+            'ia_rank_list': newlist
+        })
+        console.log(options)
+      return fetch(url,options)
+           .then((response) => response.json())
+           .catch((error) => {
+               console.log(error);
+               throw error
+          })
+       },
   }
+

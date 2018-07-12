@@ -149,7 +149,7 @@ export default class AddDish extends Component {
             delete item.tpg_note;
             delete item.tps;
          });
-         if(this.state.dish.int_no) {
+         if(this.state.dishCopy.int_no) {
           const data = await CategoryModule.setDish(this.state.dish);
           CmrCategoryAction.getDishes();
           if(data.ev_error === 0) {
@@ -170,7 +170,7 @@ export default class AddDish extends Component {
           if(data.ev_error === 0) {
            Alert.alert(
              "Success",
-             '保存成功',
+             '添加成功',
              [
                {text: 'Ok',onPress:()=>this.goBack()},
              ],
