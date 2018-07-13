@@ -18,6 +18,7 @@ import CategoryModule from '../../Module/Category/CategoryModule';
 import CmrCategoryAction from '../../Actions/CmrCategoryAction';
 const {height, width} = Dimensions.get('window');
 
+import Loading from '../Loading';
 
 
 export default class ChangeCategoryOrder extends Component {
@@ -48,16 +49,23 @@ export default class ChangeCategoryOrder extends Component {
       }
       async onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
         if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
-          if (event.id == 'edit') { // this is the same id field from the static navigatorButtons definition
-            try{
+          if (event.id == 'edit') {
+            const loadingTimeout = setTimeout(() => {
+              this.refs.loading.startLoading();
+             }, 300);//add loading if request more than 200ms     
+          try{
               console.log(this.state.newOrder);
               const data = await CategoryModule.editCategoryRank(this.state.newOrder);
               if(data.ev_error == 0) {
                 alert('修改成功');
-                this.props.navigator.dismissLightBox();
+                this.props.navigator.dismissModal();
                 CmrCategoryAction.getCategoryLists();
+                clearTimeout(loadingTimeout);
+                this.refs.loading.endLoading();
               }
             } catch(error) {
+              clearTimeout(loadingTimeout);
+              this.refs.loading.endLoading();
                 alert('修改失败')
             }
           }
@@ -66,6 +74,7 @@ export default class ChangeCategoryOrder extends Component {
   render() {
     return (
       <View style={styles.container}>
+                <Loading ref="loading" size={60}/>
         <SortableList
           style={styles.list}
           contentContainerStyle={styles.contentContainer}

@@ -120,7 +120,7 @@ export default class OrderHistory extends Component {
     let total = 0;
     if (this.state.list.orders) {order=this.state.list.orders} else {order=this.state.list}
     order.forEach(item => {
-      total = total + item.total;
+      total = total + parseFloat(item.total);
    });
   let data = {
     type:'history',
@@ -129,7 +129,7 @@ export default class OrderHistory extends Component {
     restaurantPhoneNumber: this.state.restaurantPhoneNumber,
     timeTerm: this.state.startDate + " ~ " + this.state.endDate,
     orderAmount:order.length.toString(),
-    total:total.toString(),
+    total:total.toFixed(2).toString(),
     orderArray:order,
   }
   console.log(data);
