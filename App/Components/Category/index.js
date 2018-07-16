@@ -110,7 +110,7 @@ export default class Category extends Component {
       passProps: {
         getCategoryLists: () => this.getCategoryLists(),
       }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
   goToSearchPage() {
@@ -123,7 +123,7 @@ export default class Category extends Component {
       passProps: {
         categoryOptions:this.state.categoryOptions,
       }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
 // goTo end
@@ -258,7 +258,7 @@ export default class Category extends Component {
       passProps: {
         category:this.state.categoryLists,
       }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
 // render

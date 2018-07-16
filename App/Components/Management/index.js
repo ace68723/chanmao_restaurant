@@ -28,18 +28,18 @@ export default class Management extends Component {
         <View  style={styles.container}>
             <Loading ref="loading" size={60}/>
             <ScrollableTabView
-            initialPage={0}
-            ref="Tabs"
-            renderTabBar={() => <TabBar />}
-            tabBarTextStyle = {{fontSize: 20, fontWeight: 'bold'}}
-            tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}>
-            <Category
-                tabLabel='Category'/>
-            <Submenu
-                // onPress={(record) => this._goGetSummary(record)}
-                // onPressLogout = {() => this._logOut()}
-                tabLabel='Submenu'/>
-        </ScrollableTabView>
+                initialPage={0}
+                ref="Tabs"
+                renderTabBar={() => <TabBar />}
+                tabBarTextStyle = {{fontSize: 20, fontWeight: 'bold'}}
+                tabBarUnderlineStyle = {{backgroundColor:"#EA7B21"}}>
+                <Category
+                    tabLabel='Category'/>
+                <Submenu
+                    // onPress={(record) => this._goGetSummary(record)}
+                    // onPressLogout = {() => this._logOut()}
+                    tabLabel='Submenu'/>
+            </ScrollableTabView>
         </View>
     );
     }

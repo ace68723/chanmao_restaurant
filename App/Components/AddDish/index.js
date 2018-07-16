@@ -89,7 +89,7 @@ export default class AddDish extends Component {
   confirmDelete() {
     Alert.alert(
       "Alert",
-      'Confirm Delete?',
+      'Confirm Delete ' + this.state.dish.ds_name + '?',
       [
         {text: 'Cancel'},
         {text: 'Ok', onPress:()=>this.deleteDish()},

@@ -207,7 +207,7 @@ export default class Dish extends Component {
         keyword:this.state.keyword,
         getCategoryLists: () => this.props.getCategoryLists(),
       }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
 
@@ -215,7 +215,7 @@ export default class Dish extends Component {
   confirmDelete() {
     Alert.alert(
       "Alert",
-      'Confirm Delete?',
+      'Confirm Delete ' + this.state.category.name + '?',
       [
         {text: 'Cancel'},
         {text: 'Ok', onPress:()=>this.deleteCategory()},
@@ -392,7 +392,7 @@ export default class Dish extends Component {
   }
   renderListFunction(){
     return(
-      <KeyboardAvoidingView style={styles.listFunctionView}>
+      <View style={styles.listFunctionView}>
         <View style={{flex:0.7,    height: Settings.getY(150)}}>
             <TextInput
             value = {this.state.searchText}
@@ -411,7 +411,7 @@ export default class Dish extends Component {
               Search
             </Text>
       </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
   renderListTitle(){

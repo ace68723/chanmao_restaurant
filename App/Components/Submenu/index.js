@@ -126,19 +126,19 @@ export default class Submenu extends Component {
 // render
   render(){
     return(
-      <KeyboardAvoidingView style={styles.container}>
+      <View style={styles.container}>
         <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {/* {this.renderSelectDate()} */}
           {this.renderCatFunction()}
           {this.renderDetialList()}
         </View>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
   renderListFunction(){
     return(
-      <KeyboardAvoidingView style={styles.listFunctionView}>
+      <View style={styles.listFunctionView}>
         <TouchableOpacity
             style={[styles.searchButtonStyle]}
             onPress={() => this.goToAddDish()}
@@ -164,7 +164,7 @@ export default class Submenu extends Component {
               Search
             </Text>
       </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
   renderCatFunction(){
@@ -179,7 +179,6 @@ export default class Submenu extends Component {
               Add Submenu
             </Text>
         </TouchableOpacity>
-        
       </View>
     )
   }

@@ -167,7 +167,7 @@ export default class AddSubmenu extends Component {
   confirmDelete() {
     Alert.alert(
       "Alert",
-      'Confirm Delete?',
+      'Confirm Delete ' + this.state.submenu.tpg_name + '?',
       [
         {text: 'Cancel'},
         {text: 'Ok', onPress:()=>this.deleteToppingGroup()},
@@ -215,10 +215,10 @@ export default class AddSubmenu extends Component {
         }
     }   
   }
+  // behavior="padding"
   render(){
     return(
-      <KeyboardAvoidingView style = {styles.container} behavior="padding"
-      >
+      <View style = {styles.container} >
         <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {this.renderNameFunction()}
@@ -229,7 +229,7 @@ export default class AddSubmenu extends Component {
           {this.renderDetialList()}
           {this.renderSaveButton()}
         </View>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
   renderNameFunction() {
@@ -351,16 +351,17 @@ export default class AddSubmenu extends Component {
       
     
 }
+// behavior= "padding"
   renderDetialList(){
     return(
       
-      <KeyboardAvoidingView style={styles.listDetailView} behavior= "padding">
+      <View style={styles.listDetailView}>
           <ScrollView style={{
                     flex:1,
                     }}>
             {this.renderToppingGroup()}
           </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
   renderSaveButton(){
