@@ -177,7 +177,6 @@ export default  {
     }
   },
   async setDishStatus(item,value) {
-    console.log(item,value);
     if(value == true) {
       value = 0;
     } else if(value == false) {
@@ -186,8 +185,6 @@ export default  {
     try {
             const { authortoken} = GetUserInfo();
       const data = await CategoryAPI.setDishStatus(item,value,authortoken);
-      console.log("setDishStatus")
-      console.log(data)
       if(data.ev_error === 0 ){
          return data
       }else{

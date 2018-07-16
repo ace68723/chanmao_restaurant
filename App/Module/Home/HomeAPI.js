@@ -21,8 +21,6 @@ export default  {
         "task": task,
         "items": items
       })
-
-      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
@@ -64,11 +62,7 @@ export default  {
             }
         }
 
-        // setTimeout(()=> {
-
-          fetch_cancel.abort(1);
-        //   console.log('abort');
-        // }, 30000);
+        fetch_cancel.abort(1);
 
         return fetch_cancel(url,options,1)
          .then((response) => response.json())

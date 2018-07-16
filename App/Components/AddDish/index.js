@@ -34,7 +34,6 @@ export default class AddDish extends Component {
   }
   constructor(props){
     super(props);
-    console.log(props)
     this.state={
       waiting: false,
       token: '',
@@ -67,7 +66,6 @@ export default class AddDish extends Component {
      toppingGroupList: newState.toppingGroupList,
      category:newState.categoryOptions
    })
-   console.log(this.state)
  }
  cancelGoBack() {
   this.props.navigator.dismissModal({
@@ -104,7 +102,6 @@ export default class AddDish extends Component {
     try{
         const data = await CategoryModule.deleteDish(this.state.dish);
         CmrCategoryAction.getDishes();
-        console.log(data)
         if(data.ev_error === 0) {
             Alert.alert(
                 "Success",
@@ -451,11 +448,10 @@ export default class AddDish extends Component {
       })
   }
   addToToppingGroup(item) {
-    console.log(item)
     let dish = {...this.state.dish};
     let newToppingGroup = [item];
     const newDishTP = dish.tpgs.concat(newToppingGroup)
-    console.log(newDishTP)
+
     this.setState(prevState => ({
       dish: {
           ...prevState.dish,

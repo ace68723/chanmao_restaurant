@@ -25,11 +25,9 @@ export default  {
       // const oid = oid;
       // const task = task;
       const reqData = {token, rid, oid, items, task,pptime};
-      console.log(reqData)
       const response = await OrderDetailAPI.handleOrder(reqData);
       if(response.result === 0 ){
          const result = response.result;
-         console.log(result);
          return result
       }else{
         const errorMessage = response.ev_message;

@@ -33,7 +33,6 @@ export default class AddSubmenu extends Component {
   }
   constructor(props){
     super(props);
-    console.log(props)
     this.state={
       waiting: false,
       token: '',
@@ -55,13 +54,11 @@ export default class AddSubmenu extends Component {
     });
   }
   onChangeTpName(text,index) {
-    console.log('text',text,'index',index)
     let submenu = {...this.state.submenu};
     let newTopppingGroup = [];
     let tps = [...submenu.tps];
     tps[index] = {...tps[index], tp_name: text};
     submenu.tps = tps
-    console.log(submenu)
     // arrayvar[index].tp_name = text
     // this.state.submenu.tps.map((tp,i) =>{
     //   newTopppingGroup.push(tp);
@@ -70,13 +67,11 @@ export default class AddSubmenu extends Component {
     this.setState({ submenu });
   }
   onChangeTpPrice(text,index) {
-    console.log('text',text,'index',index)
     let submenu = {...this.state.submenu};
     let newTopppingGroup = [];
     let tps = [...submenu.tps];
     tps[index] = {...tps[index], tp_price: text};
     submenu.tps = tps
-    console.log(submenu)
     // arrayvar[index].tp_name = text
     // this.state.submenu.tps.map((tp,i) =>{
     //   newTopppingGroup.push(tp);
@@ -130,7 +125,6 @@ export default class AddSubmenu extends Component {
      }, 300);//add loading if request more than 200ms
     try{
         const data = await CategoryModule.setToppingGroup(this.state.submenu);
-        console.log(data)
         if(data.ev_error === 0) {
             Alert.alert(
                 "Success",
@@ -181,7 +175,6 @@ export default class AddSubmenu extends Component {
      }, 300);//add loading if request more than 200ms
     try{
         const data = await CategoryModule.deleteToppingGroup(this.state.submenu);
-        console.log(data)
         if(data.ev_error === 0) {
             Alert.alert(
                 "Success",
@@ -416,20 +409,15 @@ export default class AddSubmenu extends Component {
         )
   }
   addToToppingGroup(item) {
-    console.log(item)
     let dish = {...this.state.dish};
     let newToppingGroup = [item];
     const newDishTP = dish.tpgs.concat(newToppingGroup)
-    console.log(newDishTP)
     this.setState(prevState => ({
       dish: {
           ...prevState.dish,
           tpgs: newDishTP
       }
      }))
-     setTimeout(() => {
-        console.log(this.state.dish)
-     }, 1000);
   }
   removeFromToppingGroup(item) {
     let submenu = {...this.state.submenu};

@@ -43,7 +43,6 @@ export default class Submenu extends Component {
   //      }, 300);//add loading if request more than 200ms
   //   try{
   //        const data = await CategoryModule.getToppongGroup();
-  //        console.log(data)
   //        this.setState({
   //           toppingGroupList:data.ea_tpgs,
   //       })
@@ -252,7 +251,6 @@ export default class Submenu extends Component {
       return (
         <View style={{flexDirection:'row',flexWrap: 'wrap',marginBottom:Settings.getX(10), marginLeft:Settings.getX(10),}}>
             {item.tps.map((tp,i) =>{
-                console.log(tp);
                 return  this.renderTPS(tp,i)
             })}
         </View>
@@ -260,7 +258,6 @@ export default class Submenu extends Component {
     }
   }
   renderTPS(tp,i) {
-      console.log(tp)
      return(
 
             <TouchableOpacity

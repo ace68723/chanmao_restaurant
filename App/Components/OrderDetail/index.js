@@ -18,7 +18,6 @@ const timeStr = ['< 10', '20', '30', '> 40'];
 
 export default class OrderDetail extends Component {
   constructor(props){
-    console.log(props)
     super(props);
     this.state = {
       totalPrice:'',
@@ -43,7 +42,6 @@ export default class OrderDetail extends Component {
     this._renderTouchable=this._renderTouchable.bind(this);
   }
   componentDidMount() {
-    console.log(this.props);
     this._getOrderDetail();
   }
 
@@ -56,7 +54,6 @@ export default class OrderDetail extends Component {
        const data = await OrderDetailModule.getOrderDetail(oid);
        clearTimeout(loadingTimeout);
        this.refs.loading.endLoading();
-       console.log(data)
        this.setState({
          itemList: data.items,
          totalPrice: data.total,
@@ -119,7 +116,6 @@ export default class OrderDetail extends Component {
   async _printOrder(){
     if(this._printerWatting) return;
     this._printerWatting = true;
-    console.log('_printOrder')
     let dltypeMessage;
     if(this.state.dltype == 0 ){
       dltypeMessage = 'Pick Up';
@@ -148,7 +144,7 @@ export default class OrderDetail extends Component {
   _changeSoldState(index){
     let temp = this.state.itemList;
     temp[index].sold = !this.state.itemList[index].sold;
-    this.setState({itemList:temp},()=>console.log(this.state.itemList[index]));
+    this.setState({itemList:temp});
   }
 
   // style= {{height:this.state.itemList.length * 30 + 40, borderBottomWidth:1,
@@ -501,7 +497,6 @@ export default class OrderDetail extends Component {
 
   }
   _renderDetails() {
-    console.log(this.state.comment.length)
     let detailFieldHeight;
     //当字数超过范围，限制View高度
     if(this.state.comment.length/19 > 5){

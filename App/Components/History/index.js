@@ -29,12 +29,7 @@ export default class HistoryPage extends Component {
     this._logOut = this._logOut.bind(this);
   }
 
-
-  componentDidMount() {
-    console.log(this.state)
-  }
   _goGetSummary(record) {
-    console.log(record)
     this.getSummary(record)
  }
  _logOut(){

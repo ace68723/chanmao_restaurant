@@ -47,7 +47,6 @@ export default class AddNewCategory extends Component {
        }, 300);//add loading if request more than 200ms
     try{
          const data = await CategoryModule.addCategory(this.state.keyword);
-         console.log(data)
          if(data.ev_error === 0) {
             this._closeSboHomeAlert()
          }

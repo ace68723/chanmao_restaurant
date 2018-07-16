@@ -94,7 +94,6 @@ export default class SearchPage extends Component {
             item.setNativeProps({
                 style: {...shadowStyle, top: this._getTopValueYById(this.index)}
             });
-            console.log(this.order);
         },
         onPanResponderTerminate: (evt, gestureState) => {
             // Another component has become the responder, so this gesture
@@ -147,7 +146,6 @@ export default class SearchPage extends Component {
           this.state.selectedCateDishes.push(dish);
         }
       });
-      console.log(this.state.selectedCateDishes)
     this.props.navigator.showModal({
         screen: 'Dish',
         title: item.name,
@@ -177,7 +175,6 @@ export default class SearchPage extends Component {
     this.setState({
         searchedDishes:dishesList
     })
-    console.log(this.state.searchedDishes)
   }
   async getDishes() {
     const loadingTimeout = setTimeout(() => {
@@ -187,8 +184,7 @@ export default class SearchPage extends Component {
          const data = await CategoryModule.getDishes();
          this.setState({
             dishLists:data.ea_dishes,
-        })
-        console.log(this.state.dishLists)         
+        })       
         if(data.ev_error === 0) {
          }
          clearTimeout(loadingTimeout);
@@ -296,7 +292,6 @@ export default class SearchPage extends Component {
   renderRecords(){
         return this.state.searchedDishes.map((item, i)=>{
             this.order.push(item);
-            console.log(this.state.searchedDishes)
             return (
               <TouchableOpacity
               {...this._panResponder.panHandlers}

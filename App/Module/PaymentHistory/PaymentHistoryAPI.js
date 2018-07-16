@@ -17,8 +17,6 @@ export default  {
           "token": token,
           "rid":rid
       })
-
-      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
@@ -45,8 +43,6 @@ export default  {
             "bill_end": bill_end,
             "bill_start":bill_start
         })
-
-        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {

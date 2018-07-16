@@ -96,7 +96,6 @@ export function DatabaseInit() {
               ],
       schemaVersion: 1,
   })
-    console.log(realm.path)
   let cmr_system = realm.objects('cmr_system');
   realm.write(() => {
     realm.create('cmr_system',{type: 'channel', value: 'cm-4'}, true);
@@ -203,7 +202,6 @@ export function saveOrder(io_data) {
     //   customer_tel:io_data.transaction_customer.customer_tel,
     // },
   }
-  console.log(data)
   realm.write(() => {
     realm.create('cmr_sales_transaction',data, true);
   })

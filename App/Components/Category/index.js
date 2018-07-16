@@ -174,8 +174,7 @@ export default class Category extends Component {
          });
          this.setState({
             dishLists:data.ea_dishes,
-        })
-        console.log(this.state.dishLists)         
+        })        
         if(data.ev_error === 0) {
          }
          clearTimeout(loadingTimeout);
@@ -209,7 +208,6 @@ export default class Category extends Component {
        }, 300);//add loading if request more than 200ms
     try{
          const data = await CategoryModule.getCategoryLists();
-         console.log(data)
          data.ea_data.forEach(item => {
           const data = {
             dt_id: 0,
@@ -418,7 +416,7 @@ export default class Category extends Component {
   }
   renderTest() {
     const sortObject = Object.assign({}, this.state.categoryLists); // {0:"a", 1:"b", 2:"c"}
-    console.log(sortObject);
+
     return (
         <SortableList
           style={styles.list}

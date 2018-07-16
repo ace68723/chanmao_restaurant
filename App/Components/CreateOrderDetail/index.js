@@ -94,9 +94,8 @@ export default class CreateOrderDetail extends Component {
         uid : this.state.uid,
       }
 
-      console.log(reqData);
       const data  = await CreateOrderModule.createOrder(reqData);
-      console.log(data);
+  
     }catch(error){
       if (error == '用户超时，请退出重新登陆') {
         Alert.alert(

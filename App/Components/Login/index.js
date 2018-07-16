@@ -82,7 +82,6 @@ export default class Login extends Component {
     }, 100);//add loading if request more than 200ms
     try{
        const data = await LoginModule.login(username, password);
-       console.log(data)
        this.props.navigator.resetTo({
            screen: 'Tab',
            navigatorStyle: {

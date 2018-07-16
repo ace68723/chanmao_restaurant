@@ -11,7 +11,6 @@ export default  {
               'Authortoken': token
           }
       }
-      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
@@ -192,8 +191,6 @@ export default  {
                 "tps":data.tps
             })
         }
-
-        console.log(options.body)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {
@@ -215,7 +212,7 @@ export default  {
             "tpg_id":submenu.tpg_id,
 
         })
-        console.log(options)
+
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {
@@ -237,14 +234,13 @@ export default  {
             "ds_id":dish.ds_id,
 
         })
-        console.log(options)
-      return fetch(url,options)
-           .then((response) => response.json())
-           .catch((error) => {
-               console.log(error);
-               throw error
-          })
-       },
+        return fetch(url,options)
+            .then((response) => response.json())
+            .catch((error) => {
+                console.log(error);
+                throw error
+            })
+        },
        setDishStatus(item,value,token){
         const url = 'http://norgta.com/api/mis/v2/set_dish_status';
         let options = {
@@ -259,7 +255,6 @@ export default  {
             "ds_id":item.ds_id,
             "status":value
         })
-        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {
@@ -279,13 +274,12 @@ export default  {
         options.body = JSON.stringify({
             'ia_rank_list': newlist
         })
-        console.log(options)
-      return fetch(url,options)
-           .then((response) => response.json())
-           .catch((error) => {
-               console.log(error);
-               throw error
-          })
-       },
+        return fetch(url,options)
+            .then((response) => response.json())
+            .catch((error) => {
+                console.log(error);
+                throw error
+            })
+        },
   }
 

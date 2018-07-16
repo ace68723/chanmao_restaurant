@@ -289,7 +289,6 @@ export default class Dish extends Component {
      }, 300);//add loading if request more than 200ms
     try{
         const data = await CategoryModule.setDishStatus(item,value);
-        console.log(data)
         clearTimeout(loadingTimeout);
         this.refs.loading.endLoading();
     }catch(error){
