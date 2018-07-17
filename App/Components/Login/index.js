@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     fontSize:24,
     fontFamily:'Noto Sans CJK SC',
     textAlign: 'left',
-
+    paddingVertical: 5,
   },
   buttonView:{
     flex:0.2,

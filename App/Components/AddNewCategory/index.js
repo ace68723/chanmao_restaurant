@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
       height: Settings.getY(60),
       borderWidth: 0.5,
       borderColor: 'grey',
-      padding:1,
+      paddingVertical:5,
       paddingLeft:10,
       fontSize: 17,
     },
