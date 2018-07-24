@@ -44,7 +44,6 @@ export default class ChangeCategoryOrder extends Component {
             categoryList: props.category,
             newOrder:[]
         }
-        console.log(props)
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
       }
       async onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
@@ -54,7 +53,6 @@ export default class ChangeCategoryOrder extends Component {
               this.refs.loading.startLoading();
              }, 300);//add loading if request more than 200ms     
           try{
-              console.log(this.state.newOrder);
               const data = await CategoryModule.editCategoryRank(this.state.newOrder);
               if(data.ev_error == 0) {
                 alert('修改成功');
@@ -96,11 +94,10 @@ export default class ChangeCategoryOrder extends Component {
       }
       newList.push(data);
     }
-    
-    console.log(newList);
+
     this.setState({
       newOrder:newList
-    },()=>{console.log(this.state)})
+    })
   }
   _renderRow = ({data, active}) => {
     return <Row data={data} active={active} />

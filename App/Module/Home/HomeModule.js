@@ -22,6 +22,8 @@ export default  {
     try {
       const { authortoken } = GetUserInfo();
       const data = await HomeAPI.fetchOrder(authortoken);
+      console.log("fetch")
+      console.log(data)
       if(data.ev_result === 0 ){
          return data
       }else{

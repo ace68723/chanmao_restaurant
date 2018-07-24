@@ -42,7 +42,6 @@ export default class Home extends Component {
     });
   }
   componentDidMount(){
-    console.log('123')
     CmrHomeStore.addChangeListener(this._onChange);
     CmrHomeAction.fetchOrder()
     this.updateOrders();
@@ -83,7 +82,6 @@ export default class Home extends Component {
       data.ea_new.sort(function(a,b){
           return parseInt(b.oid)  - parseInt(a.oid);
       })
-      console.log(data)
       if (data.ev_result === 0) {
         if(data.ea_new.length !== 0) {
           if(data.ea_new[0].oid === this.state.checkOid) {

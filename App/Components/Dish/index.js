@@ -151,7 +151,6 @@ export default class Dish extends Component {
 // drag and drop end
 // go to
   goToAddDish(item) {
-    console.log(this.state)
     if(!item) {
       let dish = {
         ds_name: '',
@@ -208,7 +207,7 @@ export default class Dish extends Component {
         keyword:this.state.keyword,
         getCategoryLists: () => this.props.getCategoryLists(),
       }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
 
@@ -216,7 +215,7 @@ export default class Dish extends Component {
   confirmDelete() {
     Alert.alert(
       "Alert",
-      'Confirm Delete?',
+      'Confirm Delete ' + this.state.category.name + '?',
       [
         {text: 'Cancel'},
         {text: 'Ok', onPress:()=>this.deleteCategory()},
@@ -290,7 +289,6 @@ export default class Dish extends Component {
      }, 300);//add loading if request more than 200ms
     try{
         const data = await CategoryModule.setDishStatus(item,value);
-        console.log(data)
         clearTimeout(loadingTimeout);
         this.refs.loading.endLoading();
     }catch(error){
@@ -393,7 +391,7 @@ export default class Dish extends Component {
   }
   renderListFunction(){
     return(
-      <KeyboardAvoidingView style={styles.listFunctionView}>
+      <View style={styles.listFunctionView}>
         <View style={{flex:0.7,    height: Settings.getY(150)}}>
             <TextInput
             value = {this.state.searchText}
@@ -412,7 +410,7 @@ export default class Dish extends Component {
               Search
             </Text>
       </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
   renderListTitle(){
@@ -572,14 +570,14 @@ export default class Dish extends Component {
   }
   render(){
     return(
-      <KeyboardAvoidingView style={styles.container}>
+      <View style={styles.container}>
         <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {this.renderListFunction()}
           {this.renderDetialList()}
           {this.renderButtonArea()}
         </View>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
 // render end
@@ -686,7 +684,7 @@ const styles = StyleSheet.create({
     flex: 0.3,
     borderWidth: 0.5,
     borderColor: '#6D6E71',
-    padding:1,
+    paddingVertical:5,
     paddingLeft:10,
     fontSize: 15,
   },

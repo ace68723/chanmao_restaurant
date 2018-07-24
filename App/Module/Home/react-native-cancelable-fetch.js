@@ -26,7 +26,6 @@ function headers(xhr) {
 
 // Fetch
 module.exports = function(input, init, tag) {
-  console.log('fetch');
   return new Promise(function(resolve, reject) {
     var request
     if (Request.prototype.isPrototypeOf(input) && !init) {
@@ -104,8 +103,6 @@ module.exports.abort = function(tag) {
     if (xhr.tag === tag) {
       _xhrs.splice(i, 1)
       xhr.abort()
-      console.log(xhr);
-      console.log(tag);
     }
   }
 }

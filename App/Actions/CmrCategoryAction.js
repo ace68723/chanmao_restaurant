@@ -19,8 +19,6 @@ export default {
             categoryLists: data.ea_data,
             categoryOptions: typeOptions,
           }
-          console.log(io_data)
-
           dispatch({
               actionType: CmrConstants.GET_CATEGORY_LIST, io_data
           })
@@ -70,8 +68,6 @@ export default {
         })
       },
       getSelectedCategory(){
-          console.log('here')
-        // const selectedAddress = Object.assign({}, io_address);
         dispatch({
             actionType: CmrConstants.GET_SELECTED_CATEGORY
         })

@@ -110,7 +110,7 @@ export default class Category extends Component {
       passProps: {
         getCategoryLists: () => this.getCategoryLists(),
       }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
   goToSearchPage() {
@@ -123,7 +123,7 @@ export default class Category extends Component {
       passProps: {
         categoryOptions:this.state.categoryOptions,
       }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
 // goTo end
@@ -174,8 +174,7 @@ export default class Category extends Component {
          });
          this.setState({
             dishLists:data.ea_dishes,
-        })
-        console.log(this.state.dishLists)         
+        })        
         if(data.ev_error === 0) {
          }
          clearTimeout(loadingTimeout);
@@ -209,7 +208,6 @@ export default class Category extends Component {
        }, 300);//add loading if request more than 200ms
     try{
          const data = await CategoryModule.getCategoryLists();
-         console.log(data)
          data.ea_data.forEach(item => {
           const data = {
             dt_id: 0,
@@ -258,7 +256,7 @@ export default class Category extends Component {
       passProps: {
         category:this.state.categoryLists,
       }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
 // render
@@ -418,7 +416,7 @@ export default class Category extends Component {
   }
   renderTest() {
     const sortObject = Object.assign({}, this.state.categoryLists); // {0:"a", 1:"b", 2:"c"}
-    console.log(sortObject);
+
     return (
         <SortableList
           style={styles.list}

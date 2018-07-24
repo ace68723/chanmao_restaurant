@@ -126,7 +126,6 @@ export default class PaymentHistory extends Component {
     )
   }
   renderRecords(){
-    console.log(this.state.list)
     return this.state.list.map((record, index)=>{
       return(
         <TouchableOpacity

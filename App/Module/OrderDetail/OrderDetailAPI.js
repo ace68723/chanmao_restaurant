@@ -2,7 +2,6 @@ import { API_GET_ORDER_DETAIL, API_HANDLE_ORDER } from '../../Config/API';
 
 export default  {
     getOrderDetail(token,rid,oid){
-      console.log('token: '+token);
       const url = API_GET_ORDER_DETAIL;
       let options = {
           method: 'POST',
@@ -28,7 +27,6 @@ export default  {
         })
      },
      handleOrder(reqData){
-         console.log(reqData)
        const url = API_HANDLE_ORDER;
        let options = {
            method: 'POST',

@@ -26,7 +26,6 @@ export default class OrderHistory extends Component {
   }
   constructor(props){
     super(props);
-    console.log(props)
     this.state={
       totalAmount: 2008.1,
       printButtonName:'Print',
@@ -46,7 +45,6 @@ export default class OrderHistory extends Component {
   }
 
   componentDidMount() {
-    console.log('123')
     this.getSummary();
   }
   componentWillReceiveProps(nextProps) {
@@ -132,8 +130,6 @@ export default class OrderHistory extends Component {
     total:total.toFixed(2).toString(),
     orderArray:order,
   }
-  console.log(data);
-  //this._disableDoubleClick();
   PrintModule.printContent(data);
 }
   render(){
@@ -316,7 +312,6 @@ export default class OrderHistory extends Component {
     )
   }
   renderRecords(){
-    console.log(this.state.list)
     let orders;
     if (this.state.list.orders) {orders=this.state.list.orders;} else {orders=this.state.list}
     return orders.map((record, index)=>{

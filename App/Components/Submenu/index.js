@@ -43,7 +43,6 @@ export default class Submenu extends Component {
   //      }, 300);//add loading if request more than 200ms
   //   try{
   //        const data = await CategoryModule.getToppongGroup();
-  //        console.log(data)
   //        this.setState({
   //           toppingGroupList:data.ea_tpgs,
   //       })
@@ -126,19 +125,19 @@ export default class Submenu extends Component {
 // render
   render(){
     return(
-      <KeyboardAvoidingView style={styles.container}>
+      <View style={styles.container}>
         <Loading ref="loading" size={60}/>
         <View style={styles.body}>
           {/* {this.renderSelectDate()} */}
           {this.renderCatFunction()}
           {this.renderDetialList()}
         </View>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
   renderListFunction(){
     return(
-      <KeyboardAvoidingView style={styles.listFunctionView}>
+      <View style={styles.listFunctionView}>
         <TouchableOpacity
             style={[styles.searchButtonStyle]}
             onPress={() => this.goToAddDish()}
@@ -164,7 +163,7 @@ export default class Submenu extends Component {
               Search
             </Text>
       </TouchableOpacity>
-      </KeyboardAvoidingView>
+      </View>
     )
   }
   renderCatFunction(){
@@ -179,7 +178,6 @@ export default class Submenu extends Component {
               Add Submenu
             </Text>
         </TouchableOpacity>
-        
       </View>
     )
   }
@@ -253,7 +251,6 @@ export default class Submenu extends Component {
       return (
         <View style={{flexDirection:'row',flexWrap: 'wrap',marginBottom:Settings.getX(10), marginLeft:Settings.getX(10),}}>
             {item.tps.map((tp,i) =>{
-                console.log(tp);
                 return  this.renderTPS(tp,i)
             })}
         </View>
@@ -261,7 +258,6 @@ export default class Submenu extends Component {
     }
   }
   renderTPS(tp,i) {
-      console.log(tp)
      return(
 
             <TouchableOpacity
@@ -377,7 +373,7 @@ const styles = StyleSheet.create({
     flex: 0.3,
     borderWidth: 0.5,
     borderColor: '#6D6E71',
-    padding:1,
+    paddingVertical:5,
     paddingLeft:10,
     fontSize: 15,
   },

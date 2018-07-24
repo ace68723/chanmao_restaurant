@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     height: Setting.getY(60),
     borderWidth: 0.5,
     borderColor: '#6D6E71',
-    padding:1,
+    paddingVertical:5,
     paddingLeft:10,
     fontSize: 20,
   },

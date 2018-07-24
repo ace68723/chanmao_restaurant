@@ -55,11 +55,9 @@ export default class CreateOrder extends Component {
     const lng = this.state.coord.lng;
     const data = await CreateOrderModule.areaCheck(lng,lat)
     this.refs.loading.endLoading();
-    console.log(data);
     if(data.result === 0) {
       const dlexp = data.dlexp;
       const area = data.area;
-      console.log(dlexp);
       this.props.navigator.showModal({
         screen: 'CreateOrderDetail',
         navigatorStyle: {
@@ -104,10 +102,8 @@ export default class CreateOrder extends Component {
                  + this.state.address;
     const response = await fetch(url);
     const jsonResponse = await response.json();
-    // console.log(jsonResponse);
     this.state.coord = jsonResponse.results[0].geometry.location;
     this.state.postal = this._addressExtractor(jsonResponse.results[0], 'postal');
-    console.log('final', this.state);
     this._goCreateOrder();
   }
 
