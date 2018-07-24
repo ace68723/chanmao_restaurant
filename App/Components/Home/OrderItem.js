@@ -45,26 +45,6 @@ export default class OrderItem extends Component {
             statusColor = '#33cd5f';
             statusMessage = 'Accepted';
             break;
-        case '20':
-            statusColor = '#33cd5f';
-            statusMessage = '商家已确认, 准备中';
-            break;
-        case '30':
-            statusColor = '#9bc8df';
-            statusMessage = '送餐员已开始送餐';
-            break;
-        case '40':
-            statusColor = '#11c1f3';
-            statusMessage = '已送到, 满意吗？';
-            break;
-        case '55':
-            statusColor = '#886aea';
-            statusMessage = '新用户订单确认中';
-            break;
-        case '60':
-            statusColor = '#11c1f3';
-            statusMessage = '客服稍后联系您改运费';
-            break;
         case '5':
             statusColor = '#b2b2b2';
             statusMessage = 'Sold Out';

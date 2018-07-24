@@ -2,7 +2,7 @@ import { API_AREACHECK, API_ORDERSUBMIT } from '../../Config/API';
 
 export default  {
     getDishes(token){
-      const url = 'https://norgta.com/api/mis/v2/get_dishes';
+      const url = 'https://chanmao.us/api/mis/v2/get_dishes';
       let options = {
           method: 'GET',
           mode:'cors',
@@ -20,7 +20,7 @@ export default  {
         })
      },
      getCategoryLists(token){
-        const url = 'http://norgta.com/api/mis/v2/get_dish_type';
+        const url = 'https://chanmao.us/api/mis/v2/get_dish_type';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -37,7 +37,7 @@ export default  {
           })
        },
        addCategory(keyword, token){
-        const url = 'http://norgta.com/api/mis/v2/add_dish_type';
+        const url = 'https://chanmao.us/api/mis/v2/add_dish_type';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -57,7 +57,7 @@ export default  {
           })
        },
        saveCategoryName(dt_id, keyword, token){
-        const url = 'http://norgta.com/api/mis/v2/edit_dish_type';
+        const url = 'https://chanmao.us/api/mis/v2/edit_dish_type';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -78,7 +78,7 @@ export default  {
           })
        },
        deleteCategory(dt_id, token){
-        const url = 'http://norgta.com/api/mis/v2/delete_dish_type';
+        const url = 'https://chanmao.us/api/mis/v2/delete_dish_type';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -98,7 +98,7 @@ export default  {
           })
        },
        getToppongGroup(token){
-        const url = 'http://norgta.com/api/mis/v2/find_tpgs';
+        const url = 'https://chanmao.us/api/mis/v2/find_tpgs';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -116,7 +116,7 @@ export default  {
           })
        },
        setDish(dish,token){
-        const url = 'http://norgta.com/api/mis/v2/set_dish';
+        const url = 'https://chanmao.us/api/mis/v2/set_dish';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -141,7 +141,7 @@ export default  {
           })
        },
        addDish(dish,token){
-        const url = 'http://norgta.com/api/mis/v2/set_dish';
+        const url = 'https://chanmao.us/api/mis/v2/set_dish';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -167,7 +167,7 @@ export default  {
           })
        },
        async setToppingGroup(data,token){
-        const url = 'http://norgta.com/api/mis/v2/set_tpg';
+        const url = 'https://chanmao.us/api/mis/v2/set_tpg';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -204,7 +204,7 @@ export default  {
           })
        },
        deleteToppingGroup(submenu,token){
-        const url = 'http://norgta.com/api/mis/v2/delete_tpg';
+        const url = 'https://chanmao.us/api/mis/v2/delete_tpg';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -226,7 +226,7 @@ export default  {
           })
        },
        deleteDish(dish,token){
-        const url = 'http://norgta.com/api/mis/v2/delete_dish';
+        const url = 'https://chanmao.us/api/mis/v2/delete_dish';
         let options = {
             method: 'POST',
             mode:'cors',
@@ -248,7 +248,7 @@ export default  {
           })
        },
        setDishStatus(item,value,token){
-        const url = 'http://norgta.com/api/mis/v2/set_dish_status';
+        const url = 'https://chanmao.us/api/mis/v2/set_dish_status';
         let options = {
             method: 'POST',
             mode:'cors',
