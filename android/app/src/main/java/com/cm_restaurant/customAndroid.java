@@ -365,7 +365,8 @@ public class customAndroid extends ReactContextBaseJavaModule {
         try {
 
             Log.i("kaltin", "printTable: "+tableItem.getText()[0]+tableItem.getText()[1]+tableItem.getText()[2]);
-            woyouService.printColumnsString(tableItem.getText(), tableItem.getWidth(), tableItem.getAlign(), null);
+            Log.i("printing",tableItem.getText()[0]);
+            woyouService.printColumnsText(tableItem.getText(), tableItem.getWidth(), tableItem.getAlign(), null);
 
             woyouService.lineWrap(1, null);
         } catch (RemoteException e) {
