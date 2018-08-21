@@ -27,7 +27,7 @@ export default class OrderHistory extends Component {
   constructor(props){
     super(props);
     this.state={
-      totalAmount: 2008.1,
+      totalAmount: 0,
       printButtonName:'Print',
       startTitle:'Start',
       endTitle:'End',
@@ -76,6 +76,7 @@ export default class OrderHistory extends Component {
          restaurantName:data.restaurant_name,
          restaurantAddress:data.restaurant_address,
          restaurantPhoneNumber:data.restaurant_cel,
+         totalAmount:data.summary_total,
        })
        clearTimeout(loadingTimeout);
        this.refs.loading.endLoading();
