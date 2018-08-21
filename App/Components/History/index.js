@@ -59,7 +59,8 @@ export default class HistoryPage extends Component {
        const bill_end = record.bill_range_end;
 
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
-
+       console.log('data list');
+       console.log(data);
        this.setState({
         list: data,
         startDate:bill_start,
