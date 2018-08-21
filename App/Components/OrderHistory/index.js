@@ -78,6 +78,7 @@ export default class OrderHistory extends Component {
          restaurantName:data.restaurant_name,
          restaurantAddress:data.restaurant_address,
          restaurantPhoneNumber:data.restaurant_cel,
+         totalAmount:data.summary_total,
        })
        clearTimeout(loadingTimeout);
        this.refs.loading.endLoading();
