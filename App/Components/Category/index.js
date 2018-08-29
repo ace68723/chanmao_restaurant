@@ -105,12 +105,15 @@ export default class Category extends Component {
       });
   }
   goToAddCategory() {
-    this.props.navigator.showLightBox({
+    this.props.navigator.showModal({
       screen: "AddNewCategory",
       passProps: {
         getCategoryLists: () => this.getCategoryLists(),
-      }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      }, // simple serializable object that will pass as props to the modal (optional)
+      navigatorStyle: {
+        navBarHidden: true
+      },
+      animationType: 'fade'
      });
   }
   goToSearchPage() {
@@ -122,7 +125,7 @@ export default class Category extends Component {
         },
       passProps: {
         categoryOptions:this.state.categoryOptions,
-      }, // simple serializable object that will pass as props to the lightbox (optional)
+      }, // simple serializable object that will pass as props to the modal (optional)
       adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
@@ -255,7 +258,7 @@ export default class Category extends Component {
         },
       passProps: {
         category:this.state.categoryLists,
-      }, // simple serializable object that will pass as props to the lightbox (optional)
+      }, // simple serializable object that will pass as props to the modal (optional)
       adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }

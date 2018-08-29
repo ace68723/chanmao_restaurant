@@ -33,7 +33,9 @@ export default class ChangeCategoryName extends Component {
   _closeSboHomeAlert() {
     CmrCategoryAction.getCategoryLists();
     CmrCategoryAction.updateSelecedCategory(this.state.category);
-    this.props.navigator.dismissLightBox();
+    this.props.navigator.dismissModal({
+      animationType: 'fade' // 'none' / 'slide-down' , dismiss animation for the modal (optional, default 'slide-down')
+    });
   }
   async saveCategoryName() {
     const loadingTimeout = setTimeout(() => {
