@@ -166,10 +166,14 @@ export default class Category extends Component {
     try{
          const data = await CategoryModule.getDishes();
          data.ea_dishes.forEach(item => {
-           if(item.status === 0) {
-             item.status = true;
+           if(new Date().getTime() >= item.soldout.getTime()){
+            if(item.status === 0) {
+              item.status = true;
+            } else {
+              item.status = false;
+            }
            } else {
-             item.status = false;
+            item.status = false;
            }
          });
          this.setState({

@@ -3,7 +3,7 @@ import { GetUserInfo } from '../Database';
 export default  {
   async getDishes(){
     try {
-            const { authortoken} = GetUserInfo();
+      const { authortoken} = GetUserInfo();
       const data = await CategoryAPI.getDishes(authortoken);
       if(data.ev_error === 0 ){
          return data

@@ -27,7 +27,7 @@ export default  {
         })
      },
      handleOrder(reqData){
-       const url = API_HANDLE_ORDER;
+       const url = 'http://localhost:8000/api/restaurant/v1/handle_order';
        let options = {
            method: 'POST',
            mode:'cors',
@@ -35,7 +35,7 @@ export default  {
                'Content-Type': 'application/json'
            }
        }
-
+      
        options.body = JSON.stringify({
           "token": reqData.token,
           "rid": reqData.rid,
@@ -44,6 +44,7 @@ export default  {
           "task": reqData.task,
           "pptime":reqData.pptime
        })
+       console.log(options.body);
      return fetch(url,options)
           .then((response) => response.json())
           .catch((error) => {

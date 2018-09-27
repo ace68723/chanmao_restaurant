@@ -11,26 +11,24 @@ export default  {
       const sysVersion = DeviceInfo.getSystemVersion()
       const sysOS = OS +sysVersion;
       const userInfo = await LoginAPI.login(deviceToken,username,password, channel, version, UUID,sysOS);
-      if(userInfo.result === 0 ){
-         const token =userInfo.token;
-         const rid = userInfo.rid;
-         const uid =userInfo.uid;
-         const authortoken = userInfo.authortoken;
-         const interval = userInfo.interval;
-         const firebaseURL = userInfo.firebase_url;
-         const firebaseKEY = userInfo.firebase_key;
-         const firebaseREF = userInfo.firebase_ref;
+      console.log(userInfo);
+      if(userInfo.ev_error === 0 ){
+         const user = userInfo.userInfo;
+         const token =user.token;
+         const rid = (user.rid).toString();
+         const uid = (user.uid).toString();
+         const authortoken = user.authortoken;
+         const interval = user.interval;
+        
          const eo_data ={
-             result: userInfo.result,
+             result: user,
          }
+
          SaveUserInfo({ authortoken,
                         token,
                         interval,
                         rid,
-                        uid,
-                        firebaseURL,
-                        firebaseKEY,
-                        firebaseREF
+                        uid
                       });
          return eo_data
       }else{
@@ -44,13 +42,17 @@ export default  {
 
   },
   async auth(){
+
     try {
+      console.log(GetUserInfo())
       const { token,rid } = GetUserInfo();
       if(!token || !rid) {
         InitUserInfo();
         throw 'no token'
       }
+     
       const userInfo = await LoginAPI.auth({token,rid});
+      console.log(userInfo);
       if(userInfo.result === 0 ){
          const eo_data ={
              result: userInfo.result

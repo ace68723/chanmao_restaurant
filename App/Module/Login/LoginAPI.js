@@ -11,10 +11,10 @@ export default  {
           }
       }
       options.headers = Object.assign(options.headers,{
-         'Cmversion':version,
-         'Cmuuid':UUID,
-         'Cmos':sysOS,
-         'Devicetoken':deviceToken
+         'cmversion':version,
+         'cmuuid':UUID,
+         'cmos':sysOS,
+         'devicetoken':deviceToken
       })
       options.body = JSON.stringify({
           "name": username,
@@ -22,6 +22,7 @@ export default  {
           "channel":channel,
           "version":version
       })
+      console.log(options)
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
@@ -41,7 +42,7 @@ export default  {
 
        options.body = JSON.stringify({
            "token": token,
-           "rid":rid
+           "iv_rid":rid
        })
 
      return fetch(url,options)

@@ -153,8 +153,4 @@ export default  {
              alert("print error."+e.message);
          }
     },
-
-
-
-
 }
