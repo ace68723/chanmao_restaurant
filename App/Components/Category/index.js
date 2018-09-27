@@ -105,12 +105,15 @@ export default class Category extends Component {
       });
   }
   goToAddCategory() {
-    this.props.navigator.showLightBox({
+    this.props.navigator.showModal({
       screen: "AddNewCategory",
       passProps: {
         getCategoryLists: () => this.getCategoryLists(),
-      }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      }, // simple serializable object that will pass as props to the modal (optional)
+      navigatorStyle: {
+        navBarHidden: true
+      },
+      animationType: 'fade'
      });
   }
   goToSearchPage() {
@@ -122,7 +125,7 @@ export default class Category extends Component {
         },
       passProps: {
         categoryOptions:this.state.categoryOptions,
-      }, // simple serializable object that will pass as props to the lightbox (optional)
+      }, // simple serializable object that will pass as props to the modal (optional)
       adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
@@ -157,7 +160,7 @@ export default class Category extends Component {
           return
         }
 
-    } 
+    }
   }
   async getDishes() {
     const loadingTimeout = setTimeout(() => {
@@ -178,7 +181,7 @@ export default class Category extends Component {
          });
          this.setState({
             dishLists:data.ea_dishes,
-        })        
+        })
         if(data.ev_error === 0) {
          }
          clearTimeout(loadingTimeout);
@@ -196,14 +199,14 @@ export default class Category extends Component {
             ],
             { cancelable: false }
           )
-  
+
         } else {
           clearTimeout(loadingTimeout);
           this.refs.loading.endLoading();
           return
         }
-  
-    } 
+
+    }
   }
   async getCategoryLists() {
     let typeOptions = [{dt_id:0, name:'Please Select Category'}];
@@ -241,13 +244,13 @@ export default class Category extends Component {
             ],
             { cancelable: false }
           )
-  
+
         } else {
           clearTimeout(loadingTimeout);
           this.refs.loading.endLoading();
           return
         }
-  
+
     }
   }
   startLeveling() {
@@ -259,7 +262,7 @@ export default class Category extends Component {
         },
       passProps: {
         category:this.state.categoryLists,
-      }, // simple serializable object that will pass as props to the lightbox (optional)
+      }, // simple serializable object that will pass as props to the modal (optional)
       adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
      });
   }
@@ -297,12 +300,12 @@ export default class Category extends Component {
         </TouchableOpacity>
       )
     }
-    
+
   }
   renderButtonArea() {
     return(
     <View style ={{flex:0.08,flexDirection:'row'}}>
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => this.goToAddCategory()}
         style = {{flex:1,
           backgroundColor:'#f4f4f4',
@@ -311,7 +314,7 @@ export default class Category extends Component {
           borderColor:'#6D6E71',
           borderTopWidth:0.5,
           borderRightWidth:0.5}}>
-         <Text 
+         <Text
             style={{
             textAlign:'center',
             color:'#6D6E71',
@@ -320,7 +323,7 @@ export default class Category extends Component {
           Add Category
          </Text>
       </TouchableOpacity>
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => this.goToSubmenu()}
         style = {{flex:1,
           backgroundColor:'#f4f4f4',
@@ -329,7 +332,7 @@ export default class Category extends Component {
           borderColor:'#6D6E71',
           borderTopWidth:0.5,
           borderRightWidth:0.5}}>
-         <Text 
+         <Text
             style={{
             textAlign:'center',
             color:'#6D6E71',
@@ -354,7 +357,7 @@ export default class Category extends Component {
                                   height:Settings.getY(33), marginRight:Settings.getX(10)}}
                                   source={require('./Image/icon-add.png')}
                               />
-         <Text 
+         <Text
             style={{textAlign:'center',
             color:'#6D6E71',
             fontSize:17,
@@ -364,7 +367,7 @@ export default class Category extends Component {
       </TouchableOpacity>
     </View>
     )
-    
+
   }
   renderDetialList(){
     if(!this.state.editLevel) {
@@ -393,7 +396,7 @@ export default class Category extends Component {
     </View>
       )
     }
-    
+
   }
   renderRecords(){
        return this.state.categoryLists.map((item, i)=>{

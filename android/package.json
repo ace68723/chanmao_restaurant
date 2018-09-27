@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "react-native-sortable-list": "^0.0.22"
+  }
+}

@@ -26,9 +26,9 @@ export default class Login extends Component {
     super();
     this.state = {
       usPlaceholder:'User Name',
-      username:'aidentest',
+      username:'',
       pwPlaceholder:'Password',
-      password:'aidentest',
+      password:'',
       buttonText:'GO',
       waiting: false,
       ver:''

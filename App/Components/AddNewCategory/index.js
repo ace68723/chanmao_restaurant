@@ -39,7 +39,9 @@ export default class AddNewCategory extends Component {
     this._closeSboHomeAlert = this._closeSboHomeAlert.bind(this);
   }
   _closeSboHomeAlert() {
-    this.props.navigator.dismissLightBox();
+    this.props.navigator.dismissModal({
+      animationType: 'fade'
+    });
   }
   async addCategory(keyword) {
     const loadingTimeout = setTimeout(() => {

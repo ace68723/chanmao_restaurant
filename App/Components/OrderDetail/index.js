@@ -317,6 +317,10 @@ export default class OrderDetail extends Component {
             statusColor = '#33cd5f';
             statusMessage = 'Accepted';
             break;
+        case '30':
+            statusColor = '#798ba5';
+            statusMessage = 'Picked Up';
+            break;
         case '5':
             statusColor = '#b2b2b2';
             statusMessage = 'Sold Out';

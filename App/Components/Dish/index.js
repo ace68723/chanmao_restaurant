@@ -200,14 +200,17 @@ export default class Dish extends Component {
     });
   }
   goToSaveCName() {
-    this.props.navigator.showLightBox({
+    this.props.navigator.showModal({
       screen: "ChangeCategoryName",
       passProps: {
         category:this.state.category,
         keyword:this.state.keyword,
         getCategoryLists: () => this.props.getCategoryLists(),
-      }, // simple serializable object that will pass as props to the lightbox (optional)
-      adjustSoftInput: "pan", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+      }, // simple serializable object that will pass as props to the modal (optional)
+      navigatorStyle: {
+        navBarHidden: true
+      },
+      animationType: 'fade'
      });
   }
 
@@ -429,7 +432,6 @@ export default class Dish extends Component {
         <View style={{flex:0.2,alignItems:'flex-start'}}>
           <Text style={styles.listTitleFont}>Open</Text>
         </View>
-        {this.renderLeveling()}
 
       </View>
     )

@@ -23,6 +23,8 @@ export default  {
       const data = await PaymentHistoryAPI.getSummary(token,rid,bill_end,bill_start);
       if(data.result === 0 ){
          const orderLists = data
+         console.log('summary1');
+         console.log(data);
          return orderLists
       }else{
         const errorMessage = data.error_msg;
