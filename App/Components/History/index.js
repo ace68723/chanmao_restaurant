@@ -12,6 +12,7 @@ import OrderHistory from '../OrderHistory/index';
 import PaymentHistory from '../PaymentHistory/index';
 import Setting from '../../Config/Setting';
 import TabBar from './TabBar';
+import {  GetUserInfo } from '../../Module/Database';
 import LoginModule from '../../Module/Login/LoginModule';
 import Loading from '../Loading';
 import PaymentHistoryModule from '../../Module/PaymentHistory/PaymentHistoryModule';
@@ -50,9 +51,10 @@ export default class HistoryPage extends Component {
       this.refs.loading.startLoading();
     }, 300);//add loading if request more than 200ms
     try{
-       const bill_start = record.bill_range_start;
-       const bill_end = record.bill_range_end;
+       const bill_start = record.start_date;
+       const bill_end = record.end_date;
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
+       console.log(data);
        this.setState({
         list: data,
         startDate:bill_start,
@@ -76,6 +78,8 @@ export default class HistoryPage extends Component {
     }
   }
     render() {
+      let { settle_type } = GetUserInfo();
+
         return (
           <View  style={styles.container}>
              <Loading ref="loading" size={60}/>
@@ -94,6 +98,7 @@ export default class HistoryPage extends Component {
               <PaymentHistory
                     onPress={(record) => this._goGetSummary(record)}
                     onPressLogout = {() => this._logOut()}
+                    settleType = {settle_type}
                     tabLabel='Payment History'/>
             </ScrollableTabView>
           </View>

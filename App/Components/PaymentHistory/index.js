@@ -91,22 +91,40 @@ export default class PaymentHistory extends Component {
   }
 
   renderListTitle(){
-    return(
-      <View style={styles.listTitles}>
-        <View style={{flex:0.25}}>
-          <Text style={styles.listTitleFont}>Start</Text>
+    if(this.props.settleType == '1') {
+      return(
+        <View style={styles.listTitles}>
+          <View style={{flex:0.4}}>
+            <Text style={styles.listTitleFont}>Cycle</Text>
+          </View>
+          <View style={{flex:0.25,paddingLeft:Setting.getX(20)}}>
+            <Text style={styles.listTitleFont}>Total</Text>
+          </View>
+          <View style={{flex:0.35,paddingLeft: Settings.getX(20)}}>
+            <Text style={styles.listTitleFont}>Srv Fee</Text>
+          </View>
+          
         </View>
-        <View style={{flex:0.25,paddingLeft:Setting.getX(20)}}>
-          <Text style={styles.listTitleFont}>End</Text>
+      )
+    } else {
+      return(
+        <View style={styles.listTitles}>
+          <View style={{flex:0.35}}>
+            <Text style={styles.listTitleFont}>Cycle</Text>
+          </View>
+          <View style={{flex:0.2,paddingLeft:Setting.getX(20)}}>
+            <Text style={styles.listTitleFont}>Total</Text>
+          </View>
+          <View style={{flex:0.25,paddingLeft: Settings.getX(20)}}>
+            <Text style={styles.listTitleFont}>Srv Fee</Text>
+          </View>
+          <View style={{flex:0.2,paddingLeft:Settings.getX(15)}}>
+            <Text style={styles.listTitleFont}>Billing</Text>
+          </View>
         </View>
-        <View style={{flex:0.2,paddingLeft: Settings.getX(20)}}>
-          <Text style={styles.listTitleFont}>Total</Text>
-        </View>
-        <View style={{flex:0.3,paddingLeft:Settings.getX(15)}}>
-          <Text style={styles.listTitleFont}>Service Fee</Text>
-        </View>
-      </View>
-    )
+      )
+    }
+
   }
   renderDetialList(){
     return(
@@ -126,28 +144,51 @@ export default class PaymentHistory extends Component {
     )
   }
   renderRecords(){
-    return this.state.list.map((record, index)=>{
-      return(
-        <TouchableOpacity
-                style={styles.recordView}
-                key={index}
-                onPress={()=>this.pressProxy(record)}
-                >
-          <View style={{flex:0.25}}>
-            <Text style={styles.recordTitleFont}>{record.bill_range_start}</Text>
-          </View>
-          <View style={{flex:0.25}}>
-            <Text style={styles.recordTitleFont}>{record.bill_range_end}</Text>
-          </View>
-          <View style={{flex:0.2}}>
-            <Text style={styles.recordTitleFont}>{record.total_income}</Text>
-          </View>
-          <View style={{flex:0.3}}>
-            <Text style={styles.recordTitleFont}>{record.service_charge}</Text>
-          </View>
-        </TouchableOpacity>
-      )
-    })
+    if(this.props.settleType == "1") {
+      return this.state.list.map((record, index)=>{
+        return(
+          <TouchableOpacity
+                  style={styles.recordView}
+                  key={index}
+                  onPress={()=>this.pressProxy(record)}
+                  >
+            <View style={{flex:0.4}}>
+              <Text style={styles.recordTitleFont}>{record.cycle}</Text>
+            </View>
+            <View style={{flex:0.25}}>
+              <Text style={styles.recordTitleFont}>{record.total}</Text>
+            </View>
+            <View style={{flex:0.35}}>
+              <Text style={styles.recordTitleFont}>{record.service_fee}</Text>
+            </View>
+          </TouchableOpacity>
+        )
+      })
+    } else {
+      return this.state.list.map((record, index)=>{
+        return(
+          <TouchableOpacity
+                  style={styles.recordView}
+                  key={index}
+                  onPress={()=>this.pressProxy(record)}
+                  >
+            <View style={{flex:0.35}}>
+              <Text style={styles.recordTitleFont}>{record.cycle}</Text>
+            </View>
+            <View style={{flex:0.2}}>
+              <Text style={styles.recordTitleFont}>{record.total}</Text>
+            </View>
+            <View style={{flex:0.25}}>
+              <Text style={styles.recordTitleFont}>{record.service_fee}</Text>
+            </View>
+            <View style={{flex:0.2}}>
+              <Text style={styles.recordTitleFont}>{record.bill}</Text>
+            </View>
+          </TouchableOpacity>
+        )
+      })
+    }
+
   }
 
 }

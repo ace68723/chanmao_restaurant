@@ -5,11 +5,19 @@ export default  {
     try {
       const { token,rid } = GetUserInfo();
       const data = await PaymentHistoryAPI.getBilling(token,rid);
-      if(data.result === 0 ){
-         const paymentLists = data.bills
+      if(data.ev_error === 0 ){
+         const paymentLists = data.ev_billings
+         paymentLists.forEach(item => {
+          let tempStartStr = item.start_date.split(" ");
+          let tempStartDate = tempStartStr[0].split("-");
+          let tempEndStr = item.end_date.split(" ");
+          let tempEndDate = tempEndStr[0].split("-");
+          const cycle = tempStartDate[1] + '-'  + tempStartDate[2] + ' ~ ' + tempEndDate[1] + '-'  + tempEndDate[2];
+          item.cycle = cycle;
+        });
          return paymentLists
       }else{
-        const errorMessage = data.error_msg;
+        const errorMessage = data.ev_context;
         throw errorMessage
       }
     } catch (error) {
@@ -21,13 +29,11 @@ export default  {
     try {
       const { token,rid } = GetUserInfo();
       const data = await PaymentHistoryAPI.getSummary(token,rid,bill_end,bill_start);
-      if(data.result === 0 ){
-         const orderLists = data
-         console.log('summary1');
-         console.log(data);
+      if(data.ev_error === 0 ){
+         const orderLists = data.ev_summarys;
          return orderLists
       }else{
-        const errorMessage = data.error_msg;
+        const errorMessage = data.ev_context;
         throw errorMessage
       }
     } catch (error) {

@@ -107,6 +107,7 @@ export function DatabaseInit() {
       realm.create('cmr_system',{type: 'token', value: ''}, true);
       realm.create('cmr_system',{type: 'rid', value: ''}, true);
       realm.create('cmr_system',{type: 'uid', value: ''}, true);
+      realm.create('cmr_system',{type: 'settle_type', value: ''}, true);
     })
   }
   NativeModules.DeviceToken.gettoken();
@@ -124,13 +125,14 @@ export function GetDeviceInfo() {
   const deviceToken  = realm.objectForPrimaryKey('cmr_system','deviceToken').value;
   return { channel,version,deviceToken }
 }
-export function SaveUserInfo({interval,authortoken,token,rid,uid}) {
+export function SaveUserInfo({interval,authortoken,token,rid,uid, settle_type}) {
   realm.write(() => {
     realm.create('cmr_system',{type: 'authortoken', value: authortoken}, true);
     realm.create('cmr_system',{type: 'interval', value: interval}, true);
     realm.create('cmr_system',{type: 'token', value: token}, true);
     realm.create('cmr_system',{type: 'rid', value: rid}, true);
     realm.create('cmr_system',{type: 'uid', value: uid}, true);
+    realm.create('cmr_system',{type: 'settle_type', value: settle_type}, true);
   })
 }
 export function InitUserInfo() {
@@ -151,7 +153,8 @@ export function GetUserInfo() {
   const rid          = realm.objectForPrimaryKey('cmr_system','rid').value;
   const uid          = realm.objectForPrimaryKey('cmr_system','uid').value;
   const channel      = realm.objectForPrimaryKey('cmr_system','channel').value;
-  return {interval,authortoken,token,version,rid,uid,channel}
+  const settle_type      = realm.objectForPrimaryKey('cmr_system','settle_type').value;
+  return {interval,authortoken,token,version,rid,uid,channel,settle_type}
 }
 export function LogOut() {
   realm.write(() => {

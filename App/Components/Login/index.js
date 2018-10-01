@@ -26,9 +26,9 @@ export default class Login extends Component {
     super();
     this.state = {
       usPlaceholder:'User Name',
-      username:'',
+      username:'aidentest',
       pwPlaceholder:'Password',
-      password:'',
+      password:'aidentest',
       buttonText:'GO',
       waiting: false,
       ver:''
@@ -62,7 +62,6 @@ export default class Login extends Component {
 
   }
   async auth(){
-    console.log('here')
     try{
        const data = await LoginModule.auth();
        this.props.navigator.resetTo({

@@ -15,7 +15,7 @@ export default  {
 
       options.body = JSON.stringify({
           "token": token,
-          "rid":rid
+          "iv_rid":rid
       })
     return fetch(url,options)
          .then((response) => response.json())
@@ -39,7 +39,7 @@ export default  {
 
         options.body = JSON.stringify({
             "token": token,
-            "rid":rid,
+            "iv_rid":rid,
             "bill_end": bill_end,
             "bill_start":bill_start
         })

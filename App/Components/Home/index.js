@@ -165,6 +165,7 @@ export default class Home extends Component {
   _renderItem ({item}){
       if (!item.title) return (
        <OrderItem
+       key={item.oid}
        fetchOrder = {() => this._fetchOrder()}
        {...item} navigator={this.props.navigator} />
       )
@@ -188,6 +189,7 @@ export default class Home extends Component {
       )
   }
   render() {
+    
     return (
       <View style={styles.container}>
         <Loading ref="loading" size={60}/>
@@ -211,7 +213,7 @@ export default class Home extends Component {
             renderItem={this._renderItem}
             stickyHeaderIndices={[0]}
             ref={(ref) => { this.list = ref; }}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
             refreshing = {this.state.refreshing}
             onRefresh = {this.handleRefresh}
           />

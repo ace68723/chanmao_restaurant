@@ -42,6 +42,7 @@ export default class OrderHistory extends Component {
     this.setDate = this.setDate.bind(this);
     this._printHistory = this._printHistory.bind(this);
     this._logOut = this._logOut.bind(this);
+    this._convertTime = this._convertTime.bind(this);
   }
 
   componentDidMount() {
@@ -59,6 +60,11 @@ export default class OrderHistory extends Component {
   _logOut(){
     this.props.onPressLogout()
     }
+    _convertTime(date) {
+      date=date.split("-");
+      var newDate=date[0]+"/"+date[1]+"/"+date[2];
+      return new Date(newDate).getTime()
+    }
   async getSummary(){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
@@ -66,21 +72,32 @@ export default class OrderHistory extends Component {
     try{
       this.setState({waiting:true});
       setTimeout(()=>this.setState({waiting:false}),500);
-      const bill_start = this.state.startDate;
+       const bill_start = this.state.startDate;
        const bill_end = this.state.endDate;
 
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
-
-       this.setState({
-         list: data.orders,
-         restaurantName:data.restaurant_name,
-         restaurantAddress:data.restaurant_address,
-         restaurantPhoneNumber:data.restaurant_cel,
-         totalAmount:data.summary_total,
-       })
-       clearTimeout(loadingTimeout);
-       this.refs.loading.endLoading();
-
+       if(data.orders.length == 0) {
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+        Alert.alert(
+          "ERROR",
+          '所选日期内没有任何记录',
+          [
+            {text: 'Ok'},
+          ],
+          { cancelable: false }
+        )
+       } else {
+        this.setState({
+          list: data.orders,
+          restaurantName:data.restaurant_name,
+          restaurantAddress:data.restaurant_address,
+          restaurantPhoneNumber:data.restaurant_cel,
+          totalAmount:data.summary_total.toFixed(2),
+        })
+        clearTimeout(loadingTimeout);
+        this.refs.loading.endLoading();
+       }
     }catch(error){
       console.log(error)
       clearTimeout(loadingTimeout);
@@ -95,17 +112,6 @@ export default class OrderHistory extends Component {
           { cancelable: false }
         )
 
-      } else if(error == '所选日期内没有任何记录') {
-        clearTimeout(loadingTimeout);
-        this.refs.loading.endLoading();
-        Alert.alert(
-          "ERROR",
-          '所选日期内没有任何记录',
-          [
-            {text: 'Ok'},
-          ],
-          { cancelable: false }
-        )
       } else {
         clearTimeout(loadingTimeout);
         this.refs.loading.endLoading();
@@ -320,13 +326,13 @@ export default class OrderHistory extends Component {
         <View style={styles.recordView}
                 key={index}>
           <View style={{flex:0.3, marginLeft:15}}>
-            <Text style={styles.recordTitleFont}>{record.oid}</Text>
+            <Text style={styles.recordTitleFont}>{record.order_id}</Text>
           </View>
           <View style={{flex:0.5,}}>
-            <Text style={styles.recordTitleFont}>{record.date} {record.time}</Text>
+            <Text style={styles.recordTitleFont}>{record.created}</Text>
           </View>
           <View style={{flex:0.2, marginRight:15}}>
-            <Text style={styles.recordTitleFont}>{record.total}</Text>
+            <Text style={styles.recordTitleFont}>{(record.total).toFixed(2)}</Text>
           </View>
         </View>
       )

@@ -56,7 +56,7 @@ export default class OrderDetail extends Component {
        this.refs.loading.endLoading();
        this.setState({
          itemList: data.items,
-         totalPrice: data.total,
+         totalPrice: data.total.toFixed(2),
          user: data.name,
          tel: data.tel,
          comment: data.comment,
@@ -70,9 +70,8 @@ export default class OrderDetail extends Component {
          refreshing: false
        })
       this._renderDetails();
-
     }catch(error){
-      console.log(error);
+      console.log('here', error);
       clearTimeout(loadingTimeout);
       this.refs.loading.endLoading();
     }
@@ -205,10 +204,10 @@ export default class OrderDetail extends Component {
       return items.map((item,index)=>{
           return(
             <View key={index} style={styles.itemContainer}>
-              <View style={{flex:0.75,marginLeft:50}}>
+              <View style={{flex:0.5,marginLeft:50}}>
                 <Text  style={styles.tpFont}>{item.tp_name}</Text>
               </View>
-              <View style={{flex:0.25,alignContent: 'flex-start'}}>
+              <View style={{flex:0.5,alignContent: 'flex-start'}}>
                 <Text  style={styles.tpFont}>{item.amount}x  {item.price}</Text>
               </View>
             </View>
@@ -397,7 +396,43 @@ export default class OrderDetail extends Component {
             </Text>
           </View>
         </View>
+        <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+          <View style={{flex:1,flexDirection:'row',}}>
+            <Text style={{
+              color:'black',
+              marginLeft:Setting.getX(26),
+              // marginTop:Settings.getY(20),
+              fontSize:16,
+              fontWeight:'bold',
+            }}>
+              User:
+            </Text>
+            <Text style={{fontSize:16,
+                      fontWeight:'normal',
+                      color:'#ea7b21'
+                    }}>
+              {this.state.user}
+            </Text>
+          </View>
+          <View style={{flex:1,flexDirection:'row',}}>
+            <Text style={{
+              color:'black',
+              marginLeft:Setting.getX(26),
+              // marginTop:Settings.getY(20),
+              fontSize:16,
+              fontWeight:'bold',
+              }}>
+              Tel:
 
+            </Text>
+            <Text style={{fontSize:16,
+                      fontWeight:'normal',
+                      color:'black',
+                    }}>
+              {this.state.tel}
+            </Text>
+          </View>
+        </View>
         <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
           <View style={{flex:1,flexDirection:'row',}}>
             <Text style={{
@@ -609,7 +644,7 @@ export default class OrderDetail extends Component {
         >
         {this._renderList()}
         {this._renderDetails()}
-        {this._renderConfirm()}
+        {/* {this._renderConfirm()} */}
         </ScrollView>
         {this._renderTouchable()}
       </ScrollView>
@@ -694,7 +729,8 @@ export default class OrderDetail extends Component {
     alignItems:'center',
     flex:0.6,
     justifyContent:'center',
-    marginBottom:15
+    marginBottom:15,
+    marginTop:15
   },
   confirmButtonStyle:{
     height:Setting.getY(75),

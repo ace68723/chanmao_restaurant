@@ -16,18 +16,17 @@ export default  {
 
       options.body = JSON.stringify({
           "token": token,
-          "rid":rid,
-          "oid": oid
+          "iv_rid":parseFloat(rid),
+          "oid": parseFloat(oid)
       })
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
-             console.log(error);
              throw error
         })
      },
      handleOrder(reqData){
-       const url = 'http://localhost:8000/api/restaurant/v1/handle_order';
+       const url = API_HANDLE_ORDER;
        let options = {
            method: 'POST',
            mode:'cors',
@@ -38,13 +37,12 @@ export default  {
       
        options.body = JSON.stringify({
           "token": reqData.token,
-          "rid": reqData.rid,
+          "iv_rid": reqData.rid,
           "oid": reqData.oid,
           "items": reqData.items,
           "task": reqData.task,
           "pptime":reqData.pptime
        })
-       console.log(options.body);
      return fetch(url,options)
           .then((response) => response.json())
           .catch((error) => {

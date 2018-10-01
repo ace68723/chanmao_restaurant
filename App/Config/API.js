@@ -1,8 +1,9 @@
 'use strict';
 // const TestServer = 'http://cmtest.littlesailing.com/index.php?r=';
-const proructServer = 'https://www.chanmao.ca/index.php?r=rrclient/';
-const testProductServer ='https://www.cmapi.ca/cm_backend/index.php/api/restaurant/v1/';
-const Server = testProductServer;
+// const proructServer = 'https://www.chanmao.ca/index.php?r=rrclient/';
+const proructServer ='https://www.cmapi.ca/cm_backend/index.php/api/restaurant/v1/';
+const qaServer = 'https://www.cmapi.ca/cm_qa_lumen/backend/index.php/api/restaurant/v1/';
+const Server = proructServer;
 const APIConstants ={
 
     //CreateOrder

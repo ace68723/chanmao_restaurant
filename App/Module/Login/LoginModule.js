@@ -11,15 +11,15 @@ export default  {
       const sysVersion = DeviceInfo.getSystemVersion()
       const sysOS = OS +sysVersion;
       const userInfo = await LoginAPI.login(deviceToken,username,password, channel, version, UUID,sysOS);
-      console.log(userInfo);
       if(userInfo.ev_error === 0 ){
          const user = userInfo.userInfo;
+         console.log(user);
          const token =user.token;
          const rid = (user.rid).toString();
          const uid = (user.uid).toString();
          const authortoken = user.authortoken;
          const interval = user.interval;
-        
+         const settle_type =user.settle_type;
          const eo_data ={
              result: user,
          }
@@ -28,7 +28,8 @@ export default  {
                         token,
                         interval,
                         rid,
-                        uid
+                        uid,
+                        settle_type
                       });
          return eo_data
       }else{
@@ -42,9 +43,7 @@ export default  {
 
   },
   async auth(){
-
     try {
-      console.log(GetUserInfo())
       const { token,rid } = GetUserInfo();
       if(!token || !rid) {
         InitUserInfo();
@@ -52,7 +51,6 @@ export default  {
       }
      
       const userInfo = await LoginAPI.auth({token,rid});
-      console.log(userInfo);
       if(userInfo.result === 0 ){
          const eo_data ={
              result: userInfo.result

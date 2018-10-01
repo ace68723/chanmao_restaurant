@@ -5,6 +5,7 @@ export default {
       async fetchOrder(){
         try{
             const data = await HomeModule.fetchOrder();
+            console.log(data);
             data.ea_done.sort(function(a,b){
               return parseInt(b.oid)  - parseInt(a.oid);
             })

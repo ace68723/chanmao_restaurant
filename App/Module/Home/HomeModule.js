@@ -9,7 +9,7 @@ export default  {
       if(data.result === 0 ){
          return data
       }else{
-        const errorMessage = data.error_msg;
+        const errorMessage = data.ev_context;
         throw errorMessage
       }
     } catch (error) {
@@ -22,14 +22,11 @@ export default  {
     try {
       const { authortoken } = GetUserInfo();
       const data = await HomeAPI.fetchOrder(authortoken);
-      console.log("fetch")
-      console.log(data)
-      if(data.ev_result === 0 ){
-         return data
+      if(data.ev_error === 0 ){
+         return data.ev_orders
       }else{
-        const errorMessage = data.ev_message;
+        const errorMessage = data.ev_context;
         throw errorMessage
-        console.log(errorMessage)
       }
     }catch (error) {
       console.log(error);

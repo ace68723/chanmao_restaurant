@@ -19,7 +19,7 @@ export default  {
   },
   async getCategoryLists(){
     try {
-            const { authortoken} = GetUserInfo();
+      const { authortoken} = GetUserInfo();
       const data = await CategoryAPI.getCategoryLists(authortoken);
       if(data.ev_error === 0 ){
          return data
