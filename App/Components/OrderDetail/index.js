@@ -88,6 +88,7 @@ export default class OrderDetail extends Component {
       let itemList;
       if (task=='0') itemList=this.state.itemList;
       if (task=='1') itemList=this.state.itemList.filter(item => item.sold == true);
+      console.log({oid,task,itemList,pptime})
       const data = await OrderDetailModule.handleOrder({oid,task,itemList,pptime});
       CmrHomeAction.fetchOrder();
       clearTimeout(loadingTimeout);

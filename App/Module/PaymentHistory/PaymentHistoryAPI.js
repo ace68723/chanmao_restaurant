@@ -24,7 +24,7 @@ export default  {
              throw error
         })
      },
-     getSummary(token,rid,bill_end,bill_start){
+     getSummary(token,rid,start_time,end_time){
         const url = API_GET_SUMMARY;
         let options = {
             method: 'POST',
@@ -40,9 +40,10 @@ export default  {
         options.body = JSON.stringify({
             "token": token,
             "iv_rid":rid,
-            "bill_end": bill_end,
-            "bill_start":bill_start
+            "bill_end": end_time,
+            "bill_start":start_time
         })
+        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {

@@ -58,7 +58,7 @@ export default class AboutUs extends Component {
         </View>
 
         <View style={styles.chanmaoView}>
-          <Image source={require('./src/chanmaoqr.jpg')} style={styles.QRCodeStyle}/>
+          <Image source={require('./src/chanmaoqr.png')} style={styles.QRCodeStyle}/>
           <View style={{marginLeft:Setting.getX(20)}}>
             <Image source={require('./src/cmbottom.png')} style={styles.iconStyle}/>
             <Text style={[styles.cmInfoFont, {marginTop:Setting.getY(25)}]}>Tel: 647-515-6699</Text>

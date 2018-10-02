@@ -28,7 +28,9 @@ export default  {
   async getSummary(bill_end,bill_start){
     try {
       const { token,rid } = GetUserInfo();
-      const data = await PaymentHistoryAPI.getSummary(token,rid,bill_end,bill_start);
+      const start_time =  Date.parse(bill_start)/1000 + 60*60*2;
+      const end_time = Date.parse(bill_end)/1000 + 60*60*26;
+      const data = await PaymentHistoryAPI.getSummary(token,rid,start_time,end_time);
       if(data.ev_error === 0 ){
          const orderLists = data.ev_summarys;
          return orderLists
