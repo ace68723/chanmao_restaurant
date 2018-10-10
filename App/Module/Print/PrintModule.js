@@ -144,7 +144,7 @@ export default  {
              await NativeModules.customAndroid.printOriginalText("________________________________");
              await NativeModules.customAndroid.lineWrap(2);
 
-             await NativeModules.customAndroid.printOriginalText("Customer Service: chanmaoweixin");
+             await NativeModules.customAndroid.printOriginalText("Customer Service: chanmao_kefu");
              await NativeModules.customAndroid.lineWrap(6);
 
 

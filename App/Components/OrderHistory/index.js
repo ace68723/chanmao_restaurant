@@ -76,6 +76,7 @@ export default class OrderHistory extends Component {
        const bill_end = this.state.endDate;
 
        const data = await PaymentHistoryModule.getSummary(bill_end,bill_start);
+       console.log(data);
        if(data.orders.length == 0) {
         clearTimeout(loadingTimeout);
         this.refs.loading.endLoading();
@@ -126,6 +127,10 @@ export default class OrderHistory extends Component {
     if (this.state.list.orders) {order=this.state.list.orders} else {order=this.state.list}
     order.forEach(item => {
       total = total + parseFloat(item.total);
+      item.oid = item.order_id.toString();
+      item.dltype = item.deliver_type;
+      item.date = item.created;
+      item.total = item.total.toFixed(2).toString();
    });
   let data = {
     type:'history',
@@ -137,6 +142,7 @@ export default class OrderHistory extends Component {
     total:total.toFixed(2).toString(),
     orderArray:order,
   }
+  console.log(data);
   PrintModule.printContent(data);
 }
   render(){

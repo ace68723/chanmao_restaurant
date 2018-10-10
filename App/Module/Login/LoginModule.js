@@ -11,6 +11,7 @@ export default  {
       const sysVersion = DeviceInfo.getSystemVersion()
       const sysOS = OS +sysVersion;
       const userInfo = await LoginAPI.login(deviceToken,username,password, channel, version, UUID,sysOS);
+      console.log(userInfo);
       if(userInfo.ev_error === 0 ){
          const user = userInfo.userInfo;
          console.log(user);

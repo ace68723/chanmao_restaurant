@@ -43,6 +43,7 @@ export default  {
           "task": reqData.task,
           "pptime":reqData.pptime
        })
+       console.log(options)
      return fetch(url,options)
           .then((response) => response.json())
           .catch((error) => {
