@@ -29,12 +29,13 @@ export default  {
              throw error
         })
      },
-     auth({token,rid}){
+     auth({authortoken,token,rid}){
        const url = API_AUTH;
        let options = {
            method: 'POST',
            mode:'cors',
            headers: {
+               'Authortoken': authortoken,
                'Content-Type': 'application/json'
            }
        }

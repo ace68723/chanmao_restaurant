@@ -3,8 +3,8 @@ import { GetUserInfo } from '../Database';
 export default  {
   async getOrderDetail(oid){
     try {
-      const { token,rid } = GetUserInfo();
-      const data = await OrderDetailAPI.getOrderDetail(token, rid, oid);
+      const { token,rid,authortoken } = GetUserInfo();
+      const data = await OrderDetailAPI.getOrderDetail(authortoken,token, rid, oid);
       if(data.ev_error === 0 ){
          const orderDetail = data.order_detail;
          return orderDetail
@@ -20,11 +20,11 @@ export default  {
   },
   async handleOrder({oid,task,itemList,pptime}){
     try {
-      const { token,rid } = GetUserInfo();
+      const { token,rid,authortoken } = GetUserInfo();
       const items = itemList;
       // const oid = oid;
       // const task = task;
-      const reqData = {token, rid, oid, items, task,pptime};
+      const reqData = {authortoken,token, rid, oid, items, task,pptime};
       const response = await OrderDetailAPI.handleOrder(reqData);
       if(response.ev_error === 0 ){
          const result = response.result;

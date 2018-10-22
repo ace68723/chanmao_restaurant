@@ -1,12 +1,13 @@
 import { API_ORDERHANDLE,API_FETCHORDER } from '../../Config/API';
 import fetch_cancel from './react-native-cancelable-fetch';
 export default  {
-    orderHandle(token,rid,task,items,oid){
+    orderHandle(authortoken,token,rid,task,items,oid){
       const url = API_ORDERHANDLE;
       let options = {
           method: 'POST',
           mode:'cors',
           headers: {
+            'Authortoken': authortoken,
               'Content-Type': 'application/json'
           }
       }
@@ -33,7 +34,7 @@ export default  {
 
 
 
-     fetchOrder(authtoken) {
+     fetchOrder(authortoken) {
        const makeCancelable = (promise) => {
          let hasCanceled_ = false;
          const wrappedPromise = new Promise((resolve, reject) => {
@@ -57,7 +58,7 @@ export default  {
             method: 'GET',
             mode:'cors',
             headers: {
-                'Authortoken': authtoken,
+                'Authortoken': authortoken,
                 'Content-Type': 'application/json'
             }
         }

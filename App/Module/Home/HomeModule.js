@@ -5,7 +5,8 @@ export default  {
   async orderHandle(token,rid,items,oid){
     try {
       const task = 1;
-      const data = await HomeAPI.orderHandle(token,rid,task,items,oid);
+      const { authortoken } = GetUserInfo();
+      const data = await HomeAPI.orderHandle(authortoken,token,rid,task,items,oid);
       if(data.result === 0 ){
          return data
       }else{

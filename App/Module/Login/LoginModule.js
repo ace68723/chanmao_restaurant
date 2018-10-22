@@ -45,13 +45,13 @@ export default  {
   },
   async auth(){
     try {
-      const { token,rid } = GetUserInfo();
-      if(!token || !rid) {
+      const { authortoken, token,rid } = GetUserInfo();
+      if(!authortoken || !rid) {
         InitUserInfo();
-        throw 'no token'
+        throw 'no authortoken'
       }
      
-      const userInfo = await LoginAPI.auth({token,rid});
+      const userInfo = await LoginAPI.auth({authortoken, token,rid});
       if(userInfo.result === 0 ){
          const eo_data ={
              result: userInfo.result

@@ -1,11 +1,12 @@
 import { API_GET_BILLING, API_GET_SUMMARY } from '../../Config/API';
 export default  {
-    getBilling(token,rid){
+    getBilling(authortoken,token,rid){
       const url = API_GET_BILLING;
       let options = {
           method: 'POST',
           mode:'cors',
           headers: {
+            'Authortoken': authortoken,
               'Content-Type': 'application/json'
           }
       }
@@ -24,12 +25,13 @@ export default  {
              throw error
         })
      },
-     getSummary(token,rid,start_time,end_time){
+     getSummary(authortoken,token,rid,start_time,end_time){
         const url = API_GET_SUMMARY;
         let options = {
             method: 'POST',
             mode:'cors',
             headers: {
+                'Authortoken': authortoken,
                 'Content-Type': 'application/json'
             }
         }

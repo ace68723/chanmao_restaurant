@@ -1,12 +1,13 @@
 import { API_GET_ORDER_DETAIL, API_HANDLE_ORDER } from '../../Config/API';
 
 export default  {
-    getOrderDetail(token,rid,oid){
+    getOrderDetail(authortoken,token,rid,oid){
       const url = API_GET_ORDER_DETAIL;
       let options = {
           method: 'POST',
           mode:'cors',
           headers: {
+              'Authortoken': authortoken,
               'Content-Type': 'application/json'
           }
       }
@@ -19,6 +20,7 @@ export default  {
           "iv_rid":parseFloat(rid),
           "oid": parseFloat(oid)
       })
+      console.log(options);
     return fetch(url,options)
          .then((response) => response.json())
          .catch((error) => {
@@ -31,6 +33,7 @@ export default  {
            method: 'POST',
            mode:'cors',
            headers: {
+               'Authortoken': reqData.authortoken,
                'Content-Type': 'application/json'
            }
        }

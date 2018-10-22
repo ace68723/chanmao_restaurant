@@ -3,8 +3,8 @@ import { GetUserInfo } from '../Database';
 export default  {
   async getBilling(){
     try {
-      const { token,rid } = GetUserInfo();
-      const data = await PaymentHistoryAPI.getBilling(token,rid);
+      const { token,rid,authortoken } = GetUserInfo();
+      const data = await PaymentHistoryAPI.getBilling(authortoken,token,rid);
       if(data.ev_error === 0 ){
          const paymentLists = data.ev_billings
          paymentLists.forEach(item => {
@@ -27,10 +27,10 @@ export default  {
   },
   async getSummary(bill_end,bill_start){
     try {
-      const { token,rid } = GetUserInfo();
+      const { token,rid,authortoken } = GetUserInfo();
       const start_time =  Date.parse(bill_start)/1000 + 60*60*2;
       const end_time = Date.parse(bill_end)/1000 + 60*60*26;
-      const data = await PaymentHistoryAPI.getSummary(token,rid,start_time,end_time);
+      const data = await PaymentHistoryAPI.getSummary(authortoken,token,rid,start_time,end_time);
       if(data.ev_error === 0 ){
          const orderLists = data.ev_summarys;
          return orderLists
