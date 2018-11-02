@@ -16,7 +16,7 @@ import {  GetUserInfo } from '../../Module/Database';
 import LoginModule from '../../Module/Login/LoginModule';
 import Loading from '../Loading';
 import PaymentHistoryModule from '../../Module/PaymentHistory/PaymentHistoryModule';
-var today=new Date(Date.now()-24*60*60*1000);
+var today=new Date(Date.now());
 export default class HistoryPage extends Component {
   constructor(props) {
     super(props);
