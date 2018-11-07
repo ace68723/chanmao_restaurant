@@ -6,6 +6,8 @@ const Realm               = require('realm');
 import {
   NativeModules,
   DeviceEventEmitter,
+  Platform,
+  PushNotificationIOS
 } from 'react-native';
 
 const cmr_system_scheam = {
@@ -110,13 +112,36 @@ export function DatabaseInit() {
       realm.create('cmr_system',{type: 'settle_type', value: ''}, true);
     })
   }
-  NativeModules.DeviceToken.gettoken();
-  DeviceEventEmitter.addListener('token',(deviceToken)=>{
-    if(!deviceToken) return
-    realm.write(() => {
-      realm.create('cmr_system',{type: 'deviceToken', value: deviceToken}, true);
-    })
-  });
+  if (Platform.OS === 'ios') {
+    setTimeout(() => {
+      PushNotificationIOS.requestPermissions();
+      PushNotificationIOS.addEventListener('register', (deviceToken) => {
+        console.log(deviceToken);
+        realm.write(() => {
+          realm.create('AppUserInfo', {
+            param: 'deviceToken',
+            value: deviceToken
+          }, true);
+        });
+      });
+      PushNotificationIOS.addEventListener('registrationError', (error) => {
+          console.log(error);
+      });
+      PushNotificationIOS.addEventListener('notification', (notification) => {
+        console.log(notification);
+        console.log('get data', notification.getData());
+      });
+    }, 500);
+  } else {
+    NativeModules.DeviceToken.gettoken();
+    DeviceEventEmitter.addListener('token',(deviceToken)=>{
+      if(!deviceToken) return
+      realm.write(() => {
+        realm.create('cmr_system',{type: 'deviceToken', value: deviceToken}, true);
+      })
+    });
+  }
+
 
 }
 export function GetDeviceInfo() {

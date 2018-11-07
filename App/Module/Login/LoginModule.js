@@ -11,7 +11,7 @@ export default  {
       const sysVersion = DeviceInfo.getSystemVersion()
       const sysOS = OS +sysVersion;
       const userInfo = await LoginAPI.login(deviceToken,username,password, channel, version, UUID,sysOS);
-      console.log(userInfo);
+      console.log('here',userInfo);
       if(userInfo.ev_error === 0 ){
          const user = userInfo.userInfo;
          console.log(user);
@@ -34,6 +34,11 @@ export default  {
                       });
          return eo_data
       }else{
+        if(userInfo.ev_context == 'PASSWORD_DOES_NOT_MATCH'){
+          alert('密码错误')
+        } else if (userInfo.ev_context == 'USERNAME_NOT_FOUND') {
+          alert('用户名错误')
+        }
         const errorMessage = userInfo.error_msg;
         throw errorMessage
       }
