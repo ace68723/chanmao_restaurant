@@ -14,6 +14,7 @@ export default  {
           let tempEndDate = tempEndStr[0].split("-");
           const cycle = tempStartDate[1] + '-'  + tempStartDate[2] + ' ~ ' + tempEndDate[1] + '-'  + tempEndDate[2];
           item.cycle = cycle;
+          item.service_fee = parseFloat(item.service_fee) + parseFloat(item.promo)
         });
          return paymentLists
       }else{

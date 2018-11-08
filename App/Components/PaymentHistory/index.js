@@ -109,13 +109,13 @@ export default class PaymentHistory extends Component {
     } else {
       return(
         <View style={styles.listTitles}>
-          <View style={{flex:0.35}}>
+          <View style={{flex:0.31}}>
             <Text style={styles.listTitleFont}>Cycle</Text>
           </View>
           <View style={{flex:0.2,paddingLeft:Setting.getX(20)}}>
             <Text style={styles.listTitleFont}>Total</Text>
           </View>
-          <View style={{flex:0.25,paddingLeft: Settings.getX(20)}}>
+          <View style={{flex:0.29,paddingLeft: Settings.getX(20)}}>
             <Text style={styles.listTitleFont}>Srv Fee</Text>
           </View>
           <View style={{flex:0.2,paddingLeft:Settings.getX(15)}}>
@@ -159,7 +159,7 @@ export default class PaymentHistory extends Component {
               <Text style={styles.recordTitleFont}>{record.total}</Text>
             </View>
             <View style={{flex:0.35}}>
-              <Text style={styles.recordTitleFont}>{record.service_fee}</Text>
+              <Text style={styles.recordTitleFont}>{record.service_fee}(r{ecord.promo})</Text>
             </View>
           </TouchableOpacity>
         )
@@ -172,14 +172,14 @@ export default class PaymentHistory extends Component {
                   key={index}
                   onPress={()=>this.pressProxy(record)}
                   >
-            <View style={{flex:0.35}}>
+            <View style={{flex:0.31}}>
               <Text style={styles.recordTitleFont}>{record.cycle}</Text>
             </View>
             <View style={{flex:0.2}}>
               <Text style={styles.recordTitleFont}>{record.total}</Text>
             </View>
-            <View style={{flex:0.25}}>
-              <Text style={styles.recordTitleFont}>{record.service_fee}</Text>
+            <View style={{flex:0.29}}>
+              <Text style={styles.recordTitleFont}>{record.service_fee}({record.promo})</Text>
             </View>
             <View style={{flex:0.2}}>
               <Text style={styles.recordTitleFont}>{record.bill}</Text>

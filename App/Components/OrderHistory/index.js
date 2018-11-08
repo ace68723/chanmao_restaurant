@@ -294,13 +294,13 @@ export default class OrderHistory extends Component {
   renderListTitle(){
     return(
       <View style={styles.listTitles}>
-        <View style={{flex:0.3,paddingLeft:Settings.getX(2)}}>
+        <View style={{flex:0.25,paddingLeft:Settings.getX(2)}}>
           <Text style={styles.listTitleFont}>No.</Text>
         </View>
-        <View style={{flex:0.5,paddingLeft:Settings.getX(35)}}>
+        <View style={{flex:0.45,paddingLeft:Settings.getX(35)}}>
           <Text style={styles.listTitleFont}>Time</Text>
         </View>
-        <View style={{flex:0.2,paddingLeft:Settings.getX(50)}}>
+        <View style={{flex:0.3,paddingLeft:Settings.getX(50)}}>
           <Text style={styles.listTitleFont}>Price</Text>
         </View>
       </View>
@@ -331,14 +331,14 @@ export default class OrderHistory extends Component {
       return(
         <View style={styles.recordView}
                 key={index}>
-          <View style={{flex:0.3, marginLeft:15}}>
+          <View style={{flex:0.25, marginLeft:15}}>
             <Text style={styles.recordTitleFont}>{record.order_id}</Text>
           </View>
-          <View style={{flex:0.5,}}>
+          <View style={{flex:0.45,}}>
             <Text style={styles.recordTitleFont}>{record.created}</Text>
           </View>
-          <View style={{flex:0.2, marginRight:15}}>
-            <Text style={styles.recordTitleFont}>{(record.total).toFixed(2)}</Text>
+          <View style={{flex:0.3, marginRight:15}}>
+            <Text style={styles.recordTitleFont}>{(record.total).toFixed(2)}({record.promo})</Text>
           </View>
         </View>
       )
