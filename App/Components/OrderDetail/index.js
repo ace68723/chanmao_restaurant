@@ -532,7 +532,7 @@ export default class OrderDetail extends Component {
       return(
         <View style={[styles.detailContainer,{height:detailFieldHeight}]}>
           <View style={{height:20}}>
-            <Text style={styles.detailInfoFont}>Pretax: {this.state.totalPrice}</Text>
+            <Text style={styles.detailInfoFont}>Pretax: {this.state.subTotal}</Text>
           </View>
           <ScrollView style={{height:detailFieldHeight - 25,marginTop:5}} scrollEnabled={this.state.comment.length > 0}>
             <Text style={styles.detailInfoFont}>Comment: {this.state.comment}</Text>
