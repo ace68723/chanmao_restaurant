@@ -255,6 +255,7 @@ export default  {
             "ds_id":item.ds_id,
             "status":value
         })
+        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {

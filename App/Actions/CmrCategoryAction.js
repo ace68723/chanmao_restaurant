@@ -29,6 +29,7 @@ export default {
       async getDishes(){
         try{
           const data = await CategoryModule.getDishes();
+          console.log(data)
           data.ea_dishes.forEach(item => {
             if(item.status === 0) {
               item.status = true;

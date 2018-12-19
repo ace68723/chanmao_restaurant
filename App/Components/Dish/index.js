@@ -284,7 +284,7 @@ export default class Dish extends Component {
   }
   async _handleOpen(item,value) {
     var dishLists = this.state.dishLists.slice()
-    const selectIndex = findIndex(this.state.dishLists,{int_no: item.int_no});
+    const selectIndex = findIndex(this.state.dishLists,{ds_id: item.ds_id});
     dishLists[selectIndex] = {...dishLists[selectIndex], status: value};
     this.setState({dishLists});
     const loadingTimeout = setTimeout(() => {

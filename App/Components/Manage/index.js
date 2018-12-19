@@ -9,7 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import Setting from '../../Config/Setting';
+import Setting, { Settings } from '../../Config/Setting';
 import LoginModule from '../../Module/Login/LoginModule';
 export default class AboutUs extends Component {
   constructor(){
@@ -22,20 +22,33 @@ export default class AboutUs extends Component {
       buttonText:'Log Out',
       waiting:false
     }
-    this._logOut = this._logOut.bind(this);
+    this.goToCategory = this.goToCategory.bind(this);
+    this.goToClose = this.goToClose.bind(this);
   }
-  _logOut(){
+  goToCategory(){
     this.setState({waiting:true});
     setTimeout(()=>this.setState({waiting:false}),500);
-    this.props.navigator.resetTo({
-        screen: 'Login',
+    this.props.navigator.push({
+        screen: 'Category',
         navigatorStyle: {
           navBarHidden: true
         },
         passProps: {},
         animationType: 'fade'
       });
-    LoginModule.logout();
+  }
+  goToClose(){
+    this.setState({waiting:true});
+    setTimeout(()=>this.setState({waiting:false}),500);
+    this.props.navigator.push({
+        screen: 'Close',
+        title:'Temporary Closure',
+        navigatorStyle: {
+          navBarHidden: false
+        },
+        passProps: {},
+        animationType: 'fade'
+      });
   }
   render() {
     return (
@@ -53,38 +66,19 @@ export default class AboutUs extends Component {
             fontSize:22,
             marginLeft:Setting.getX(26),
           }}>
-            About Us
+           Management
           </Text>
         </View>
 
         <View style={styles.chanmaoView}>
-          <Image source={require('./src/chanmaoqr.png')} style={styles.QRCodeStyle}/>
-          <View style={{marginLeft:Setting.getX(20)}}>
-            <Image source={require('./src/cmbottom.png')} style={styles.iconStyle}/>
-            <Text style={[styles.cmInfoFont, {marginTop:Setting.getY(25)}]}>Tel: 647-515-6699</Text>
-            <Text style={[styles.cmInfoFont, {marginTop:Setting.getY(25)}]}>Wechat: chanmao_kefu</Text>
-          </View>
-        </View>
-        <View style={styles.rotatingView}>
-          <Image source={require('./src/rotating.png')} style={styles.rotatingIconStyle}/>
-          <View style={{marginLeft:Setting.getX(40)}}>
-            <Text style={styles.rotatingInfoFont}>Business Collaboration</Text>
-            <Text style={styles.rotatingInfoFont}>Inquire</Text>
-            <Text style={[styles.cmInfoFont,{marginTop:Setting.getY(12)}]}>Tel: 647-123-4567</Text>
-            <Text style={[styles.cmInfoFont,{marginTop:Setting.getY(14)}]}>Email: info@rotating.ca</Text>
-          </View>
-        </View>
-        <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.buttonStyle}
-                            activeOpacity={0.4}
-                            onPress={()=>this._logOut()}
-                            disabled={this.state.waiting}>
-              <Text style={{fontSize:22, color:'white',fontFamily:'Noto Sans CJK SC'}}>{this.state.buttonText}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.copyrightView}>
-          <Text style={styles.copyrightFont}>Chanmao Inc. 版权所有</Text>
-          <Text style={styles.copyrightFont}>版本号 V1.2.6</Text>
+        <TouchableOpacity onPress={()=>this.goToCategory()}style = {{flex:1,backgroundColor:'#E3E3E3',marginRight:Setting.getX(13),alignItems:'center',justifyContent:'center',paddingVertical:Setting.getY(30)}}>
+            <Image source={require('./Image/menu.png')} style={styles.QRCodeStyle}/>
+            <Text style = {{marginTop:Settings.getY(15),fontWeight:'bold',fontSize: 16,fontFamily:'Noto Sans CJK SC',color:'black',}}>Menu</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>this.goToClose()} style = {{flex:1,backgroundColor:'#E3E3E3',marginLeft:Setting.getX(13),alignItems:'center',justifyContent:'center',paddingVertical:Setting.getY(30)}}>
+            <Image source={require('./Image/close.png')} style={styles.QRCodeStyle}/>
+            <Text style = {{marginTop:Settings.getY(15),fontWeight:'bold',fontSize: 16,fontFamily:'Noto Sans CJK SC',color:'black',}}>Temporary Closure</Text>
+        </TouchableOpacity>
         </View>
       </View>
     );
@@ -96,15 +90,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   chanmaoView:{
-    flex:0.3,
     paddingLeft:Setting.getX(26),
+    paddingRight:Setting.getX(26),
     paddingTop:Setting.getY(30),
     flexDirection:'row',
 
   },
   QRCodeStyle:{
-    width:Setting.getX(202),
-    height:Setting.getY(208),
+    width:Setting.getX(98),
+    height:Setting.getY(92),
   },
   iconStyle:{
     width:Setting.getX(162),

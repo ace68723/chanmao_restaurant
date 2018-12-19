@@ -45,7 +45,6 @@ export default  {
             "bill_end": end_time,
             "bill_start":start_time
         })
-        console.log(options)
       return fetch(url,options)
            .then((response) => response.json())
            .catch((error) => {

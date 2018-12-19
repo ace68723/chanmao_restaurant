@@ -34,23 +34,44 @@ export default class PaymentHistory extends Component {
       endTitle:'End',
       startDate:'YYYY/MM/DD',
       endDate:'YYYY/MM/DD',
-      list: [],
+      list: props.billing,
       waiting: false,
       "page_num" :1,
       "page_size":50,
       token: '',
     }
+    this.goToBillingDetail = this.goToBillingDetail.bind(this);
     this.pressProxy = this.pressProxy.bind(this);
     this._logOut = this._logOut.bind(this);
   }
-  componentDidMount() {
-    this.getBilling();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.billing !== this.props.billing) {
+      this.setState({
+        list: nextProps.billing,
+       });
+    }
   }
-  pressProxy(record) {
-    this.props.onPress(record)
+
+  goToBillingDetail(record) {
+    this.props.navigator.push({
+      screen: "BillingDetail",
+      title:'Billing Report',
+      passProps: {
+        record,
+        settleType: this.props.settleType,
+        pressProxy: (record) => this.pressProxy(record),
+      }, // simple serializable object that will pass as props to the modal (optional)
+      navigatorStyle: {
+        navBarHidden: false
+      },
+      animationType: 'fade'
+     });
   }
   _logOut(){
     this.props.onPressLogout()
+    }
+    pressProxy(record) {
+      this.props.onPress(record)
     }
   async getBilling(){
     const loadingTimeout = setTimeout(() => {
@@ -58,6 +79,7 @@ export default class PaymentHistory extends Component {
     }, 300);//add loading if request more than 200ms
     try{
        const data = await PaymentHistoryModule.getBilling();
+       console.log(data);
        clearTimeout(loadingTimeout);
        this.refs.loading.endLoading();
        this.setState({
@@ -91,40 +113,25 @@ export default class PaymentHistory extends Component {
   }
 
   renderListTitle(){
-    if(this.props.settleType == '1') {
       return(
         <View style={styles.listTitles}>
-          <View style={{flex:0.4}}>
-            <Text style={styles.listTitleFont}>Cycle</Text>
+          <View style={{flex:0.15}}>
+            <Text style={styles.listTitleFont}>No.</Text>
           </View>
-          <View style={{flex:0.25,paddingLeft:Setting.getX(20)}}>
-            <Text style={styles.listTitleFont}>Total</Text>
-          </View>
-          <View style={{flex:0.35,paddingLeft: Settings.getX(20)}}>
-            <Text style={styles.listTitleFont}>Srv Fee</Text>
-          </View>
-          
-        </View>
-      )
-    } else {
-      return(
-        <View style={styles.listTitles}>
-          <View style={{flex:0.31}}>
+          <View style={{flex:0.25}}>
             <Text style={styles.listTitleFont}>Cycle</Text>
           </View>
           <View style={{flex:0.2,paddingLeft:Setting.getX(20)}}>
-            <Text style={styles.listTitleFont}>Total</Text>
+            <Text style={styles.listTitleFont}>Sales</Text>
           </View>
-          <View style={{flex:0.29,paddingLeft: Settings.getX(20)}}>
-            <Text style={styles.listTitleFont}>Srv Fee</Text>
+          <View style={{flex:0.2,paddingLeft: Settings.getX(20)}}>
+            <Text style={styles.listTitleFont}>Amount</Text>
           </View>
           <View style={{flex:0.2,paddingLeft:Settings.getX(15)}}>
-            <Text style={styles.listTitleFont}>Billing</Text>
+            <Text style={styles.listTitleFont}>Balance</Text>
           </View>
         </View>
       )
-    }
-
   }
   renderDetialList(){
     return(
@@ -150,17 +157,24 @@ export default class PaymentHistory extends Component {
           <TouchableOpacity
                   style={styles.recordView}
                   key={index}
-                  onPress={()=>this.pressProxy(record)}
+                  onPress={()=>this.goToBillingDetail(record)}
                   >
-            <View style={{flex:0.4}}>
+            <View style={{flex:0.15}}>
+              <Text style={styles.recordTitleFont}>{record.billing_id}</Text>
+            </View>
+            <View style={{flex:0.3}}>
               <Text style={styles.recordTitleFont}>{record.cycle}</Text>
             </View>
-            <View style={{flex:0.25}}>
+            <View style={{flex:0.2}}>
               <Text style={styles.recordTitleFont}>{record.total}</Text>
             </View>
-            <View style={{flex:0.35}}>
-              <Text style={styles.recordTitleFont}>{record.service_fee}(r{ecord.promo})</Text>
+            <View style={{flex:0.2}}>
+              <Text style={styles.recordTitleFont}>{record.charge}</Text>
             </View>
+            <View style={{flex:0.2}}>
+              <Text style={styles.recordTitleFont}>{record.total_balance}</Text>
+            </View>
+
           </TouchableOpacity>
         )
       })
@@ -170,20 +184,24 @@ export default class PaymentHistory extends Component {
           <TouchableOpacity
                   style={styles.recordView}
                   key={index}
-                  onPress={()=>this.pressProxy(record)}
+                  onPress={()=>this.goToBillingDetail(record)}
                   >
-            <View style={{flex:0.31}}>
+            <View style={{flex:0.15}}>
+              <Text style={styles.recordTitleFont}>{record.billing_id}</Text>
+            </View>
+            <View style={{flex:0.3}}>
               <Text style={styles.recordTitleFont}>{record.cycle}</Text>
             </View>
             <View style={{flex:0.2}}>
               <Text style={styles.recordTitleFont}>{record.total}</Text>
             </View>
-            <View style={{flex:0.29}}>
-              <Text style={styles.recordTitleFont}>{record.service_fee}({record.promo})</Text>
-            </View>
             <View style={{flex:0.2}}>
               <Text style={styles.recordTitleFont}>{record.bill}</Text>
             </View>
+            <View style={{flex:0.2}}>
+              <Text style={styles.recordTitleFont}>{record.total_balance}</Text>
+            </View>
+
           </TouchableOpacity>
         )
       })
@@ -256,7 +274,6 @@ const styles = StyleSheet.create({
   },
   recordView:{
     height:50,
-    paddingHorizontal:Settings.getX(12),
     width:width-10,
     flexDirection:'row',
     borderColor:'#D1D3D4',

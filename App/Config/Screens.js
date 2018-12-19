@@ -1,8 +1,6 @@
 import { Navigation } from 'react-native-navigation';
 import HistoryPage from '../Components/History';
 import AboutUs from '../Components/AboutUs';
-// import CreateOrder from '../Components/CreateOrder';
-// import CreateOrderDetail from '../Components/CreateOrderDetail';
 import Login from '../Components/Login';
 import Submenu from '../Components/Submenu';
 import Category from '../Components/Category';
@@ -20,24 +18,24 @@ import SearchPage from '../Components/SearchPage';
 import ChangeCategoryName from '../Components/ChangeCategoryName';
 import CmRestaurantAlert from '../Components/CmRestaurantAlert';
 import ChangeCategoryOrder from '../Components/ChangeCategoryOrder';
+import Manage from '../Components/Manage';
+import Close from '../Components/Close';
+import BillingDetail from '../Components/BillingDetail';
 
-
-
-// import TabBar from '../Components/TabBar';
-// register all screens of the app (including internal ones)
 export function registerScreens() {
   Navigation.registerComponent('CmRestaurantAlert', () => CmRestaurantAlert);
   Navigation.registerComponent('ChangeCategoryName', () => ChangeCategoryName);
   Navigation.registerComponent('AboutUs', () => AboutUs);
   Navigation.registerComponent('AddDish', () => AddDish);
   Navigation.registerComponent('Dish', () => Dish);
+  Navigation.registerComponent('Close', () => Close);
+  Navigation.registerComponent('BillingDetail', () => BillingDetail);
   Navigation.registerComponent('Submenu', () => Submenu);
   Navigation.registerComponent('AddSubmenu', () => AddSubmenu);
   Navigation.registerComponent('Category', () => Category);
   Navigation.registerComponent('Management', () => Management);
+  Navigation.registerComponent('Manage', () => Manage);
   Navigation.registerComponent('HistoryPage', () => HistoryPage);
-  // Navigation.registerComponent('CreateOrder', () => CreateOrder);
-  // Navigation.registerComponent('CreateOrderDetail', () => CreateOrderDetail);
   Navigation.registerComponent('Login', () => Login);
   Navigation.registerComponent('OrderDetail', () => OrderDetail);
   Navigation.registerComponent('OrderHistory', () => OrderHistory);

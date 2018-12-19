@@ -38,6 +38,7 @@ const CmrCategoryStore = Object.assign({},EventEmitter.prototype,{
         this.state.toppingGroupList = data.toppingGroupList;
     },
     updateSelectedCategory(data) {
+        console.log(data,this.state.dishLists)
         this.state.selectedCateDishes = [];
         this.state.dishLists.forEach((dish, index) => {
             if (dish.dt_id === data.dt_id) {

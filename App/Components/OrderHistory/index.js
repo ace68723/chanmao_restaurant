@@ -12,7 +12,6 @@ import {
   AsyncStorage
 } from 'react-native';
 import Settings from '../../Config/Setting';
-import Setting from '../../Config/Setting';
 import Loading from '../Loading';
 import PaymentHistoryModule from '../../Module/PaymentHistory/PaymentHistoryModule';
 import PrintModule from '../../Module/Print/PrintModule';

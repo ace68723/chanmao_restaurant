@@ -36,35 +36,4 @@ export default  {
 
   },
 }
-// data.ea_done.forEach(data => {
-//   const io_data = {
-//    transaction_id: data.oid,
-//    transaction_retail_price: "data.total",
-//    transaction_date_time:'',
-//    transaction_retail_subtotal:'',
-//    transaction_retail_tax:'',
-//    transaction_delivery: {
-//      delivery_type:data.dltype,
-//      delivery_comment: data.comment,
-//      delivery_status: data.status,
-//      delivery_prepare_time: data.pptime,
-//    }
-//  }
-//    saveOrder(io_data);
-//
-//
-//    data.ea_new.forEach(data => {
-//      const io_data = {
-//       transaction_id: data.oid,
-//       transaction_retail_price: "data.total",
-//       transaction_date_time:'',
-//       transaction_retail_subtotal:'',
-//       transaction_retail_tax:'',
-//       transaction_delivery: {
-//         delivery_type:data.dltype,
-//         delivery_comment: data.comment,
-//         delivery_status: data.status,
-//         delivery_prepare_time: data.pptime,
-//       }
-//     }
-//       saveOrder(io_data);
+

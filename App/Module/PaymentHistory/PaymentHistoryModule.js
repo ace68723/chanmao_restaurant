@@ -5,6 +5,7 @@ export default  {
     try {
       const { token,rid,authortoken } = GetUserInfo();
       const data = await PaymentHistoryAPI.getBilling(authortoken,token,rid);
+      console.log(data);
       if(data.ev_error === 0 ){
          const paymentLists = data.ev_billings
          paymentLists.forEach(item => {
@@ -12,7 +13,7 @@ export default  {
           let tempStartDate = tempStartStr[0].split("-");
           let tempEndStr = item.end_date.split(" ");
           let tempEndDate = tempEndStr[0].split("-");
-          const cycle = tempStartDate[1] + '-'  + tempStartDate[2] + ' ~ ' + tempEndDate[1] + '-'  + tempEndDate[2];
+          const cycle = tempStartDate[1] + '-'  + tempStartDate[2] + '~' + tempEndDate[1] + '-'  + tempEndDate[2];
           item.cycle = cycle;
           item.service_fee = parseFloat(item.service_fee) + parseFloat(item.promo)
         });

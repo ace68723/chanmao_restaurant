@@ -12,6 +12,7 @@ import Home from '../Home';
 import Category from '../Category';
 import HistoryPage from '../History';
 import AboutUs from '../AboutUs';
+import Manage from '../Manage';
 import TabBar from './TabBar';
 import LoginModule from '../../Module/Login/LoginModule';
 
@@ -51,11 +52,11 @@ export default class Tab extends Component {
                     activeIconImage={require("./Image/homeorange.png")}
                     inactiveIconImage={require("./Image/homegrey.png")}
                     navigator={this.props.navigator}/>
-              <HistoryPage tabLabel="History"
+              <HistoryPage tabLabel="Report"
                     activeIconImage={require("./Image/historyorange.png")}
                     inactiveIconImage={require("./Image/historygrey.png")}
                     navigator={this.props.navigator}/>
-              <Category tabLabel="Management"
+              <Manage tabLabel="Management"
                     onPressLogout = {() => this._logOut()}  
                     activeIconImage={require("./Image/neworange.png")}
                     inactiveIconImage={require("./Image/newgrey.png")}
