@@ -1,4 +1,5 @@
 package com.cm_restaurant;
+import cn.jpush.reactnativejpush.JPushPackage;
 import io.realm.react.RealmReactPackage; // add this import
 
 import com.facebook.react.ReactPackage;
@@ -9,7 +10,8 @@ import java.util.List;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 
 public class MainApplication extends NavigationApplication {
-
+    private boolean SHUTDOWN_TOAST = false;
+    private boolean SHUTDOWN_LOG = false;
 
     @Override
     public boolean isDebug() {
@@ -23,7 +25,8 @@ public class MainApplication extends NavigationApplication {
         return Arrays.<ReactPackage>asList(
                 new RNDeviceInfo(),
                 new customPackage(),
-                new RealmReactPackage() // add this line
+                new RealmReactPackage(), // add this line
+                new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG)
         );
     }
     @Override
