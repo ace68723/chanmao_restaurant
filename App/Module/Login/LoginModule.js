@@ -1,7 +1,6 @@
 import LoginAPI from './LoginAPI';
 import { GetDeviceInfo, GetUserInfo, SaveUserInfo, InitUserInfo } from '../Database';
 import DeviceInfo from 'react-native-device-info';
-
 export default  {
   async login(username,password){
     try {
@@ -55,7 +54,7 @@ export default  {
         InitUserInfo();
         throw 'no authortoken'
       }
-     
+
       const userInfo = await LoginAPI.auth({authortoken, token,rid});
       if(userInfo.result === 0 ){
          const eo_data ={

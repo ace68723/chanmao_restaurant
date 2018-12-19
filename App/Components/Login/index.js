@@ -20,6 +20,7 @@ import Loading from '../Loading';
 import Setting from '../../Config/Setting';
 import LoginModule from '../../Module/Login/LoginModule';
 import { GetDeviceInfo } from '../../Module/Database';
+import JPushModule from 'jpush-react-native';
 
 export default class Login extends Component {
   constructor(){
@@ -47,7 +48,25 @@ export default class Login extends Component {
       this.setState({
         ver: version,
       })
+      JPushModule.notifyJSDidLoad((resultCode) => {
+        // console.log('resisterID:'+resultCode)
+        if (resultCode === 0) {
+        }
 
+    });
+    JPushModule.initPush()
+     JPushModule.getRegistrationID(registrationId => {console.log('resisterID:'+registrationId)})
+     JPushModule.addReceiveCustomMsgListener((message) => {
+      this.setState({pushMsg: message});
+    });
+    JPushModule.addReceiveNotificationListener((message) => {
+      console.log("receive notification: " + message);
+    });
+  }
+  componentWillUnmount(){
+    // AppState.removeEventListener('change', this._handleAppStateChange);
+    JPushModule.removeReceiveCustomMsgListener();
+    JPushModule.removeReceiveNotificationListener();
   }
   _setUsername(username){
     this.setState({username});
