@@ -21,7 +21,6 @@ export default class BillingDetail extends Component {
     this.pressGo = this.pressGo.bind(this);
   }
   pressGo() {
-    console.log('her')
     this.props.navigator.pop({
       animated: true, // does the pop have transition animation or does it happen immediately (optional)
       animationType: 'fade', // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
@@ -126,6 +125,39 @@ export default class BillingDetail extends Component {
         </TouchableOpacity>
         </View>
        )
+     } else {
+      return(
+        <View style={{
+          backgroundColor:'white',
+          flex:0.15,
+          borderBottomColor: '#f4f4f4',
+          borderBottomWidth: 1,
+          flexDirection:'row',
+          alignItems:'center',
+          justifyContent:'center'
+        }}>
+              <View style={{flex:0.5,alignItems:'flex-end',marginRight:30}}>
+                <Text style={{
+                  color:'black',
+                  fontSize:18,
+                  fontWeight:'bold',}}>
+                    Remittance
+                </Text>
+              </View>
+              <View style={{flex:0.3,alignItems:'flex-start',marginLeft:30}}>
+        <Text style={{
+            color:'black',
+            fontSize:18,
+            fontWeight:'bold',
+          }}>
+            ${this.state.record.bill}
+          </Text>
+        </View>
+        <TouchableOpacity style = {{flex:0.2}} onPress = {() => this.pressGo()}>
+        <Text>Order Report</Text>
+        </TouchableOpacity>
+        </View>
+      )
      }
   }
   renderSales() {

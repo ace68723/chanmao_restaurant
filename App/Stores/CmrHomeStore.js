@@ -39,12 +39,13 @@ const CmrHomeStore = Object.assign({},EventEmitter.prototype,{
               const soundInterval = setInterval(() => {
                 NativeModules.SystemSound.playSound();
                 }, 500);//add loading if request more than 200ms
-             
+             setTimeout(()=>clearInterval(soundInterval),2000);
+
               Alert.alert(
                 "Message",
                 'You Have New Order',
                 [
-                  {text: 'Ok',onPress:()=>clearInterval(soundInterval)},
+                  {text: 'Ok'},
                 ],
                 { cancelable: false }
               )

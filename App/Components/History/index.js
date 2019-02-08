@@ -127,7 +127,7 @@ export default class HistoryPage extends Component {
                     navigator={this.props.navigator}
                     tabLabel='Order Report'/>
               <PaymentHistory
-                    onPress={(record) => this._goGetSummary(record)}
+                    onPress={(record) => this.getSummary(record)}
                     billing = {this.state.billing}
                     onPressLogout = {() => this._logOut()}
                     settleType = {settle_type}

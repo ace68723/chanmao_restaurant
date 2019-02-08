@@ -14,7 +14,7 @@ import Loading from '../Loading';
 import OrderDetailModule from '../../Module/OrderDetail/OrderDetailModule';
 import CmrHomeAction from '../../Actions/CmrHomeAction';
 
-const timeStr = ['< 10', '20', '30', '> 40'];
+const timeStr = ['10', '20', '30', '40'];
 
 export default class OrderDetail extends Component {
   constructor(props){

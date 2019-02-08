@@ -72,51 +72,5 @@ export default  {
              throw error
         })
 
-
-      // const result= fetch(url,options)
-      //      .then((response) => response.json())
-      //      .catch((error) => {
-      //          console.log(error);
-      //          throw error
-      //     })
-      //     const cancelable = makeCancelable(result);
-      //
-      //
-      //
-      //     setTimeout(function () {
-      //       cancelable.cancel();
-      //     }, 30000);
-      //     return result;
-
-          // this.cancelable = makeCancelable(fetch(url,options));
-          //         return(this.cancelable.promise
-          //             .then((response)=>response.json())
-          //             .catch((error)=> {
-          //                 console.log(error);
-          //                 throw error
-          //             }));
-          //
-          //   this.cancelable.cancel();
-
-
-
-
-
-      // let cancelable = makeCancelable(fetch(url,options));
-      //         const result= this.cancelable.promise
-      //             .then((response)=>response.json())
-      //             .catch((error)=> {
-      //                 console.log(error);
-      //                 throw error
-      //             });
-      //
-      //
-      //
-      // setTimeout(function () {
-      //   cancelable.cancel();
-      // }, 3);
-      // return result;
-
-
      }
   }

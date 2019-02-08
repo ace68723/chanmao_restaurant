@@ -18,12 +18,11 @@ import Settings from '../../Config/Setting';
 import Loading from '../Loading';
 import OrderItem from './OrderItem';
 import HomeModule from '../../Module/Home/HomeModule';
-import TimerMixin from 'react-timer-mixin';
+import JPushModule from 'jpush-react-native';
 import CmrHomeAction from '../../Actions/CmrHomeAction';
 import CmrHomeStore from '../../Stores/CmrHomeStore';
 import { GetUserInfo } from '../../Module/Database';
 export default class Home extends Component {
-  mixins: [TimerMixin];
   constructor()
   {
     super();
@@ -45,6 +44,13 @@ export default class Home extends Component {
     CmrHomeStore.addChangeListener(this._onChange);
     CmrHomeAction.fetchOrder()
     this.updateOrders();
+    JPushModule.addReceiveCustomMsgListener((message) => {
+      this.setState({pushMsg: message});
+    });
+    JPushModule.addReceiveNotificationListener((message) => {
+      console.log("receive notification: " + message);
+      CmrHomeAction.fetchOrder()
+    });
   }
   componentWillUnmount() {
     CmrHomeStore.removeChangeListener(this._onChange);

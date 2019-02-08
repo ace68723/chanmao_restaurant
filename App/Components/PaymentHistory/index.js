@@ -70,9 +70,9 @@ export default class PaymentHistory extends Component {
   _logOut(){
     this.props.onPressLogout()
     }
-    pressProxy(record) {
+  pressProxy(record) {
       this.props.onPress(record)
-    }
+  }
   async getBilling(){
     const loadingTimeout = setTimeout(() => {
       this.refs.loading.startLoading();
