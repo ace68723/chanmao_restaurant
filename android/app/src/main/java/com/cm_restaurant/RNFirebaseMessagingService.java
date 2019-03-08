@@ -3,10 +3,9 @@ package com.cm_restaurant;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.cm_restaurant.DeviceToken;
+
 /**
  * Created by aiden on 2018-01-22.
  */

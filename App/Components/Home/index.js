@@ -37,7 +37,12 @@ export default class Home extends Component {
   }
   componentWillMount() {
     DeviceEventEmitter.addListener('Message',(Message)=>{
-      NativeModules.SystemSound.playSound();
+      const soundInterval = setInterval(() => {
+        NativeModules.SystemSound.playSound();
+        }, 500);//add loading if request more than 200ms
+      setTimeout(() => {
+        clearInterval(soundInterval)
+      }, 5000);
     });
   }
   componentDidMount(){
@@ -103,7 +108,9 @@ export default class Home extends Component {
             const soundInterval = setInterval(() => {
               NativeModules.SystemSound.playSound();
               }, 500);//add loading if request more than 200ms
-           
+              setTimeout(() => {
+                clearInterval(soundInterval)
+              }, 5000);
             Alert.alert(
               "Message",
               'You Have New Order',

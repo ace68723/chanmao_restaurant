@@ -52,30 +52,31 @@ export default class AboutUs extends Component {
     let date = this.getDate();
     const start_time = date + ' ' + '00:00:00';
     const end_time = date + ' ' + '23:59:59';
-    try {
-      const data = await CloseModule.createRRClose(start_time, end_time);
-      if(data.ev_error == 0) {
-        this.getCloseInfo()
+      try {
+        const data = await CloseModule.createRRClose(start_time, end_time);
+        if(data.ev_error == 0) {
+          this.getCloseInfo()
+          Alert.alert(
+            "Success",
+            '今日关店成功',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
+        }
+      } catch (e) {
+        console.log(e)
         Alert.alert(
-          "Success",
-          '今日关店成功',
+          "Error",
+          '关店失败',
           [
             {text: 'Ok'},
           ],
           { cancelable: false }
         )
       }
- } catch (e) {
-   console.log(e)
-   Alert.alert(
-    "Error",
-    '关店失败',
-    [
-      {text: 'Ok'},
-    ],
-    { cancelable: false }
-  )
- }
+
   }
   async getCloseInfo() {
     try {
@@ -88,29 +89,40 @@ export default class AboutUs extends Component {
     }
   }
   async createRRClose() {
-    try {
-         const data = await CloseModule.createRRClose(this.state.start_time, this.state.end_time);
-         if(data.ev_error == 0) {
-           this.getCloseInfo()
-           Alert.alert(
-            "Success",
-            '添加关店成功',
-            [
-              {text: 'Ok'},
-            ],
-            { cancelable: false }
-          )
-         }
-    } catch (e) {
-      console.log(e)
+    if(this.state.start_time > this.state.end_time) {
       Alert.alert(
-        "Error",
-        '关店失败',
+        "ERROR",
+        '起始时间晚于结束时间, 会导致永久关店,请检查',
         [
           {text: 'Ok'},
         ],
         { cancelable: false }
       )
+    } else {
+        try {
+            const data = await CloseModule.createRRClose(this.state.start_time, this.state.end_time);
+            if(data.ev_error == 0) {
+              this.getCloseInfo()
+              Alert.alert(
+                "Success",
+                '添加关店成功',
+                [
+                  {text: 'Ok'},
+                ],
+                { cancelable: false }
+              )
+            }
+        } catch (e) {
+          console.log(e)
+          Alert.alert(
+            "Error",
+            '关店失败',
+            [
+              {text: 'Ok'},
+            ],
+            { cancelable: false }
+          )
+        }
     }
   }
   async deleteClose(record) {

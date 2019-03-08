@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 import android.content.BroadcastReceiver;
 
 import com.facebook.react.bridge.Promise;
@@ -18,14 +17,9 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import java.util.HashMap;
-import java.util.Map;
 import android.graphics.Bitmap;
 import woyou.aidlservice.jiuiv5.ICallback;
 import woyou.aidlservice.jiuiv5.IWoyouService;
-import com.sunmi.trans.*;
-import static android.R.attr.duration;
-import static android.R.id.message;
 
 /**
  * Created by aiden on 2017-09-12.

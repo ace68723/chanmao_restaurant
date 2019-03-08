@@ -32,20 +32,21 @@ const CmrHomeStore = Object.assign({},EventEmitter.prototype,{
                 this.state.newOrder = data.ea_new,
                 this.state.recentOrder = data.ea_done,
                 this.state.Orders = Orders,
-                // checkOid= data.ev_new[i].oid,
                 this.state.refreshing = false
 
             } else {
               const soundInterval = setInterval(() => {
                 NativeModules.SystemSound.playSound();
                 }, 500);//add loading if request more than 200ms
-             setTimeout(()=>clearInterval(soundInterval),2000);
+                setTimeout(() => {
+                  clearInterval(soundInterval)
+                }, 5000);
 
               Alert.alert(
                 "Message",
                 'You Have New Order',
                 [
-                  {text: 'Ok'},
+                  {text: 'Ok',onPress:()=>clearInterval(soundInterval)},
                 ],
                 { cancelable: false }
               )

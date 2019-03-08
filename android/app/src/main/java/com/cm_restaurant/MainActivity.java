@@ -15,7 +15,7 @@ public class MainActivity extends SplashActivity {
      */
     private static Activity mCurrentMainActivity = null;
     protected String getMainComponentName() {
-        return "cm_restaurant";
+        return "cm_restaurant_ac";
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

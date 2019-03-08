@@ -101,7 +101,7 @@ export function DatabaseInit() {
   let cmr_system = realm.objects('cmr_system');
   realm.write(() => {
     realm.create('cmr_system',{type: 'channel', value: 'cm-4'}, true);
-    realm.create('cmr_system',{type: 'version', value: '1.2.7'}, true);
+    realm.create('cmr_system',{type: 'version', value: '1.2.9'}, true);
     realm.create('cmr_system',{type: 'deviceToken', value: ''}, true);
   })
   if(cmr_system.length <5) {
