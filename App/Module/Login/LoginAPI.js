@@ -1,7 +1,7 @@
 import { API_LOGIN,API_AUTH } from '../../Config/API';
 import JPushModule from 'jpush-react-native';
 let jpushid='';
-JPushModule.getRegistrationID(registrationId => {jpushid=registrationId;});
+// JPushModule.getRegistrationID(registrationId => {jpushid=registrationId;});
 export default  {
     login(deviceToken,username,password, channel, version, UUID,sysOS){
       const url = API_LOGIN;

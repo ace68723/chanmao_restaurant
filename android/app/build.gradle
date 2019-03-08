@@ -94,13 +94,14 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.cm_restaurant"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 22
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55" // See note below!
         versionCode 18
         versionName "1.2.9"
         ndk {
@@ -110,6 +111,10 @@ android {
                 JPUSH_APPKEY: "43de57b5e7d7bfe46edbb6e7", //在此替换你的APPKey
                 APP_CHANNEL: "developer-default"    //应用渠道号
         ]
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     signingConfigs {
         release {
@@ -152,14 +157,14 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.facebook.react:react-native:"  // From node_modules
+    implementation project(':react-native-navigation')
     compile project(':realm')
     compile (project(':react-native-device-info')) {
         exclude group: "com.google.android.gms"
     }
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
-    compile "com.facebook.react:react-native:+"  // From node_modules
-    compile project(':react-native-navigation')
     compile 'com.google.firebase:firebase-core:9.6.1'
     compile 'com.google.firebase:firebase-messaging:9.6.1'
     compile project(':jpush-react-native')
